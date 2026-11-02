@@ -70,26 +70,31 @@ footer{text-align:center;color:#6585a4;font-size:10px;padding:18px}
 const $=id=>document.getElementById(id);
 const reply=$('reply'),status=$('status'),hud=$('hud'),log=$('log');
 let history=[];
-function speak(text){
-  if(!('speechSynthesis' in window)) return;
+function speak(text) {
+  if (!window.speechSynthesis) return;
 
   speechSynthesis.cancel();
 
+  const voices = speechSynthesis.getVoices();
   const u = new SpeechSynthesisUtterance(text);
+
   u.lang = 'en-GB';
-  u.rate = 0.90;
-  u.pitch = 0.82;
+  u.rate = 0.88;
+  u.pitch = 0.85;
   u.volume = 1;
 
-  const voices = speechSynthesis.getVoices();
+  const british = voices.filter(v =>
+    v.lang.toLowerCase().includes('en-gb')
+  );
 
-  const voice =
-    voices.find(v => /Google UK English Male/i.test(v.name)) ||
-    voices.find(v => /Daniel|Arthur/i.test(v.name)) ||
-    voices.find(v => v.lang === 'en-GB' && /male/i.test(v.name)) ||
-    voices.find(v => v.lang === 'en-GB');
+  const voice = british.find(v =>
+    /male|daniel|george/i.test(v.name)
+  ) || british[0];
 
-  if(voice) u.voice = voice;
+  if (voice) u.voice = voice;
+
+  speechSynthesis.speak(u);
+}
 
   speechSynthesis.speak(u);
 }
