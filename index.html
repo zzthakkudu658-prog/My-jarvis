@@ -91,26 +91,81 @@ function localCommand(t){
  if(s.includes('what can you do'))return 'I can talk, answer questions with my AI connection, tell you the time and date, and open a few websites.';
  return null;
 }
+
 async function ask(text){
  if(!text.trim())return;
- add('You',text);$('message').value='';status.textContent='PROCESSING';
+ add('You',text);
+ $('message').value='';
+ status.textContent='PROCESSING';
+
  const cmd=localCommand(text);
- if(cmd){add('JARVIS',cmd);say(cmd);status.textContent='SYSTEM READY';return}
+ if(cmd){
+  add('JARVIS',cmd);
+  say(cmd);
+  status.textContent='SYSTEM READY';
+  return;
+ }
+
  const key=localStorage.getItem('jarvis_gemini_key');
- if(!key){const m='I can handle basic commands. To answer general questions, add your Gemini API key in settings.';add('JARVIS',m);say(m);status.textContent='AI KEY REQUIRED';return}
- history.push({role:'user',parts:[{text}]});
+
+ if(!key){
+  const m='Please add your OpenRouter API key in settings.';
+  add('JARVIS',m);
+  say(m);
+  status.textContent='API KEY REQUIRED';
+  return;
+ }
+
+ const messages=[
+  {
+   role:'system',
+   content:'You are JARVIS, a friendly, intelligent and natural personal assistant. Speak warmly and confidently like a helpful friend. Keep spoken answers concise. Never claim to control phone functions unless actually done.'
+  },
+  ...history.slice(-12),
+  {role:'user',content:text}
+ ];
+
  try{
-  const res=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+encodeURIComponent(key),{
-   method:'POST',headers:{'Content-Type':'application/json'},
-   body:JSON.stringify({systemInstruction:{parts:[{text:'You are JARVIS, a friendly, intelligent, concise personal assistant. Speak naturally, warmly and confidently. Do not claim to control phone functions unless actually done. Keep spoken answers brief.'}]},contents:history.slice(-12),generationConfig:{temperature:.7,maxOutputTokens:500}})
+  const res=await fetch('https://openrouter.ai/api/v1/chat/completions',{
+   method:'POST',
+   headers:{
+    'Authorization':'Bearer '+key,
+    'Content-Type':'application/json'
+   },
+   body:JSON.stringify({
+    model:'openrouter/free',
+    messages:messages,
+    temperature:0.7,
+    max_tokens:500
+   })
   });
+
   const data=await res.json();
-  if(!res.ok)throw new Error(data.error?.message||'API request failed');
-  const answer=data.candidates?.[0]?.content?.parts?.map(p=>p.text||'').join('')||'I could not generate a response.';
-  history.push({role:'model',parts:[{text:answer}]});add('JARVIS',answer);say(answer);status.textContent='SYSTEM READY';
- }catch(e){history.pop();const m='Connection error: '+e.message;add('JARVIS',m);say(m);status.textContent='CONNECTION ERROR'}
+
+  if(!res.ok){
+   throw new Error(data.error?.message||'API request failed');
+  }
+
+  const answer=data.choices?.[0]?.message?.content
+   ||'I could not generate a response.';
+
+  history.push(
+   {role:'user',content:text},
+   {role:'assistant',content:answer}
+  );
+
+  add('JARVIS',answer);
+  say(answer);
+  status.textContent='SYSTEM READY';
+
+ }catch(e){
+  const m='Connection error: '+e.message;
+  add('JARVIS',m);
+  say(m);
+  status.textContent='CONNECTION ERROR';
+ }
 }
-$('send').onclick=()=>ask($('message').value);
+
 $('message').addEventListener('keydown',e=>{if(e.key==='Enter')ask($('message').value)});
 $('settings').onclick=()=>{$('settingsPanel').classList.toggle('hidden');$('apiKey').value=localStorage.getItem('jarvis_gemini_key')||''};
 $('saveKey').onclick=()=>{const k=$('apiKey').value.trim();if(k){localStorage.setItem('jarvis_gemini_key',k);say('Gemini connection key saved on this device.');}else say('Please paste your API key first.')};
