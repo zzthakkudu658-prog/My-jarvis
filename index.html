@@ -3,168 +3,205 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#020914">
-<meta name="description" content="Your personal JARVIS voice assistant">
+<meta name="theme-color" content="#030914">
+<meta name="description" content="JARVIS personal holographic AI assistant">
 <link rel="manifest" href="manifest.json">
-<title>J.A.R.V.I.S.</title>
+<title>J.A.R.V.I.S. — Personal AI</title>
 <style>
-:root{--cyan:#55eaff;--blue:#248cff;--muted:#83a9c5;--line:rgba(85,234,255,.25)}
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:#020914;color:#eafaff;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
-body{min-height:100svh;background:radial-gradient(ellipse at 50% 38%,rgba(0,114,190,.23),transparent 38%),radial-gradient(ellipse at 50% 100%,rgba(0,61,119,.2),transparent 45%),#020914;overflow-x:hidden}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.17;background-image:linear-gradient(rgba(61,194,255,.13) 1px,transparent 1px),linear-gradient(90deg,rgba(61,194,255,.13) 1px,transparent 1px);background-size:40px 40px;mask-image:linear-gradient(transparent,#000 15%,#000 85%,transparent)}
-.app{position:relative;max-width:960px;min-height:100svh;margin:auto;padding:16px 15px calc(18px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:14px}
-header{display:flex;align-items:center;justify-content:space-between;padding:7px 2px 13px;border-bottom:1px solid var(--line);letter-spacing:3px;font-weight:800;color:var(--cyan)}
-header small{font-size:9px;letter-spacing:1.5px;color:#91b7d4;font-weight:500}
-.brand{font-size:14px;text-shadow:0 0 14px #168bff}
-.brand small{display:block;margin-top:5px}
-.headright{display:flex;align-items:center;gap:10px}
-.status{color:#91b7d4;font-size:10px;letter-spacing:1.7px;white-space:nowrap}
-.status:before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#59ffc5;box-shadow:0 0 12px #59ffc5;margin-right:7px}
-.iconbtn{width:35px;height:35px;border:1px solid var(--line);border-radius:50%;background:#06223b;color:var(--cyan);font-size:17px}
-main{width:100%;margin:auto;padding:0 0 8px}
-.dashboard{display:grid;grid-template-columns:1fr;gap:14px}
-.hero{display:flex;flex-direction:column;align-items:center;text-align:center;gap:5px;padding:1px 0 0}
-.eyebrow{font-size:9px;letter-spacing:3px;color:#79cce5}
-.hud{width:min(76vw,330px);aspect-ratio:1;display:grid;place-items:center;position:relative;margin:0 auto}
-.hud:before,.hud:after{content:"";position:absolute;inset:4%;border:1px solid rgba(85,234,255,.22);border-radius:50%;box-shadow:inset 0 0 30px #087bff12,0 0 24px #087bff12}
-.hud:after{inset:15%;border-style:dashed;animation:spin 28s linear infinite}
-.ring{position:absolute;inset:9%;border-radius:50%;border:1px solid #2c9effaa;border-left-color:transparent;border-right-color:var(--cyan);box-shadow:0 0 18px #168bff44,inset 0 0 25px #168bff22;animation:spin 13s linear infinite}
-.ring:before,.ring:after{content:"";position:absolute;border-radius:50%;border:1px dashed #4cecff88;inset:13px;animation:spin 18s linear infinite}
-.ring:after{inset:29px;border-style:solid;border-color:#1b7edc88;animation-direction:reverse;animation-duration:12s}
-.ring2{position:absolute;inset:21%;border:1px solid rgba(85,234,255,.55);border-top:2px solid var(--cyan);border-bottom-color:transparent;border-radius:50%;animation:spin 9s linear infinite reverse}
-.ring3{position:absolute;inset:29%;border:1px dashed #4cecff88;border-radius:50%;animation:spin 22s linear infinite}
-.ticks{position:absolute;inset:0;border-radius:50%;background:repeating-conic-gradient(rgba(88,220,255,.8) 0deg 1deg,transparent 1deg 12deg);mask:radial-gradient(circle,transparent 66%,#000 67%,#000 68%,transparent 69%);opacity:.6;animation:spin 45s linear infinite}
-.core{width:34%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 50% 45%,#dfffff 0,#65eaff 9%,#168ed4 33%,#07528c 54%,#061a3c 76%);box-shadow:0 0 25px #35dfff,0 0 65px #087bff88;animation:pulse 2.5s ease-in-out infinite;position:relative}
-.core:after{content:"J";position:absolute;inset:0;display:grid;place-items:center;font-size:clamp(25px,8vw,38px);font-weight:300;color:#eaffff;text-shadow:0 0 14px white;letter-spacing:3px}
-.orbit{position:absolute;font-size:8px;letter-spacing:1.5px;color:#68cce9}
-.orbit.a{top:12%;left:2%}.orbit.b{right:0;top:49%}.orbit.c{bottom:11%;left:12%}
-.hud.listening .core{background:radial-gradient(circle,#fff 0,#8affff 12%,#00aaff 42%,#061a3c 75%);box-shadow:0 0 35px #55f5ff,0 0 95px #087bff;animation:pulse .8s infinite}
-@keyframes spin{to{transform:rotate(360deg)}}@keyframes pulse{0%,100%{transform:scale(.96);filter:brightness(.92)}50%{transform:scale(1.06);filter:brightness(1.3)}}
-.coretitle{font-size:17px;letter-spacing:6px;font-weight:500;text-shadow:0 0 18px #168cff}
-.corehint{font-size:9px;letter-spacing:2px;color:var(--muted);margin-top:3px}
-.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%;margin-top:8px}
-.metric{border:1px solid var(--line);background:linear-gradient(145deg,#07273ebd,#030f20c9);padding:10px 6px;border-radius:9px}
-.metric b{display:block;color:#b7f5ff;font-size:12px;font-weight:500;letter-spacing:1px}
-.metric small{display:block;margin-top:5px;color:#6798b0;font-size:8px;letter-spacing:1.2px}
-.panel{background:linear-gradient(145deg,rgba(5,30,49,.9),rgba(2,14,27,.88));border:1px solid #1a5a83;border-radius:14px;overflow:hidden;box-shadow:inset 0 0 25px #0082c009,0 8px 30px #0005}
-.panelhead{display:flex;justify-content:space-between;align-items:center;padding:11px 13px;border-bottom:1px solid #1a5a8355}
-.section-title{font-size:10px;letter-spacing:2px;color:var(--cyan)}
-.panelhead small{font-size:8px;letter-spacing:1px;color:#638ba4}
-#reply{min-height:43px;text-align:center;color:#d9f8ff;font-size:13px;line-height:1.5;padding:13px 14px 8px}
-#log{height:130px;max-height:130px;overflow:auto;display:flex;flex-direction:column;gap:8px;padding:5px 12px 12px}
-.msg{padding:9px 11px;border-radius:10px;font-size:12px;line-height:1.45;max-width:90%;white-space:pre-wrap}
-.user{align-self:flex-end;background:#104a70;border:1px solid #248cff44}
-.bot{align-self:flex-start;background:#10243c;border:1px solid #1c5275}
-.composer{display:flex;gap:8px;padding:10px;border-top:1px solid #1a5a8355}
-input{min-width:0;width:100%;background:#030c1b;border:1px solid #235477;border-radius:10px;color:white;padding:12px;font-size:13px;outline:none}
-input:focus{border-color:var(--cyan);box-shadow:0 0 12px #35bce933}
-button{border:1px solid #35bce9;background:linear-gradient(135deg,#0e4c83,#092849);color:#eaffff;border-radius:10px;padding:11px 14px;font-weight:700;cursor:pointer}
-button:active{transform:scale(.98)}
-.controls{display:flex;justify-content:center;gap:13px;align-items:center;margin:1px 0 4px}
-.primary{border-radius:50%;width:66px;height:66px;font-size:24px;padding:0;box-shadow:0 0 24px #078eff66}
-.round{width:42px;height:42px;border-radius:50%;padding:0;font-size:16px}
-.quick{display:flex;gap:7px;overflow:auto;padding:0 1px 2px}
-.quick button{white-space:nowrap;border-radius:20px;padding:8px 11px;font-size:10px;background:#041c30;color:#8eddf1;border-color:#48dfff33}
-.small{font-size:11px;color:var(--muted);line-height:1.5}
-.settings{padding:13px;display:flex;flex-direction:column;gap:9px}
-.hidden{display:none!important}
-.row{display:flex;gap:9px}
-.row>*{flex:1;min-width:0}
-a{color:var(--cyan)}
-footer{text-align:center;color:#527b94;font-size:8px;letter-spacing:2px;padding:3px 0}
-@media(min-width:720px){.app{padding-top:23px}.dashboard{grid-template-columns:1fr 1fr;align-items:start}.hero{grid-row:span 2}.hud{width:min(34vw,340px)}#log{height:170px;max-height:170px}}
-@media(max-height:760px){.hud{width:min(62vw,255px)}#log{height:105px;max-height:105px}.app{gap:9px}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important}}
+:root{--cyan:#65efff;--blue:#248cff;--ice:#d9fbff;--muted:#759ab8;--line:#1c759b;--bg:#030914}
+*{box-sizing:border-box}html,body{margin:0;width:100%;min-height:100%;background:var(--bg);color:var(--ice);font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+body{min-height:100svh;overflow-x:hidden;background:radial-gradient(ellipse at 50% 40%,#0b2a48 0,#061426 38%,#020711 78%);padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.23;background-image:linear-gradient(#2e9dca22 1px,transparent 1px),linear-gradient(90deg,#2e9dca22 1px,transparent 1px);background-size:34px 34px;mask-image:linear-gradient(transparent,#000 18%,#000 80%,transparent)}
+header{height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;border-bottom:1px solid #1b658755;position:relative;z-index:2}
+.brand{font-weight:900;letter-spacing:4px;color:var(--cyan);text-shadow:0 0 15px #27cfff88}.brand small{display:block;font-size:8px;letter-spacing:2px;color:#83a9c7;font-weight:500}
+.topright{font-size:9px;letter-spacing:1.5px;color:#7fa8c8;text-align:right}
+main{max-width:850px;margin:auto;padding:8px 14px 24px;position:relative;z-index:1}
+.statusline{display:flex;justify-content:space-between;align-items:center;color:#8db1cc;font-size:9px;letter-spacing:1.8px;padding:10px 3px}
+.live{color:#62ffd1}.live:before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#62ffd1;box-shadow:0 0 10px #62ffd1;margin-right:7px}
+.clockrow{display:flex;justify-content:space-between;align-items:end;padding:8px 5px 0}.clock{font-size:clamp(30px,8vw,48px);font-weight:200;letter-spacing:2px}.date{font-size:9px;letter-spacing:1.5px;color:#8eacc5}.telemetry{text-align:right;font-size:9px;line-height:1.8;color:#8eacc5}
+.stage{height:min(58vh,470px);min-height:340px;position:relative;display:grid;place-items:center;isolation:isolate}
+.stage:before{content:"";position:absolute;width:min(76vw,390px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#20bfff20 0,transparent 68%);filter:blur(8px)}
+.reactor{width:min(52vw,250px);aspect-ratio:1;border-radius:50%;position:relative;display:grid;place-items:center;filter:drop-shadow(0 0 20px #17bfff55)}
+.reactor:before,.reactor:after{content:"";position:absolute;inset:0;border-radius:50%;border:1px solid #4bdfff99;box-shadow:inset 0 0 25px #1289d555,0 0 24px #078bce55}
+.reactor:before{inset:8%;border-style:dashed;animation:spin 28s linear infinite}
+.reactor:after{inset:18%;border-color:#8bf5ff99;border-left-color:transparent;border-right-color:transparent;animation:spin 12s linear infinite reverse}
+.ring3{position:absolute;inset:-9%;border-radius:50%;border:1px dashed #2d9bdc66;animation:spin 38s linear infinite}
+.core{width:42%;height:42%;border-radius:50%;background:radial-gradient(circle at 45% 40%,#fff 0,#aafaff 8%,#38dfff 22%,#0879c5 49%,#04162e 78%);box-shadow:0 0 18px #5beaff,0 0 55px #008cffaa,inset 0 0 15px #d8ffff88;animation:corepulse 2.5s ease-in-out infinite}
+.listening .core{box-shadow:0 0 35px #fff,0 0 95px #00cfff;animation:corepulse .65s ease-in-out infinite}
+.orbit{position:absolute;inset:0;animation:orbit 34s linear infinite}
+.orbit .node{position:absolute;left:50%;top:0;transform:translateX(-50%);font-size:9px;color:#80cde9;letter-spacing:1px;white-space:nowrap}
+.orbit .node:before{content:"";display:block;width:5px;height:5px;background:var(--cyan);border-radius:50%;margin:0 auto 5px;box-shadow:0 0 9px var(--cyan)}
+@keyframes spin{to{transform:rotate(360deg)}}@keyframes orbit{to{transform:rotate(360deg)}}@keyframes corepulse{50%{transform:scale(1.08);filter:brightness(1.35)}}
+.side-readout{position:absolute;top:50%;transform:translateY(-50%);font-size:8px;letter-spacing:1px;color:#6f9cbb;line-height:2.1}.side-readout.left{left:0}.side-readout.right{right:0;text-align:right}
+#reply{min-height:40px;text-align:center;font-size:14px;line-height:1.45;color:#d8faff;padding:0 16px;margin-top:-4px}
+.controls{display:flex;justify-content:center;align-items:center;gap:13px;margin:12px 0 18px}
+button{cursor:pointer;color:#dffcff;background:linear-gradient(145deg,#0c3b60,#071a31);border:1px solid #278cb5;border-radius:12px;padding:11px 14px;font-weight:700;letter-spacing:1px;font-size:10px;box-shadow:0 0 14px #007ec522}
+button:active{transform:scale(.97)}button.primary{width:68px;height:68px;border-radius:50%;font-size:25px;border:1px solid #83f7ff;background:radial-gradient(circle,#146a91,#08233c 72%);box-shadow:0 0 24px #00cfff66}
+.iconorbit{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:520px;margin:0 auto 16px}
+.appicon{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;color:#8fb6d1;font-size:8px;letter-spacing:1px}
+.appicon .glyph{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;border:1px solid #3ac7ef99;background:radial-gradient(circle at 40% 30%,#164d6b,#06162a 75%);box-shadow:0 0 15px #008bc944,inset 0 0 12px #31cfff22;font-size:19px;color:#9cf7ff;transition:.2s}
+.appicon:active .glyph{transform:scale(.9);box-shadow:0 0 24px #28dfff}
+.panel{background:linear-gradient(145deg,#081a2bd9,#061120eF);border:1px solid #1a668455;border-radius:16px;padding:13px;margin-top:12px;box-shadow:0 12px 30px #0005}
+.paneltitle{font-size:9px;letter-spacing:2px;color:var(--cyan);margin-bottom:10px}
+.row{display:flex;gap:8px}input{min-width:0;flex:1;background:#020b17;border:1px solid #245675;border-radius:10px;color:white;padding:12px;font-size:13px;outline:none}input:focus{border-color:var(--cyan)}
+#log{display:flex;flex-direction:column;gap:7px;max-height:155px;overflow:auto;margin-top:10px}.msg{padding:8px 10px;border-radius:10px;font-size:12px;line-height:1.4;white-space:pre-wrap;max-width:92%}.user{align-self:flex-end;background:#10486b}.bot{align-self:flex-start;background:#10243a;border:1px solid #1d5877}
+.hidden{display:none!important}.hint{font-size:10px;color:#7798b4;line-height:1.6}
+#workshop{height:310px;position:relative;overflow:hidden;border:1px solid #1a789c66;border-radius:13px;background:radial-gradient(ellipse,#0b2c47,#030b17 72%);touch-action:pan-y}
+#modelCanvas{width:100%;height:100%;display:block}
+.worktools{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
+footer{text-align:center;color:#547b9c;font-size:9px;letter-spacing:1px;padding:18px 0}
+@media(min-width:650px){.iconorbit{grid-template-columns:repeat(8,1fr)}.stage{height:440px}.side-readout.left{left:8%}.side-readout.right{right:8%}}
 </style>
 </head>
 <body>
-<div class="app">
-<header><div class="brand">J.A.R.V.I.S.<small>PERSONAL AI SYSTEM</small></div><div class="headright"><span class="status" id="status">SYSTEM STANDBY · READY</span><button class="iconbtn" id="settings" title="Settings">⚙</button></div></header>
-<main><div class="dashboard">
-<section class="hero">
-<div class="eyebrow">STARK-STYLE HOLOGRAPHIC INTERFACE</div>
-<div class="hud" id="hud"><div class="ticks"></div><div class="ring"></div><div class="ring2"></div><div class="ring3"></div><div class="orbit a">CORE // 01</div><div class="orbit b">SYSTEM ACTIVE</div><div class="orbit c">NEURAL LINK</div><div class="core"></div></div>
-<div class="coretitle">JARVIS</div><div class="corehint" id="corehint">AWAITING YOUR COMMAND</div>
-<div class="metrics"><div class="metric"><b id="clock">--:--</b><small>LOCAL TIME</small></div><div class="metric"><b>ONLINE</b><small>CORE STATUS</small></div><div class="metric"><b id="battery">READY</b><small>DEVICE POWER</small></div></div>
-<div class="controls"><button id="mic" class="primary" aria-label="Speak">🎙</button><button id="stop" class="round" title="Stop speaking">■</button></div>
+<header><div class="brand">J.A.R.V.I.S.<small>PERSONAL INTELLIGENCE SYSTEM</small></div><div class="topright">MARK VII INTERFACE<br><span style="color:#58eaff">ONLINE</span></div></header>
+<main>
+<div class="statusline"><span class="live" id="status">SYSTEM ONLINE</span><span id="mode">VOICE INTERFACE · READY</span></div>
+<div class="clockrow"><div><div class="clock" id="clock">--:--</div><div class="date" id="date">INITIALISING</div></div><div class="telemetry"><div>POWER <span id="battery">--</span></div><div>NETWORK <span id="network">CHECKING</span></div><div>CORE TEMP <span>OPTIMAL</span></div></div></div>
+<section class="stage" id="hud">
+<div class="side-readout left">NEURAL LINK<br>ACTIVE<br>────────<br>VOICE READY</div>
+<div class="side-readout right">SYSTEMS<br>NOMINAL<br>────────<br>AI CONNECTED</div>
+<div class="reactor"><div class="ring3"></div><div class="orbit"><div class="node">J.A.R.V.I.S.</div></div><div class="core"></div></div>
 </section>
-<section class="panel"><div class="panelhead"><span class="section-title">COMMUNICATION CHANNEL</span><small>LIVE SESSION</small></div><div id="reply">Good day. JARVIS is online. Tap the microphone to speak.</div><div id="log" aria-live="polite"></div><div class="composer"><input id="message" placeholder="Give JARVIS a command..." autocomplete="off"><button id="send">SEND</button></div></section>
-<section class="quick"><button data-command="What can you do?">CAPABILITIES</button><button data-command="What time is it?">TIME</button><button data-command="Tell me a joke">JOKE</button><button data-command="Give me a motivational thought">MOTIVATE</button></section>
-<section class="panel hidden" id="settingsPanel"><div class="panelhead"><span class="section-title">AI CONNECTION</span><small>LOCAL SETTINGS</small></div><div class="settings"><p class="small">Your OpenRouter key stays in this browser on this device. Never paste the key into GitHub code or share it.</p><input id="apiKey" type="password" placeholder="OpenRouter API key"><div class="row"><button id="saveKey">SAVE KEY</button><button id="clearKey">CLEAR</button></div><p class="small">OpenRouter key management: <a href="https://openrouter.ai/keys" target="_blank" rel="noopener">openrouter.ai/keys</a></p></div></section>
-<section class="panel"><div class="panelhead"><span class="section-title">QUICK SYSTEM INFO</span><small>V1 PROTOTYPE</small></div><div style="padding:12px 13px" class="small">British English speech preference · Microphone permission required · AI connection requires your saved OpenRouter key.</div></section>
-</div></main>
-<footer>PERSONAL AI ASSISTANT · STARK-INSPIRED INTERFACE</footer>
+<div id="reply">Good evening. All systems are online. How may I assist you?</div>
+<div class="controls"><button id="settings" title="Settings">⚙</button><button id="mic" class="primary" aria-label="Speak">🎙</button><button id="stop" title="Stop speaking">■</button></div>
+<div class="iconorbit" id="appIcons">
+<div class="appicon" data-app="WhatsApp"><div class="glyph">◉</div><span>WHATSAPP</span></div>
+<div class="appicon" data-app="YouTube"><div class="glyph">▶</div><span>YOUTUBE</span></div>
+<div class="appicon" data-app="Google"><div class="glyph">⌕</div><span>GOOGLE</span></div>
+<div class="appicon" data-app="Instagram"><div class="glyph">◎</div><span>INSTAGRAM</span></div>
+<div class="appicon" data-app="Maps"><div class="glyph">⌖</div><span>MAPS</span></div>
+<div class="appicon" data-app="Gmail"><div class="glyph">✉</div><span>GMAIL</span></div>
+<div class="appicon" data-app="Workshop"><div class="glyph">◇</div><span>3D LAB</span></div>
+<div class="appicon" data-app="Settings"><div class="glyph">⚙</div><span>SYSTEM</span></div>
 </div>
+<section class="panel">
+<div class="paneltitle">HOLOGRAPHIC WORKSHOP · 3D LAB</div>
+<div id="workshop"><canvas id="modelCanvas"></canvas></div>
+<div class="worktools"><button id="human">HUMAN</button><button id="robot">ROBOT</button><button id="car">VEHICLE</button><button id="clearModel">CLEAR</button></div>
+<div class="hint">Drag to rotate · Pinch/scroll to zoom · Ask JARVIS: “Build a robot”, “Show a human model” or “Create a car”. These are interactive procedural 3D previews.</div>
+</section>
+<section class="panel">
+<div class="paneltitle">COMMUNICATION CHANNEL</div>
+<div class="row"><input id="message" placeholder="Speak or type a command..." autocomplete="off"><button id="send">SEND</button></div><div id="log"></div>
+</section>
+<section class="panel hidden" id="settingsPanel">
+<div class="paneltitle">AI CONNECTION · OPENROUTER</div>
+<p class="hint">Your existing OpenRouter key is stored locally on this device under the original JARVIS key name. It is not included in this file. Do not paste API keys into public GitHub code.</p>
+<input id="apiKey" type="password" placeholder="OpenRouter API key">
+<div class="row" style="margin-top:9px"><button id="saveKey">SAVE KEY</button><button id="clearKey">CLEAR KEY</button></div>
+<p class="hint">Uses the OpenRouter free model route. Availability and rate limits depend on the provider.</p>
+</section>
+<footer>J.A.R.V.I.S. · PERSONAL HOLOGRAPHIC INTERFACE · V2</footer>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-const $=id=>document.getElementById(id);
-const reply=$('reply'),status=$('status'),hud=$('hud'),log=$('log');
+const $=id=>document.getElementById(id),reply=$('reply'),status=$('status'),hud=$('hud'),log=$('log');
 let history=[];
-function setStatus(text){status.textContent=text.toUpperCase();$('corehint').textContent=text.toUpperCase()}
 function speak(text){
- if(!('speechSynthesis'in window))return;
+ if(!window.speechSynthesis)return;
  speechSynthesis.cancel();
- const voices=speechSynthesis.getVoices();
- const u=new SpeechSynthesisUtterance(text);
+ const voices=speechSynthesis.getVoices(),u=new SpeechSynthesisUtterance(text);
  u.lang='en-GB';u.rate=.88;u.pitch=.85;u.volume=1;
- const british=voices.filter(v=>(v.lang||'').toLowerCase().includes('en-gb'));
+ const british=voices.filter(v=>v.lang.toLowerCase().includes('en-gb'));
  const voice=british.find(v=>/male|daniel|george/i.test(v.name))||british[0];
  if(voice)u.voice=voice;
- u.onstart=()=>setStatus('Speaking');
- u.onend=()=>setStatus('System ready');
  speechSynthesis.speak(u);
 }
 function say(text){reply.textContent=text;speak(text)}
 function add(who,text){const d=document.createElement('div');d.className='msg '+(who==='You'?'user':'bot');d.textContent=(who==='You'?'YOU: ':'JARVIS: ')+text;log.appendChild(d);log.scrollTop=log.scrollHeight}
+function updateClock(){const n=new Date();$('clock').textContent=n.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});$('date').textContent=n.toLocaleDateString('en-GB',{weekday:'long',day:'2-digit',month:'long'}).toUpperCase()}
+updateClock();setInterval(updateClock,1000);
+$('network').textContent=navigator.onLine?'CONNECTED':'OFFLINE';window.addEventListener('online',()=>$('network').textContent='CONNECTED');window.addEventListener('offline',()=>$('network').textContent='OFFLINE');
+if('getBattery'in navigator){navigator.getBattery().then(b=>{const draw=()=> $('battery').textContent=Math.round(b.level*100)+'%';draw();b.addEventListener('levelchange',draw)})}else $('battery').textContent='N/A';
+function openApp(name){
+ const urls={whatsapp:'https://wa.me/',youtube:'https://youtube.com',google:'https://google.com',instagram:'https://instagram.com',maps:'https://maps.google.com',gmail:'https://mail.google.com'};
+ const url=urls[name.toLowerCase()];
+ if(url){window.open(url,'_blank','noopener');return 'Opening '+name+'.'}
+ return null;
+}
 function localCommand(t){
  const s=t.toLowerCase();
- if(/\b(hello|hi|hey)\b/.test(s))return 'Hello! I am online and ready. What can I do for you?';
+ if(/\b(hello|hi|hey)\b/.test(s))return 'Hello. I am online and ready. What can I do for you?';
  if(s.includes('time'))return 'The time is '+new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})+'.';
  if(s.includes('date')||s.includes('today'))return 'Today is '+new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'})+'.';
- if(s.includes('open youtube')){window.open('https://youtube.com','_blank');return 'Opening YouTube.'}
- if(s.includes('open google')){window.open('https://google.com','_blank');return 'Opening Google.'}
- if(s.includes('open whatsapp')){window.open('https://wa.me/','_blank');return 'Opening WhatsApp.'}
- if(s.includes('who are you'))return 'I am JARVIS, your personal AI assistant. I am here to help.';
- if(s.includes('what can you do'))return 'I can talk, answer questions with my AI connection, tell you the time and date, and open a few websites.';
+ for(const app of ['whatsapp','youtube','google','instagram','maps','gmail'])if(s.includes('open '+app))return openApp(app.charAt(0).toUpperCase()+app.slice(1));
+ if(s.includes('who are you'))return 'I am JARVIS, your personal AI assistant. Always at your service.';
+ if(s.includes('what can you do'))return 'I can converse, answer questions, open supported web apps, and create interactive procedural 3D previews in my holographic workshop.';
+ if(s.includes('human')||s.includes('person model')){showModel('human');return 'Displaying a human-form 3D preview in the workshop.'}
+ if(s.includes('robot')||s.includes('iron man')||s.includes('suit')){showModel('robot');return 'Constructing a robotic armour-inspired 3D preview.'}
+ if(s.includes('car')||s.includes('vehicle')){showModel('car');return 'Displaying a vehicle 3D preview.'}
+ if(s.includes('3d')||s.includes('workshop')||s.includes('model')){showModel('robot');return 'The holographic workshop is ready. You can rotate and zoom the model.'}
  return null;
 }
 async function ask(text){
- if(!text.trim())return;
- add('You',text);$('message').value='';history.push({role:'user',content:text});setStatus('Processing');
+ if(!text.trim())return;add('You',text);$('message').value='';status.textContent='PROCESSING';$('mode').textContent='AI THINKING';
  const cmd=localCommand(text);
- if(cmd){add('JARVIS',cmd);say(cmd);setStatus('System ready');history.push({role:'assistant',content:cmd});return}
+ if(cmd){add('JARVIS',cmd);say(cmd);status.textContent='SYSTEM ONLINE';$('mode').textContent='VOICE INTERFACE · READY';return}
  const key=localStorage.getItem('jarvis_gemini_key');
- if(!key){const m='Please add your OpenRouter API key in settings.';add('JARVIS',m);say(m);setStatus('API key required');return}
- const messages=[{role:'system',content:'You are JARVIS, a friendly, intelligent and natural personal assistant. Speak warmly and confidently like a helpful friend, with concise answers and a polished British manner. Never claim to control phone functions unless actually done.'},...history.slice(-12)];
+ if(!key){const m='Please add your existing OpenRouter API key in settings.';add('JARVIS',m);say(m);status.textContent='API KEY REQUIRED';$('mode').textContent='CONNECTION REQUIRED';return}
+ const messages=[{role:'system',content:'You are JARVIS, a warm, witty, intelligent personal assistant with a calm British butler-like manner. Speak naturally and concisely. The user is using a holographic assistant interface. You can display built-in procedural 3D previews when asked for a human, robot, armour or car. Never claim to have performed a phone action unless it happened. Explain Android/PWA limitations honestly.'},...history.slice(-12),{role:'user',content:text}];
  try{
   const res=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({model:'openrouter/free',messages,temperature:.7,max_tokens:500})});
   const data=await res.json();if(!res.ok)throw new Error(data.error?.message||'API request failed');
   const answer=data.choices?.[0]?.message?.content||'I could not generate a response.';
-  history.push({role:'assistant',content:answer});add('JARVIS',answer);say(answer);setStatus('System ready');
- }catch(e){const m='Connection error: '+e.message;add('JARVIS',m);say(m);setStatus('Connection error')}
+  history.push({role:'user',content:text},{role:'assistant',content:answer});add('JARVIS',answer);say(answer);status.textContent='SYSTEM ONLINE';$('mode').textContent='VOICE INTERFACE · READY';
+ }catch(e){const m='Connection error: '+e.message;add('JARVIS',m);say(m);status.textContent='CONNECTION ERROR';$('mode').textContent='CHECK CONNECTION'}
 }
-$('send').onclick=()=>ask($('message').value);
-$('message').addEventListener('keydown',e=>{if(e.key==='Enter')ask($('message').value)});
-document.querySelectorAll('[data-command]').forEach(b=>b.onclick=()=>ask(b.dataset.command));
+$('send').onclick=()=>ask($('message').value);$('message').addEventListener('keydown',e=>{if(e.key==='Enter')ask($('message').value)});
 $('settings').onclick=()=>{$('settingsPanel').classList.toggle('hidden');$('apiKey').value=localStorage.getItem('jarvis_gemini_key')||''};
-$('saveKey').onclick=()=>{const k=$('apiKey').value.trim();if(k){localStorage.setItem('jarvis_gemini_key',k);say('OpenRouter key saved on this device.')}else say('Please paste your API key first.')};
+$('saveKey').onclick=()=>{const k=$('apiKey').value.trim();if(k){localStorage.setItem('jarvis_gemini_key',k);say('OpenRouter connection key saved on this device.')}else say('Please paste your OpenRouter key first.')};
 $('clearKey').onclick=()=>{localStorage.removeItem('jarvis_gemini_key');$('apiKey').value='';say('API key cleared.')};
-$('stop').onclick=()=>{if('speechSynthesis'in window)speechSynthesis.cancel();setStatus('System ready')};
+$('stop').onclick=()=>speechSynthesis.cancel();
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 $('mic').onclick=()=>{
- if(!SR){say('Speech recognition is not available in this browser. Please use Chrome or type your message.');return}
+ if(!SR){say('Speech recognition is unavailable in this browser. Please use Chrome or type your message.');return}
  const r=new SR();r.lang='en-IN';r.interimResults=false;r.maxAlternatives=1;
- r.onstart=()=>{status.textContent='LISTENING';$('corehint').textContent='LISTENING';hud.classList.add('listening');reply.textContent='Listening...'};
- r.onend=()=>{hud.classList.remove('listening');if(status.textContent==='LISTENING')setStatus('System ready')};
- r.onerror=e=>{hud.classList.remove('listening');say('Microphone error: '+e.error+'. Check browser microphone permission.');setStatus('Mic error')};
- r.onresult=e=>ask(e.results[0][0].transcript);
- try{r.start()}catch(e){say('Could not start microphone. Please try again.')}
+ r.onstart=()=>{status.textContent='LISTENING';$('mode').textContent='VOICE INPUT ACTIVE';hud.classList.add('listening');reply.textContent='Listening...'};
+ r.onend=()=>{hud.classList.remove('listening');if(status.textContent==='LISTENING')status.textContent='SYSTEM ONLINE';$('mode').textContent='VOICE INTERFACE · READY'};
+ r.onerror=e=>{hud.classList.remove('listening');say('Microphone error: '+e.error+'. Check Chrome microphone permission.');status.textContent='MIC ERROR'};
+ r.onresult=e=>ask(e.results[0][0].transcript);try{r.start()}catch(e){say('Could not start microphone. Please try again.')}
 };
-function updateClock(){$('clock').textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}
-updateClock();setInterval(updateClock,1000);
-if(navigator.getBattery)navigator.getBattery().then(b=>{const update=()=>$('battery').textContent=Math.round(b.level*100)+'%';update();b.addEventListener('levelchange',update)}).catch(()=>{});
-if('serviceWorker'in navigator&&location.protocol.startsWith('http'))addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
-if('speechSynthesis'in window)speechSynthesis.getVoices();
+document.querySelectorAll('.appicon').forEach(el=>el.onclick=()=>{const name=el.dataset.app;if(name==='Workshop'){showModel('robot');$('workshop').scrollIntoView({behavior:'smooth'});say('Holographic workshop ready.')}else if(name==='Settings'){$('settings').click()}else{const result=openApp(name);if(result)say(result)}});
+/* Three.js procedural hologram viewer */
+let scene,camera,renderer,model,group,drag=false,lastX=0,lastY=0,zoom=1;
+function init3D(){
+ const canvas=$('modelCanvas');if(!window.THREE){canvas.insertAdjacentHTML('afterend','<p class="hint">3D library could not load. Check your internet connection.</p>');return}
+ scene=new THREE.Scene();camera=new THREE.PerspectiveCamera(42,1,.1,100);camera.position.set(0,1.2,5.8);
+ renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+ scene.add(new THREE.AmbientLight(0x66cfff,.8));const light=new THREE.PointLight(0x42dfff,2.2);light.position.set(3,4,5);scene.add(light);
+ const floor=new THREE.GridHelper(9,28,0x167fa8,0x10324b);floor.position.y=-1.25;scene.add(floor);
+ group=new THREE.Group();scene.add(group);showModel('robot');
+ const resize=()=>{const w=canvas.clientWidth,h=canvas.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()};new ResizeObserver(resize).observe(canvas);resize();
+ const animate=()=>{requestAnimationFrame(animate);if(model&&!drag)model.rotation.y+=.003;renderer.render(scene,camera)};animate();
+ canvas.addEventListener('pointerdown',e=>{drag=true;lastX=e.clientX;lastY=e.clientY;canvas.setPointerCapture(e.pointerId)});
+ canvas.addEventListener('pointermove',e=>{if(!drag||!model)return;model.rotation.y+=(e.clientX-lastX)*.012;model.rotation.x+=(e.clientY-lastY)*.008;lastX=e.clientX;lastY=e.clientY});
+ canvas.addEventListener('pointerup',()=>drag=false);canvas.addEventListener('pointercancel',()=>drag=false);
+ canvas.addEventListener('wheel',e=>{e.preventDefault();camera.position.z=Math.max(3,Math.min(9,camera.position.z+e.deltaY*.005))},{passive:false});
+}
+function mat(){return new THREE.MeshStandardMaterial({color:0x1c9dcc,metalness:.65,roughness:.28,emissive:0x073b5b,wireframe:false})}
+function mesh(geo,m,x,y,z,sx=1,sy=1,sz=1){const o=new THREE.Mesh(geo,m);o.position.set(x,y,z);o.scale.set(sx,sy,sz);group.add(o);return o}
+function showModel(kind){
+ if(!scene)return;if(model)scene.remove(model);model=new THREE.Group();scene.add(model);group=model;
+ const m=mat(),glow=new THREE.MeshStandardMaterial({color:0x76f5ff,emissive:0x087da9,metalness:.4,roughness:.25});
+ if(kind==='human'){
+  mesh(new THREE.SphereGeometry(.34,24,18),glow,0,.72,0, .8,1.05,.8);
+  mesh(new THREE.CylinderGeometry(.22,.34,.95,18),m,0,.05,0);
+  for(const side of [-1,1]){mesh(new THREE.CylinderGeometry(.09,.12,.82,12),m,side*.43,.12,0);mesh(new THREE.CylinderGeometry(.11,.14,.82,12),m,side*.16,-.85,0)}
+ }else if(kind==='car'){
+  mesh(new THREE.BoxGeometry(2.2,.48,1.05),m,0,-.25,0);
+  mesh(new THREE.BoxGeometry(1.15,.5,.9),glow,0,.18,0);
+  for(const x of [-.72,.72])for(const z of [-.58,.58]){const w=mesh(new THREE.CylinderGeometry(.23,.23,.13,20),glow,x,-.53,z);w.rotation.z=Math.PI/2}
+ }else{
+  mesh(new THREE.SphereGeometry(.3,20,16),glow,0,.78,0,1,.9,.9);
+  mesh(new THREE.BoxGeometry(.78,.9,.42),m,0,.05,0);
+  mesh(new THREE.BoxGeometry(.5,.15,.48),glow,0,.48,0);
+  for(const side of [-1,1]){mesh(new THREE.CylinderGeometry(.12,.15,.72,12),m,side*.53,.08,0);mesh(new THREE.CylinderGeometry(.14,.17,.82,12),m,side*.2,-.78,0)}
+  mesh(new THREE.ConeGeometry(.18,.42,12),glow,0,-1.28,0);
+ }
+}
+$('human').onclick=()=>showModel('human');$('robot').onclick=()=>showModel('robot');$('car').onclick=()=>showModel('car');$('clearModel').onclick=()=>{if(model){scene.remove(model);model=null}};
+if(window.THREE)init3D();
+if('serviceWorker'in navigator&&location.protocol.startsWith('http'))window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 </script>
-</body>
-</html>
+</body></html>
