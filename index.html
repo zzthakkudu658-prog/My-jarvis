@@ -19,20 +19,26 @@ main{max-width:850px;margin:auto;padding:8px 14px 24px;position:relative;z-index
 .statusline{display:flex;justify-content:space-between;align-items:center;color:#8db1cc;font-size:9px;letter-spacing:1.8px;padding:10px 3px}
 .live{color:#62ffd1}.live:before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#62ffd1;box-shadow:0 0 10px #62ffd1;margin-right:7px}
 .clockrow{display:flex;justify-content:space-between;align-items:end;padding:8px 5px 0}.clock{font-size:clamp(30px,8vw,48px);font-weight:200;letter-spacing:2px}.date{font-size:9px;letter-spacing:1.5px;color:#8eacc5}.telemetry{text-align:right;font-size:9px;line-height:1.8;color:#8eacc5}
-.stage{height:min(58vh,470px);min-height:340px;position:relative;display:grid;place-items:center;isolation:isolate}
-.stage:before{content:"";position:absolute;width:min(76vw,390px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#20bfff20 0,transparent 68%);filter:blur(8px)}
-.reactor{width:min(52vw,250px);aspect-ratio:1;border-radius:50%;position:relative;display:grid;place-items:center;filter:drop-shadow(0 0 20px #17bfff55)}
-.reactor:before,.reactor:after{content:"";position:absolute;inset:0;border-radius:50%;border:1px solid #4bdfff99;box-shadow:inset 0 0 25px #1289d555,0 0 24px #078bce55}
-.reactor:before{inset:8%;border-style:dashed;animation:spin 28s linear infinite}
-.reactor:after{inset:18%;border-color:#8bf5ff99;border-left-color:transparent;border-right-color:transparent;animation:spin 12s linear infinite reverse}
-.ring3{position:absolute;inset:-9%;border-radius:50%;border:1px dashed #2d9bdc66;animation:spin 38s linear infinite}
-.reactor-rim{position:absolute;inset:4%;border-radius:50%;border:3px double #1b8dc9;box-shadow:0 0 9px #00aaff,inset 0 0 14px #008cff66}.reactor-segments{position:absolute;inset:13%;border-radius:50%;border:10px dashed #13cfff;filter:drop-shadow(0 0 7px #00cfff);animation:spin 18s linear infinite}.reactor-inner{position:absolute;inset:25%;border-radius:50%;border:3px solid #4cecff;border-left-color:#ffca42;border-right-color:#168cff;box-shadow:0 0 16px #00bfff,inset 0 0 12px #00bfff66;animation:spin 9s linear infinite reverse}.core{width:42%;height:42%;border-radius:50%;background:radial-gradient(circle at 45% 40%,#fff 0,#aafaff 8%,#38dfff 22%,#0879c5 49%,#04162e 78%);box-shadow:0 0 18px #5beaff,0 0 55px #008cffaa,inset 0 0 15px #d8ffff88;animation:corepulse 2.5s ease-in-out infinite}
-.listening .core{box-shadow:0 0 35px #fff,0 0 95px #00cfff;animation:corepulse .65s ease-in-out infinite}
-.orbit{position:absolute;inset:0;animation:orbit 34s linear infinite}
-.orbit .node{position:absolute;left:50%;top:0;transform:translateX(-50%);font-size:9px;color:#80cde9;letter-spacing:1px;white-space:nowrap}
-.orbit .node:before{content:"";display:block;width:5px;height:5px;background:var(--cyan);border-radius:50%;margin:0 auto 5px;box-shadow:0 0 9px var(--cyan)}
-@keyframes spin{to{transform:rotate(360deg)}}@keyframes orbit{to{transform:rotate(360deg)}}@keyframes corepulse{50%{transform:scale(1.08);filter:brightness(1.35)}}
-.side-readout{position:absolute;top:50%;transform:translateY(-50%);font-size:8px;letter-spacing:1px;color:#6f9cbb;line-height:2.1}.side-readout.left{left:0}.side-readout.right{right:0;text-align:right}
+.reactor-card{min-height:215px;display:grid;grid-template-columns:1fr 1.45fr 1fr;align-items:center;gap:5px;padding:18px 14px;margin:12px 0 10px;border:1px solid #1b5475;border-radius:24px;background:linear-gradient(125deg,#0b1b2c,#071425 55%,#0a1b2d);box-shadow:inset 0 0 22px #0a4c7933}
+.reactor-status,.voice-status{display:flex;flex-direction:column;gap:9px;font-size:9px;letter-spacing:1.6px;color:#91abc5;line-height:1.8;min-width:0}
+.reactor-status strong,.voice-status strong{font-size:clamp(16px,4vw,24px);letter-spacing:0;color:#20eaff;line-height:1.2}
+.power-track{height:6px;width:100%;max-width:120px;border-radius:10px;background:#1c3349;overflow:hidden;margin-top:8px}.power-track i{display:block;width:64%;height:100%;background:#14dff1;border-radius:10px;box-shadow:0 0 10px #00dfff}
+.reactor-visual{display:grid;place-items:center;min-width:0}
+.reactor{width:min(37vw,190px);aspect-ratio:1;border-radius:50%;position:relative;display:grid;place-items:center;filter:drop-shadow(0 0 17px #17bfff77);background:radial-gradient(circle,#0a2844 0 34%,#07182a 35% 57%,#071321 59% 100%)}
+.reactor:before{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid #177bb7;box-shadow:inset 0 0 15px #1289d5,0 0 12px #078bce88}
+.reactor:after{content:"";position:absolute;inset:7%;border-radius:50%;border:4px double #126aa0;border-left-color:#25cfff;border-right-color:#25cfff;box-shadow:0 0 8px #078bce;animation:spin 20s linear infinite reverse}
+.ring3{position:absolute;inset:-5%;border-radius:50%;border:1px dashed #2d9bdcaa;animation:spin 35s linear infinite}
+.reactor-rim{position:absolute;inset:13%;border-radius:50%;border:5px double #176da9;box-shadow:0 0 10px #00aaff,inset 0 0 14px #008cff66}
+.reactor-segments{position:absolute;inset:20%;border-radius:50%;border:9px dotted #13cfff;filter:drop-shadow(0 0 7px #00cfff);animation:spin 12s linear infinite}
+.reactor-inner{position:absolute;inset:29%;border-radius:50%;border:4px solid #4cecff;border-left-color:#ffca42;border-right-color:#168cff;box-shadow:0 0 16px #00bfff,inset 0 0 12px #00bfff66;animation:spin 8s linear infinite reverse}
+.reactor-core{width:70%;height:70%;border-radius:50%;background:radial-gradient(circle at 45% 40%,#fff 0,#c9ffff 7%,#36dfff 25%,#0879c5 62%,#04162e 100%);box-shadow:0 0 16px #5beaff,0 0 40px #008cffaa,inset 0 0 15px #d8ffff88;animation:corepulse 2.5s ease-in-out infinite}
+.listening .reactor-core{box-shadow:0 0 28px #fff,0 0 70px #00cfff;animation:corepulse .65s ease-in-out infinite}
+.waveform{height:25px;display:flex;align-items:center;gap:3px;margin-top:4px}.waveform i{display:block;width:4px;height:10px;border-radius:5px;background:#12e9ff;box-shadow:0 0 7px #00dfff;animation:wave 1s ease-in-out infinite alternate}.waveform i:nth-child(3n){animation-delay:.3s}.waveform i:nth-child(2n){animation-delay:.6s}
+@keyframes wave{to{height:23px}}
+.stats-strip{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid #1b5475;border-radius:20px;background:#09182a;margin-bottom:13px;overflow:hidden}
+.stats-strip>div{min-height:72px;display:grid;grid-template-columns:28px 1fr;grid-template-rows:1fr 1fr;align-content:center;align-items:center;padding:10px 8px;border-right:1px solid #1b3a55;column-gap:5px}.stats-strip>div:last-child{border:0}
+.stats-strip .stat-icon{grid-row:1/3;color:#16dff4;font-size:24px;text-align:center}.stats-strip small{font-size:10px;color:#9bb2ca}.stats-strip strong{font-size:16px;color:#27dff4}.stats-strip strong.green{color:#38d8b4}
+@keyframes spin{to{transform:rotate(360deg)}}@keyframes corepulse{50%{transform:scale(1.08);filter:brightness(1.35)}}
 #reply{min-height:40px;text-align:center;font-size:14px;line-height:1.45;color:#d8faff;padding:0 16px;margin-top:-4px}
 .controls{display:flex;justify-content:center;align-items:center;gap:13px;margin:12px 0 18px}
 button{cursor:pointer;color:#dffcff;background:linear-gradient(145deg,#0c3b60,#071a31);border:1px solid #278cb5;border-radius:12px;padding:11px 14px;font-weight:700;letter-spacing:1px;font-size:10px;box-shadow:0 0 14px #007ec522}
@@ -50,7 +56,7 @@ button:active{transform:scale(.97)}button.primary{width:68px;height:68px;border-
 #modelCanvas{width:100%;height:100%;display:block}.blueprint-prompt{margin-top:10px}.blueprint-prompt input{font-size:12px}.blueprint-active #workshop{background:linear-gradient(0deg,#061b36dd,#061b36dd),repeating-linear-gradient(0deg,transparent 0 19px,#1b8ac755 20px),repeating-linear-gradient(90deg,transparent 0 19px,#1b8ac755 20px)}
 .worktools{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
 footer{text-align:center;color:#547b9c;font-size:9px;letter-spacing:1px;padding:18px 0}
-@media(min-width:650px){.iconorbit{grid-template-columns:repeat(8,1fr)}.stage{height:440px}.side-readout.left{left:8%}.side-readout.right{right:8%}}
+@media(max-width:380px){.reactor-card{padding:13px 8px;grid-template-columns:1fr 1.25fr 1fr}.reactor-status,.voice-status{font-size:7px}.stats-strip>div{padding:8px 4px}.stats-strip small{font-size:9px}.stats-strip strong{font-size:13px}}\n@media(min-width:650px){.reactor-card{max-width:680px;margin:14px auto}.iconorbit{grid-template-columns:repeat(8,1fr)}.stage{height:440px}.side-readout.left{left:8%}.side-readout.right{right:8%}}
 </style>
 </head>
 <body>
@@ -58,10 +64,15 @@ footer{text-align:center;color:#547b9c;font-size:9px;letter-spacing:1px;padding:
 <main>
 <div class="statusline"><span class="live" id="status">SYSTEM ONLINE</span><span id="mode">VOICE INTERFACE · READY</span></div>
 <div class="clockrow"><div><div class="clock" id="clock">--:--</div><div class="date" id="date">INITIALISING</div></div><div class="telemetry"><div>POWER <span id="battery">--</span></div><div>NETWORK <span id="network">CHECKING</span></div><div>CORE TEMP <span>OPTIMAL</span></div></div></div>
-<section class="stage" id="hud">
-<div class="side-readout left">NEURAL LINK<br>ACTIVE<br>────────<br>VOICE READY</div>
-<div class="side-readout right">SYSTEMS<br>NOMINAL<br>────────<br>AI CONNECTED</div>
-<div class="reactor"><div class="ring3"></div><div class="reactor-rim"></div><div class="reactor-segments"></div><div class="reactor-inner"></div><div class="orbit"><div class="node">J.A.R.V.I.S.</div></div><div class="core"></div></div>
+<section class="reactor-card" id="hud">
+ <div class="reactor-status"><span>ARC REACTOR<br>STATUS</span><strong>ONLINE</strong><div class="power-track"><i></i></div></div>
+ <div class="reactor-visual"><div class="reactor"><div class="ring3"></div><div class="reactor-rim"></div><div class="reactor-segments"></div><div class="reactor-inner"></div><div class="reactor"><div class="reactor-core"></div></div></div></div>
+ <div class="voice-status"><span>VOICE PROTOCOL</span><strong id="voiceState">STANDBY</strong><div class="waveform" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+</section>
+<section class="stats-strip">
+ <div><span class="stat-icon">▦</span><small>CPU</small><strong id="cpuStat">12%</strong></div>
+ <div><span class="stat-icon">♧</span><small>Neural Link</small><strong class="green">ACTIVE</strong></div>
+ <div><span class="stat-icon">♨</span><small>Core Temp</small><strong>37°C</strong></div>
 </section>
 <div id="reply">Good evening. All systems are online. How may I assist you?</div>
 <div class="controls"><button id="settings" title="Settings">⚙</button><button id="mic" class="primary" aria-label="Speak">🎙</button><button id="stop" title="Stop speaking">■</button></div>
@@ -93,7 +104,7 @@ footer{text-align:center;color:#547b9c;font-size:9px;letter-spacing:1px;padding:
 <div class="row" style="margin-top:9px"><button id="saveKey">SAVE KEY</button><button id="clearKey">CLEAR KEY</button></div>
 <p class="hint">Uses the OpenRouter free model route. Availability and rate limits depend on the provider.</p>
 </section>
-<footer>J.A.R.V.I.S. · PERSONAL HOLOGRAPHIC INTERFACE · V2</footer>
+<footer>J.A.R.V.I.S. · PERSONAL HOLOGRAPHIC INTERFACE · V4</footer>
 </main>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
@@ -159,8 +170,8 @@ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 $('mic').onclick=()=>{
  if(!SR){say('Speech recognition is unavailable in this browser. Please use Chrome or type your message.');return}
  const r=new SR();r.lang='en-IN';r.interimResults=false;r.maxAlternatives=1;
- r.onstart=()=>{status.textContent='LISTENING';$('mode').textContent='VOICE INPUT ACTIVE';hud.classList.add('listening');reply.textContent='Listening...'};
- r.onend=()=>{hud.classList.remove('listening');if(status.textContent==='LISTENING')status.textContent='SYSTEM ONLINE';$('mode').textContent='VOICE INTERFACE · READY'};
+ r.onstart=()=>{status.textContent='LISTENING';$('mode').textContent='VOICE INPUT ACTIVE';$('voiceState').textContent='LISTENING';hud.classList.add('listening');reply.textContent='Listening...'};
+ r.onend=()=>{hud.classList.remove('listening');$('voiceState').textContent='STANDBY';if(status.textContent==='LISTENING')status.textContent='SYSTEM ONLINE';$('mode').textContent='VOICE INTERFACE · READY'};
  r.onerror=e=>{hud.classList.remove('listening');say('Microphone error: '+e.error+'. Check Chrome microphone permission.');status.textContent='MIC ERROR'};
  r.onresult=e=>ask(e.results[0][0].transcript);try{r.start()}catch(e){say('Could not start microphone. Please try again.')}
 };
@@ -229,27 +240,38 @@ function addPart(part){
  obj.rotation.set(rot[0]||0,rot[1]||0,rot[2]||0);
  model.add(obj);
 }
+async function requestBlueprint(key,prompt,repair=false){
+ const compact=`Return ONLY compact valid JSON, no markdown. Schema: {"name":"title","parts":[{"shape":"box|sphere|cylinder|cone|torus","size":[a,b,c],"position":[x,y,z],"rotation":[x,y,z]}]}. Create 12-22 parts for a recognisable ${prompt}. Coordinates -2 to 2, dimensions 0.08 to 2. Use boxes for body/wings/panels, cylinders for shafts/legs, torus for rings, spheres for joints/lights. Keep object centred and symmetrical where appropriate. Ensure every bracket and quote is closed. Concept art only, not certified engineering.`;
+ const messages=[{role:'system',content:'You create compact 3D primitive geometry. Output syntactically valid JSON only. No explanation.'},{role:'user',content:compact+(repair?' Previous output was incomplete. Produce a shorter valid JSON object with at most 14 parts.':'')}];
+ const res=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({model:'openrouter/free',messages,temperature:.2,max_tokens:2400})});
+ const data=await res.json();if(!res.ok)throw new Error(data.error?.message||'AI request failed');
+ let content=data.choices?.[0]?.message?.content;
+ if(Array.isArray(content))content=content.map(x=>x.text||'').join('');
+ if(typeof content!=='string'||!content.trim())throw new Error('The AI provider returned an empty model description.');
+ const raw=content.replace(/```(?:json)?/gi,'').trim();
+ const first=raw.indexOf('{'),last=raw.lastIndexOf('}');
+ if(first<0||last<first)throw new Error('The AI response did not contain a JSON model.');
+ return JSON.parse(raw.slice(first,last+1));
+}
 async function buildFromPrompt(prompt){
  const key=localStorage.getItem('jarvis_gemini_key');
  if(!key){const m='Please add your existing OpenRouter API key in settings before asking me to design a custom model.';add('JARVIS',m);say(m);return}
- $('status').textContent='GENERATING BLUEPRINT';$('workshopHint').textContent='JARVIS is translating your description into a 3D concept…';
+ if(!window.THREE||!scene){const m='The 3D workshop has not loaded. Check your internet connection and reload.';add('JARVIS',m);say(m);return}
+ $('status').textContent='GENERATING BLUEPRINT';$('voiceState').textContent='DESIGNING';$('workshopHint').textContent='JARVIS is translating your description into a 3D concept…';
  $('workshop').scrollIntoView({behavior:'smooth',block:'center'});
- const instruction=`Convert the user's object description into a simple but recognisable 3D concept made from primitive parts. Return ONLY valid JSON, no markdown, in this exact schema: {"name":"short title","parts":[{"shape":"box|sphere|cylinder|cone|torus","size":[x,y,z],"position":[x,y,z],"rotation":[x,y,z]}]}. Use 8 to 35 parts. Coordinates must be within -2.5 to 2.5. Sizes must be positive and at most 2.5. For box size is width,height,depth; sphere size[0] is radius; cylinder size is radiusTop,radiusBottom,height; cone size is radius,height; torus size is majorRadius,tubeRadius. Build a balanced centred object with a recognisable silhouette. This is a concept model, not an engineering-certified design. User description: ${prompt}`;
  try{
-  const res=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({model:'openrouter/free',messages:[{role:'system',content:'You are a 3D concept artist who outputs compact JSON geometry only.'},{role:'user',content:instruction}],temperature:.35,max_tokens:1100})});
-  const data=await res.json();if(!res.ok)throw new Error(data.error?.message||'AI design request failed');
-  let raw=data.choices?.[0]?.message?.content||'';raw=raw.replace(/```json|```/g,'').trim();
-  const start=raw.indexOf('{'),end=raw.lastIndexOf('}');const spec=JSON.parse(raw.slice(start,end+1));
-  if(!Array.isArray(spec.parts)||!spec.parts.length)throw new Error('The design response had no model parts.');
+  let spec;
+  try{spec=await requestBlueprint(key,prompt,false)}catch(firstError){spec=await requestBlueprint(key,prompt,true)}
+  if(!Array.isArray(spec.parts)||!spec.parts.length)throw new Error('The AI returned no usable model components.');
   clearCurrentModel();model=new THREE.Group();scene.add(model);
-  spec.parts.slice(0,40).forEach(addPart);
+  spec.parts.slice(0,24).forEach(addPart);
   const box=new THREE.Box3().setFromObject(model),center=box.getCenter(new THREE.Vector3());model.position.sub(center);
   const size=box.getSize(new THREE.Vector3()),maxDim=Math.max(size.x,size.y,size.z,1);model.scale.setScalar(2.5/maxDim);
-  $('workshopHint').textContent=(spec.name||'Custom concept')+' · '+spec.parts.length+' components · Interactive AI-generated concept blueprint. Rotate and zoom to inspect.';
-  const done='Blueprint ready: '+(spec.name||prompt)+'. I have assembled a 3D concept from '+spec.parts.length+' components.';
+  $('workshopHint').textContent=(spec.name||'Custom concept')+' · '+Math.min(spec.parts.length,24)+' components · AI-generated 3D concept blueprint. Rotate and zoom to inspect.';
+  const done='Blueprint ready: '+(spec.name||prompt)+'. I have assembled a 3D concept from '+Math.min(spec.parts.length,24)+' components.';
   add('JARVIS',done);say(done);
- }catch(e){const m='I could not build that blueprint: '+e.message+'. Try a shorter description.';add('JARVIS',m);say(m);$('workshopHint').textContent=m}
- $('status').textContent='SYSTEM ONLINE';
+ }catch(e){const m='Blueprint generation failed: '+e.message+'. The existing preview has been kept. Check your OpenRouter key, connection and free-model availability.';add('JARVIS',m);say(m);$('workshopHint').textContent=m}
+ $('status').textContent='SYSTEM ONLINE';$('voiceState').textContent='STANDBY';
 }
 $('generateDesign').onclick=()=>{const p=$('designPrompt').value.trim();if(p)buildFromPrompt(p)};
 $('designPrompt').addEventListener('keydown',e=>{if(e.key==='Enter'){$('generateDesign').click()}});
