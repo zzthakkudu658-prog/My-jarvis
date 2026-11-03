@@ -26,7 +26,7 @@ main{max-width:850px;margin:auto;padding:8px 14px 24px;position:relative;z-index
 .reactor:before{inset:8%;border-style:dashed;animation:spin 28s linear infinite}
 .reactor:after{inset:18%;border-color:#8bf5ff99;border-left-color:transparent;border-right-color:transparent;animation:spin 12s linear infinite reverse}
 .ring3{position:absolute;inset:-9%;border-radius:50%;border:1px dashed #2d9bdc66;animation:spin 38s linear infinite}
-.core{width:42%;height:42%;border-radius:50%;background:radial-gradient(circle at 45% 40%,#fff 0,#aafaff 8%,#38dfff 22%,#0879c5 49%,#04162e 78%);box-shadow:0 0 18px #5beaff,0 0 55px #008cffaa,inset 0 0 15px #d8ffff88;animation:corepulse 2.5s ease-in-out infinite}
+.reactor-rim{position:absolute;inset:4%;border-radius:50%;border:3px double #1b8dc9;box-shadow:0 0 9px #00aaff,inset 0 0 14px #008cff66}.reactor-segments{position:absolute;inset:13%;border-radius:50%;border:10px dashed #13cfff;filter:drop-shadow(0 0 7px #00cfff);animation:spin 18s linear infinite}.reactor-inner{position:absolute;inset:25%;border-radius:50%;border:3px solid #4cecff;border-left-color:#ffca42;border-right-color:#168cff;box-shadow:0 0 16px #00bfff,inset 0 0 12px #00bfff66;animation:spin 9s linear infinite reverse}.core{width:42%;height:42%;border-radius:50%;background:radial-gradient(circle at 45% 40%,#fff 0,#aafaff 8%,#38dfff 22%,#0879c5 49%,#04162e 78%);box-shadow:0 0 18px #5beaff,0 0 55px #008cffaa,inset 0 0 15px #d8ffff88;animation:corepulse 2.5s ease-in-out infinite}
 .listening .core{box-shadow:0 0 35px #fff,0 0 95px #00cfff;animation:corepulse .65s ease-in-out infinite}
 .orbit{position:absolute;inset:0;animation:orbit 34s linear infinite}
 .orbit .node{position:absolute;left:50%;top:0;transform:translateX(-50%);font-size:9px;color:#80cde9;letter-spacing:1px;white-space:nowrap}
@@ -47,7 +47,7 @@ button:active{transform:scale(.97)}button.primary{width:68px;height:68px;border-
 #log{display:flex;flex-direction:column;gap:7px;max-height:155px;overflow:auto;margin-top:10px}.msg{padding:8px 10px;border-radius:10px;font-size:12px;line-height:1.4;white-space:pre-wrap;max-width:92%}.user{align-self:flex-end;background:#10486b}.bot{align-self:flex-start;background:#10243a;border:1px solid #1d5877}
 .hidden{display:none!important}.hint{font-size:10px;color:#7798b4;line-height:1.6}
 #workshop{height:310px;position:relative;overflow:hidden;border:1px solid #1a789c66;border-radius:13px;background:radial-gradient(ellipse,#0b2c47,#030b17 72%);touch-action:pan-y}
-#modelCanvas{width:100%;height:100%;display:block}
+#modelCanvas{width:100%;height:100%;display:block}.blueprint-prompt{margin-top:10px}.blueprint-prompt input{font-size:12px}.blueprint-active #workshop{background:linear-gradient(0deg,#061b36dd,#061b36dd),repeating-linear-gradient(0deg,transparent 0 19px,#1b8ac755 20px),repeating-linear-gradient(90deg,transparent 0 19px,#1b8ac755 20px)}
 .worktools{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
 footer{text-align:center;color:#547b9c;font-size:9px;letter-spacing:1px;padding:18px 0}
 @media(min-width:650px){.iconorbit{grid-template-columns:repeat(8,1fr)}.stage{height:440px}.side-readout.left{left:8%}.side-readout.right{right:8%}}
@@ -61,7 +61,7 @@ footer{text-align:center;color:#547b9c;font-size:9px;letter-spacing:1px;padding:
 <section class="stage" id="hud">
 <div class="side-readout left">NEURAL LINK<br>ACTIVE<br>────────<br>VOICE READY</div>
 <div class="side-readout right">SYSTEMS<br>NOMINAL<br>────────<br>AI CONNECTED</div>
-<div class="reactor"><div class="ring3"></div><div class="orbit"><div class="node">J.A.R.V.I.S.</div></div><div class="core"></div></div>
+<div class="reactor"><div class="ring3"></div><div class="reactor-rim"></div><div class="reactor-segments"></div><div class="reactor-inner"></div><div class="orbit"><div class="node">J.A.R.V.I.S.</div></div><div class="core"></div></div>
 </section>
 <div id="reply">Good evening. All systems are online. How may I assist you?</div>
 <div class="controls"><button id="settings" title="Settings">⚙</button><button id="mic" class="primary" aria-label="Speak">🎙</button><button id="stop" title="Stop speaking">■</button></div>
@@ -78,8 +78,9 @@ footer{text-align:center;color:#547b9c;font-size:9px;letter-spacing:1px;padding:
 <section class="panel">
 <div class="paneltitle">HOLOGRAPHIC WORKSHOP · 3D LAB</div>
 <div id="workshop"><canvas id="modelCanvas"></canvas></div>
-<div class="worktools"><button id="human">HUMAN</button><button id="robot">ROBOT</button><button id="car">VEHICLE</button><button id="clearModel">CLEAR</button></div>
-<div class="hint">Drag to rotate · Pinch/scroll to zoom · Ask JARVIS: “Build a robot”, “Show a human model” or “Create a car”. These are interactive procedural 3D previews.</div>
+<div class="row blueprint-prompt"><input id="designPrompt" placeholder="Describe anything to blueprint… e.g. a futuristic rescue drone"><button id="generateDesign">BUILD</button></div>
+<div class="worktools"><button id="blueprintToggle">BLUEPRINT: ON</button><button id="human">HUMAN</button><button id="robot">ROBOT</button><button id="car">VEHICLE</button><button id="clearModel">CLEAR</button></div>
+<div class="hint" id="workshopHint">Describe a machine, vehicle, building, robot or invention. JARVIS will design a concept from your prompt. Drag to rotate · Scroll/pinch to zoom. Blueprint mode shows a technical wireframe.</div>
 </section>
 <section class="panel">
 <div class="paneltitle">COMMUNICATION CHANNEL</div>
@@ -128,6 +129,7 @@ function localCommand(t){
  for(const app of ['whatsapp','youtube','google','instagram','maps','gmail'])if(s.includes('open '+app))return openApp(app.charAt(0).toUpperCase()+app.slice(1));
  if(s.includes('who are you'))return 'I am JARVIS, your personal AI assistant. Always at your service.';
  if(s.includes('what can you do'))return 'I can converse, answer questions, open supported web apps, and create interactive procedural 3D previews in my holographic workshop.';
+ if(s.startsWith('design ')||s.startsWith('build ')||s.startsWith('create ')||s.startsWith('make a model of ')||s.startsWith('blueprint ')){const p=t.replace(/^(design|build|create|make a model of|blueprint)\s+/i,'');buildFromPrompt(p);return 'Understood. I am drafting a 3D blueprint for '+p+'.'}
  if(s.includes('human')||s.includes('person model')){showModel('human');return 'Displaying a human-form 3D preview in the workshop.'}
  if(s.includes('robot')||s.includes('iron man')||s.includes('suit')){showModel('robot');return 'Constructing a robotic armour-inspired 3D preview.'}
  if(s.includes('car')||s.includes('vehicle')){showModel('car');return 'Displaying a vehicle 3D preview.'}
@@ -202,6 +204,56 @@ function showModel(kind){
 }
 $('human').onclick=()=>showModel('human');$('robot').onclick=()=>showModel('robot');$('car').onclick=()=>showModel('car');$('clearModel').onclick=()=>{if(model){scene.remove(model);model=null}};
 if(window.THREE)init3D();
+
+let blueprintMode=true;
+$('blueprintToggle').onclick=()=>{blueprintMode=!blueprintMode;$('blueprintToggle').textContent='BLUEPRINT: '+(blueprintMode?'ON':'OFF');$('workshop').classList.toggle('blueprint-active',blueprintMode);if(model)applyBlueprintStyle(model)};
+$('workshop').classList.add('blueprint-active');
+function applyBlueprintStyle(root){
+ root.traverse(o=>{if(o.isMesh&&o.material){o.material=o.material.clone();o.material.wireframe=blueprintMode;o.material.color.set(blueprintMode?0x54dfff:0x1c9dcc);o.material.emissive.set(blueprintMode?0x063d75:0x073b5b);}});
+}
+function clearCurrentModel(){if(model){scene.remove(model);model=null}}
+function addPart(part){
+ const material=new THREE.MeshStandardMaterial({color:blueprintMode?0x55dcff:0x1c9dcc,emissive:blueprintMode?0x063e79:0x073b5b,metalness:.45,roughness:.3,wireframe:blueprintMode});
+ let geo;
+ const size=Array.isArray(part.size)?part.size:[.5,.5,.5];
+ switch((part.shape||'box').toLowerCase()){
+  case 'sphere':geo=new THREE.SphereGeometry(Math.max(.08,size[0]),20,14);break;
+  case 'cylinder':geo=new THREE.CylinderGeometry(Math.max(.06,size[0]),Math.max(.06,size[1]||size[0]),Math.max(.1,size[2]||.8),20);break;
+  case 'cone':geo=new THREE.ConeGeometry(Math.max(.08,size[0]),Math.max(.1,size[1]||.8),18);break;
+  case 'torus':geo=new THREE.TorusGeometry(Math.max(.12,size[0]),Math.max(.025,size[1]||.06),10,36);break;
+  default:geo=new THREE.BoxGeometry(Math.max(.08,size[0]),Math.max(.08,size[1]),Math.max(.08,size[2]));
+ }
+ const obj=new THREE.Mesh(geo,material);
+ const pos=part.position||[0,0,0],rot=part.rotation||[0,0,0];
+ obj.position.set(pos[0]||0,pos[1]||0,pos[2]||0);
+ obj.rotation.set(rot[0]||0,rot[1]||0,rot[2]||0);
+ model.add(obj);
+}
+async function buildFromPrompt(prompt){
+ const key=localStorage.getItem('jarvis_gemini_key');
+ if(!key){const m='Please add your existing OpenRouter API key in settings before asking me to design a custom model.';add('JARVIS',m);say(m);return}
+ $('status').textContent='GENERATING BLUEPRINT';$('workshopHint').textContent='JARVIS is translating your description into a 3D concept…';
+ $('workshop').scrollIntoView({behavior:'smooth',block:'center'});
+ const instruction=`Convert the user's object description into a simple but recognisable 3D concept made from primitive parts. Return ONLY valid JSON, no markdown, in this exact schema: {"name":"short title","parts":[{"shape":"box|sphere|cylinder|cone|torus","size":[x,y,z],"position":[x,y,z],"rotation":[x,y,z]}]}. Use 8 to 35 parts. Coordinates must be within -2.5 to 2.5. Sizes must be positive and at most 2.5. For box size is width,height,depth; sphere size[0] is radius; cylinder size is radiusTop,radiusBottom,height; cone size is radius,height; torus size is majorRadius,tubeRadius. Build a balanced centred object with a recognisable silhouette. This is a concept model, not an engineering-certified design. User description: ${prompt}`;
+ try{
+  const res=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({model:'openrouter/free',messages:[{role:'system',content:'You are a 3D concept artist who outputs compact JSON geometry only.'},{role:'user',content:instruction}],temperature:.35,max_tokens:1100})});
+  const data=await res.json();if(!res.ok)throw new Error(data.error?.message||'AI design request failed');
+  let raw=data.choices?.[0]?.message?.content||'';raw=raw.replace(/```json|```/g,'').trim();
+  const start=raw.indexOf('{'),end=raw.lastIndexOf('}');const spec=JSON.parse(raw.slice(start,end+1));
+  if(!Array.isArray(spec.parts)||!spec.parts.length)throw new Error('The design response had no model parts.');
+  clearCurrentModel();model=new THREE.Group();scene.add(model);
+  spec.parts.slice(0,40).forEach(addPart);
+  const box=new THREE.Box3().setFromObject(model),center=box.getCenter(new THREE.Vector3());model.position.sub(center);
+  const size=box.getSize(new THREE.Vector3()),maxDim=Math.max(size.x,size.y,size.z,1);model.scale.setScalar(2.5/maxDim);
+  $('workshopHint').textContent=(spec.name||'Custom concept')+' · '+spec.parts.length+' components · Interactive AI-generated concept blueprint. Rotate and zoom to inspect.';
+  const done='Blueprint ready: '+(spec.name||prompt)+'. I have assembled a 3D concept from '+spec.parts.length+' components.';
+  add('JARVIS',done);say(done);
+ }catch(e){const m='I could not build that blueprint: '+e.message+'. Try a shorter description.';add('JARVIS',m);say(m);$('workshopHint').textContent=m}
+ $('status').textContent='SYSTEM ONLINE';
+}
+$('generateDesign').onclick=()=>{const p=$('designPrompt').value.trim();if(p)buildFromPrompt(p)};
+$('designPrompt').addEventListener('keydown',e=>{if(e.key==='Enter'){$('generateDesign').click()}});
+
 if('serviceWorker'in navigator&&location.protocol.startsWith('http'))window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 </script>
 </body></html>
