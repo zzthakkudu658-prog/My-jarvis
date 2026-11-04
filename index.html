@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -7,14 +8,15 @@
 <meta name="description" content="JARVIS personal holographic AI assistant">
 <link rel="manifest" href="manifest.json">
 <title>J.A.R.V.I.S. — Personal AI</title>
- /* JARVIS LANDSCAPE COMMAND CENTRE */
-/* JARVIS LANDSCAPE COMMAND CENTRE - FIXED */
+
+<style>
+/* JARVIS LANDSCAPE COMMAND CENTRE */
 @media (orientation: landscape) and (min-width: 600px) {
   main {
     max-width: 1500px;
     padding: 8px 20px 20px;
     display: grid;
-    grid-template-columns: minmax(270px, .85fr) minmax(360px, 1.4fr);
+    grid-template-columns: minmax(270px,.85fr) minmax(360px,1.4fr);
     grid-template-areas:
       "status status"
       "clock clock"
@@ -28,302 +30,1047 @@
       "footer footer";
     gap: 10px 18px;
   }
-
-  .statusline { grid-area: status; }
-  .clockrow { grid-area: clock; }
-  .reactor-card { grid-area: reactor; margin: 5px 0; }
-  .stats-strip { grid-area: stats; margin: 0; }
-  #reply { grid-area: reply; }
-  .controls { grid-area: controls; }
-  #appIcons { grid-area: apps; max-width: 850px; width: 100%; }
-  main > section.panel:nth-of-type(3) { grid-area: workshop; }
-  main > section.panel:nth-of-type(4) { grid-area: chat; }
-  #settingsPanel { grid-area: settings; }
-  footer { grid-area: footer; }
-
-  #workshop {
-    height: 55vh;
-    min-height: 260px;
-  }
-
-  .reactor { width: min(17vw, 180px); }
-  .panel { margin-top: 0; }
+  .statusline {grid-area:status}
+  .clockrow {grid-area:clock}
+  .reactor-card {grid-area:reactor;margin:5px 0}
+  .stats-strip {grid-area:stats;margin:0}
+  #reply {grid-area:reply}
+  .controls {grid-area:controls}
+  #appIcons {grid-area:apps;max-width:850px;width:100%}
+  main > section.panel:nth-of-type(3) {grid-area:workshop}
+  main > section.panel:nth-of-type(4) {grid-area:chat}
+  #settingsPanel {grid-area:settings}
+  footer {grid-area:footer}
+  #workshop {height:55vh;min-height:260px}
+  .reactor {width:min(17vw,180px)}
+  .panel {margin-top:0}
+}
+@media (orientation:portrait) {
+  main {display:block}
 }
 
-@media (orientation: portrait) {
-  main {
-    display: block;
-  }
+:root {
+  --cyan:#65efff;
+  --blue:#248cff;
+  --ice:#d9fbff;
+  --muted:#759ab8;
+  --line:#1c759b;
+  --bg:#030914;
 }
-<style>
-:root{--cyan:#65efff;--blue:#248cff;--ice:#d9fbff;--muted:#759ab8;--line:#1c759b;--bg:#030914}
-*{box-sizing:border-box}html,body{margin:0;width:100%;min-height:100%;background:var(--bg);color:var(--ice);font-family:system-ui,-apple-system,Segoe UI,sans-serif}
-body{min-height:100svh;overflow-x:hidden;background:radial-gradient(ellipse at 50% 40%,#0b2a48 0,#061426 38%,#020711 78%);padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.23;background-image:linear-gradient(#2e9dca22 1px,transparent 1px),linear-gradient(90deg,#2e9dca22 1px,transparent 1px);background-size:34px 34px;mask-image:linear-gradient(transparent,#000 18%,#000 80%,transparent)}
-header{height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;border-bottom:1px solid #1b658755;position:relative;z-index:2}
-.brand{font-weight:900;letter-spacing:4px;color:var(--cyan);text-shadow:0 0 15px #27cfff88}.brand small{display:block;font-size:8px;letter-spacing:2px;color:#83a9c7;font-weight:500}
-.topright{font-size:9px;letter-spacing:1.5px;color:#7fa8c8;text-align:right}
-main{max-width:850px;margin:auto;padding:8px 14px 24px;position:relative;z-index:1}
-.statusline{display:flex;justify-content:space-between;align-items:center;color:#8db1cc;font-size:9px;letter-spacing:1.8px;padding:10px 3px}
-.live{color:#62ffd1}.live:before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#62ffd1;box-shadow:0 0 10px #62ffd1;margin-right:7px}
-.clockrow{display:flex;justify-content:space-between;align-items:end;padding:8px 5px 0}.clock{font-size:clamp(30px,8vw,48px);font-weight:200;letter-spacing:2px}.date{font-size:9px;letter-spacing:1.5px;color:#8eacc5}.telemetry{text-align:right;font-size:9px;line-height:1.8;color:#8eacc5}
-.reactor-card{min-height:215px;display:grid;grid-template-columns:1fr 1.45fr 1fr;align-items:center;gap:5px;padding:18px 14px;margin:12px 0 10px;border:1px solid #1b5475;border-radius:24px;background:linear-gradient(125deg,#0b1b2c,#071425 55%,#0a1b2d);box-shadow:inset 0 0 22px #0a4c7933}
-.reactor-status,.voice-status{display:flex;flex-direction:column;gap:9px;font-size:9px;letter-spacing:1.6px;color:#91abc5;line-height:1.8;min-width:0}
-.reactor-status strong,.voice-status strong{font-size:clamp(16px,4vw,24px);letter-spacing:0;color:#20eaff;line-height:1.2}
-.power-track{height:6px;width:100%;max-width:120px;border-radius:10px;background:#1c3349;overflow:hidden;margin-top:8px}.power-track i{display:block;width:64%;height:100%;background:#14dff1;border-radius:10px;box-shadow:0 0 10px #00dfff}
-.reactor-visual{display:grid;place-items:center;min-width:0}
-.reactor{width:min(37vw,190px);aspect-ratio:1;border-radius:50%;position:relative;display:grid;place-items:center;filter:drop-shadow(0 0 17px #17bfff77);background:radial-gradient(circle,#0a2844 0 34%,#07182a 35% 57%,#071321 59% 100%)}
-.reactor:before{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid #177bb7;box-shadow:inset 0 0 15px #1289d5,0 0 12px #078bce88}
-.reactor:after{content:"";position:absolute;inset:7%;border-radius:50%;border:4px double #126aa0;border-left-color:#25cfff;border-right-color:#25cfff;box-shadow:0 0 8px #078bce;animation:spin 20s linear infinite reverse}
-.ring3{position:absolute;inset:-5%;border-radius:50%;border:1px dashed #2d9bdcaa;animation:spin 35s linear infinite}
-.reactor-rim{position:absolute;inset:13%;border-radius:50%;border:5px double #176da9;box-shadow:0 0 10px #00aaff,inset 0 0 14px #008cff66}
-.reactor-segments{position:absolute;inset:20%;border-radius:50%;border:9px dotted #13cfff;filter:drop-shadow(0 0 7px #00cfff);animation:spin 12s linear infinite}
-.reactor-inner{position:absolute;inset:29%;border-radius:50%;border:4px solid #4cecff;border-left-color:#ffca42;border-right-color:#168cff;box-shadow:0 0 16px #00bfff,inset 0 0 12px #00bfff66;animation:spin 8s linear infinite reverse}
-.reactor-core{width:70%;height:70%;border-radius:50%;background:radial-gradient(circle at 45% 40%,#fff 0,#c9ffff 7%,#36dfff 25%,#0879c5 62%,#04162e 100%);box-shadow:0 0 16px #5beaff,0 0 40px #008cffaa,inset 0 0 15px #d8ffff88;animation:corepulse 2.5s ease-in-out infinite}
-.listening .reactor-core{box-shadow:0 0 28px #fff,0 0 70px #00cfff;animation:corepulse .65s ease-in-out infinite}
-.waveform{height:25px;display:flex;align-items:center;gap:3px;margin-top:4px}.waveform i{display:block;width:4px;height:10px;border-radius:5px;background:#12e9ff;box-shadow:0 0 7px #00dfff;animation:wave 1s ease-in-out infinite alternate}.waveform i:nth-child(3n){animation-delay:.3s}.waveform i:nth-child(2n){animation-delay:.6s}
-@keyframes wave{to{height:23px}}
-.stats-strip{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid #1b5475;border-radius:20px;background:#09182a;margin-bottom:13px;overflow:hidden}
-.stats-strip>div{min-height:72px;display:grid;grid-template-columns:28px 1fr;grid-template-rows:1fr 1fr;align-content:center;align-items:center;padding:10px 8px;border-right:1px solid #1b3a55;column-gap:5px}.stats-strip>div:last-child{border:0}
-.stats-strip .stat-icon{grid-row:1/3;color:#16dff4;font-size:24px;text-align:center}.stats-strip small{font-size:10px;color:#9bb2ca}.stats-strip strong{font-size:16px;color:#27dff4}.stats-strip strong.green{color:#38d8b4}
-@keyframes spin{to{transform:rotate(360deg)}}@keyframes corepulse{50%{transform:scale(1.08);filter:brightness(1.35)}}
-#reply{min-height:40px;text-align:center;font-size:14px;line-height:1.45;color:#d8faff;padding:0 16px;margin-top:-4px}
-.controls{display:flex;justify-content:center;align-items:center;gap:13px;margin:12px 0 18px}
-button{cursor:pointer;color:#dffcff;background:linear-gradient(145deg,#0c3b60,#071a31);border:1px solid #278cb5;border-radius:12px;padding:11px 14px;font-weight:700;letter-spacing:1px;font-size:10px;box-shadow:0 0 14px #007ec522}
-button:active{transform:scale(.97)}button.primary{width:68px;height:68px;border-radius:50%;font-size:25px;border:1px solid #83f7ff;background:radial-gradient(circle,#146a91,#08233c 72%);box-shadow:0 0 24px #00cfff66}
-.iconorbit{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:520px;margin:0 auto 16px}
-.appicon{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;color:#8fb6d1;font-size:8px;letter-spacing:1px}
-.appicon .glyph{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;border:1px solid #3ac7ef99;background:radial-gradient(circle at 40% 30%,#164d6b,#06162a 75%);box-shadow:0 0 15px #008bc944,inset 0 0 12px #31cfff22;font-size:19px;color:#9cf7ff;transition:.2s}
-.appicon:active .glyph{transform:scale(.9);box-shadow:0 0 24px #28dfff}
-.panel{background:linear-gradient(145deg,#081a2bd9,#061120eF);border:1px solid #1a668455;border-radius:16px;padding:13px;margin-top:12px;box-shadow:0 12px 30px #0005}
-.paneltitle{font-size:9px;letter-spacing:2px;color:var(--cyan);margin-bottom:10px}
-.row{display:flex;gap:8px}input{min-width:0;flex:1;background:#020b17;border:1px solid #245675;border-radius:10px;color:white;padding:12px;font-size:13px;outline:none}input:focus{border-color:var(--cyan)}
-#log{display:flex;flex-direction:column;gap:7px;max-height:155px;overflow:auto;margin-top:10px}.msg{padding:8px 10px;border-radius:10px;font-size:12px;line-height:1.4;white-space:pre-wrap;max-width:92%}.user{align-self:flex-end;background:#10486b}.bot{align-self:flex-start;background:#10243a;border:1px solid #1d5877}
-.hidden{display:none!important}.hint{font-size:10px;color:#7798b4;line-height:1.6}
-#workshop{height:310px;position:relative;overflow:hidden;border:1px solid #1a789c66;border-radius:13px;background:radial-gradient(ellipse,#0b2c47,#030b17 72%);touch-action:pan-y}
-#modelCanvas{width:100%;height:100%;display:block}.blueprint-prompt{margin-top:10px}.blueprint-prompt input{font-size:12px}.blueprint-active #workshop{background:linear-gradient(0deg,#061b36dd,#061b36dd),repeating-linear-gradient(0deg,transparent 0 19px,#1b8ac755 20px),repeating-linear-gradient(90deg,transparent 0 19px,#1b8ac755 20px)}
-.worktools{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
-footer{text-align:center;color:#547b9c;font-size:9px;letter-spacing:1px;padding:18px 0}
-@media(max-width:380px){.reactor-card{padding:13px 8px;grid-template-columns:1fr 1.25fr 1fr}.reactor-status,.voice-status{font-size:7px}.stats-strip>div{padding:8px 4px}.stats-strip small{font-size:9px}.stats-strip strong{font-size:13px}}\n@media(min-width:650px){.reactor-card{max-width:680px;margin:14px auto}.iconorbit{grid-template-columns:repeat(8,1fr)}.stage{height:440px}.side-readout.left{left:8%}.side-readout.right{right:8%}}
+* {box-sizing:border-box}
+html,body {
+  margin:0;
+  width:100%;
+  min-height:100%;
+  background:var(--bg);
+  color:var(--ice);
+  font-family:system-ui,-apple-system,Segoe UI,sans-serif;
+}
+body {
+  min-height:100svh;
+  overflow-x:hidden;
+  background:radial-gradient(ellipse at 50% 40%,#0b2a48 0,#061426 38%,#020711 78%);
+  padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+}
+body:before {
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.23;
+  background-image:linear-gradient(#2e9dca22 1px,transparent 1px),linear-gradient(90deg,#2e9dca22 1px,transparent 1px);
+  background-size:34px 34px;
+  mask-image:linear-gradient(transparent,#000 18%,#000 80%,transparent);
+}
+header {
+  height:58px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 18px;
+  border-bottom:1px solid #1b658755;
+  position:relative;
+  z-index:2;
+}
+.brand {
+  font-weight:900;
+  letter-spacing:4px;
+  color:var(--cyan);
+  text-shadow:0 0 15px #27cfff88;
+}
+.brand small {
+  display:block;
+  font-size:8px;
+  letter-spacing:2px;
+  color:#83a9c7;
+  font-weight:500;
+}
+.topright {
+  font-size:9px;
+  letter-spacing:1.5px;
+  color:#7fa8c8;
+  text-align:right;
+}
+main {
+  max-width:850px;
+  margin:auto;
+  padding:8px 14px 24px;
+  position:relative;
+  z-index:1;
+}
+.statusline {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  color:#8db1cc;
+  font-size:9px;
+  letter-spacing:1.8px;
+  padding:10px 3px;
+}
+.live {color:#62ffd1}
+.live:before {
+  content:"";
+  display:inline-block;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:#62ffd1;
+  box-shadow:0 0 10px #62ffd1;
+  margin-right:7px;
+}
+.clockrow {
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  padding:8px 5px 0;
+}
+.clock {
+  font-size:clamp(30px,8vw,48px);
+  font-weight:200;
+  letter-spacing:2px;
+}
+.date {
+  font-size:9px;
+  letter-spacing:1.5px;
+  color:#8eacc5;
+}
+.telemetry {
+  text-align:right;
+  font-size:9px;
+  line-height:1.8;
+  color:#8eacc5;
+}
+.reactor-card {
+  min-height:215px;
+  display:grid;
+  grid-template-columns:1fr 1.45fr 1fr;
+  align-items:center;
+  gap:5px;
+  padding:18px 14px;
+  margin:12px 0 10px;
+  border:1px solid #1b5475;
+  border-radius:24px;
+  background:linear-gradient(125deg,#0b1b2c,#071425 55%,#0a1b2d);
+  box-shadow:inset 0 0 22px #0a4c7933;
+}
+.reactor-status,.voice-status {
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+  font-size:9px;
+  letter-spacing:1.6px;
+  color:#91abc5;
+  line-height:1.8;
+  min-width:0;
+}
+.reactor-status strong,.voice-status strong {
+  font-size:clamp(16px,4vw,24px);
+  letter-spacing:0;
+  color:#20eaff;
+  line-height:1.2;
+}
+.power-track {
+  height:6px;
+  width:100%;
+  max-width:120px;
+  border-radius:10px;
+  background:#1c3349;
+  overflow:hidden;
+  margin-top:8px;
+}
+.power-track i {
+  display:block;
+  width:64%;
+  height:100%;
+  background:#14dff1;
+  border-radius:10px;
+  box-shadow:0 0 10px #00dfff;
+}
+.reactor-visual {
+  display:grid;
+  place-items:center;
+  min-width:0;
+}
+.reactor {
+  width:min(37vw,190px);
+  aspect-ratio:1;
+  border-radius:50%;
+  position:relative;
+  display:grid;
+  place-items:center;
+  filter:drop-shadow(0 0 17px #17bfff77);
+  background:radial-gradient(circle,#0a2844 0 34%,#07182a 35% 57%,#071321 59% 100%);
+}
+.reactor:before {
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  border:2px solid #177bb7;
+  box-shadow:inset 0 0 15px #1289d5,0 0 12px #078bce88;
+}
+.reactor:after {
+  content:"";
+  position:absolute;
+  inset:7%;
+  border-radius:50%;
+  border:4px double #126aa0;
+  border-left-color:#25cfff;
+  border-right-color:#25cfff;
+  box-shadow:0 0 8px #078bce;
+  animation:spin 20s linear infinite reverse;
+}
+.ring3 {
+  position:absolute;
+  inset:-5%;
+  border-radius:50%;
+  border:1px dashed #2d9bdcaa;
+  animation:spin 35s linear infinite;
+}
+.reactor-rim {
+  position:absolute;
+  inset:13%;
+  border-radius:50%;
+  border:5px double #176da9;
+  box-shadow:0 0 10px #00aaff,inset 0 0 14px #008cff66;
+}
+.reactor-segments {
+  position:absolute;
+  inset:20%;
+  border-radius:50%;
+  border:9px dotted #13cfff;
+  filter:drop-shadow(0 0 7px #00cfff);
+  animation:spin 12s linear infinite;
+}
+.reactor-inner {
+  position:absolute;
+  inset:29%;
+  border-radius:50%;
+  border:4px solid #4cecff;
+  border-left-color:#ffca42;
+  border-right-color:#168cff;
+  box-shadow:0 0 16px #00bfff,inset 0 0 12px #00bfff66;
+  animation:spin 8s linear infinite reverse;
+}
+.reactor-core {
+  width:70%;
+  height:70%;
+  border-radius:50%;
+  background:radial-gradient(circle at 45% 40%,#fff 0,#c9ffff 7%,#36dfff 25%,#0879c5 62%,#04162e 100%);
+  box-shadow:0 0 16px #5beaff,0 0 40px #008cffaa,inset 0 0 15px #d8ffff88;
+  animation:corepulse 2.5s ease-in-out infinite;
+}
+.listening .reactor-core {
+  box-shadow:0 0 28px #fff,0 0 70px #00cfff;
+  animation:corepulse .65s ease-in-out infinite;
+}
+.waveform {
+  height:25px;
+  display:flex;
+  align-items:center;
+  gap:3px;
+  margin-top:4px;
+}
+.waveform i {
+  display:block;
+  width:4px;
+  height:10px;
+  border-radius:5px;
+  background:#12e9ff;
+  box-shadow:0 0 7px #00dfff;
+  animation:wave 1s ease-in-out infinite alternate;
+}
+.waveform i:nth-child(3n) {animation-delay:.3s}
+.waveform i:nth-child(2n) {animation-delay:.6s}
+@keyframes wave {to {height:23px}}
+.stats-strip {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  border:1px solid #1b5475;
+  border-radius:20px;
+  background:#09182a;
+  margin-bottom:13px;
+  overflow:hidden;
+}
+.stats-strip>div {
+  min-height:72px;
+  display:grid;
+  grid-template-columns:28px 1fr;
+  grid-template-rows:1fr 1fr;
+  align-content:center;
+  align-items:center;
+  padding:10px 8px;
+  border-right:1px solid #1b3a55;
+  column-gap:5px;
+}
+.stats-strip>div:last-child {border:0}
+.stats-strip .stat-icon {
+  grid-row:1/3;
+  color:#16dff4;
+  font-size:24px;
+  text-align:center;
+}
+.stats-strip small {font-size:10px;color:#9bb2ca}
+.stats-strip strong {font-size:16px;color:#27dff4}
+.stats-strip strong.green {color:#38d8b4}
+@keyframes spin {to {transform:rotate(360deg)}}
+@keyframes corepulse {
+  50% {transform:scale(1.08);filter:brightness(1.35)}
+}
+#reply {
+  min-height:40px;
+  text-align:center;
+  font-size:14px;
+  line-height:1.45;
+  color:#d8faff;
+  padding:0 16px;
+  margin-top:-4px;
+}
+.controls {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:13px;
+  margin:12px 0 18px;
+}
+button {
+  cursor:pointer;
+  color:#dffcff;
+  background:linear-gradient(145deg,#0c3b60,#071a31);
+  border:1px solid #278cb5;
+  border-radius:12px;
+  padding:11px 14px;
+  font-weight:700;
+  letter-spacing:1px;
+  font-size:10px;
+  box-shadow:0 0 14px #007ec522;
+}
+button:active {transform:scale(.97)}
+button.primary {
+  width:68px;
+  height:68px;
+  border-radius:50%;
+  font-size:25px;
+  border:1px solid #83f7ff;
+  background:radial-gradient(circle,#146a91,#08233c 72%);
+  box-shadow:0 0 24px #00cfff66;
+}
+.iconorbit {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  max-width:520px;
+  margin:0 auto 16px;
+}
+.appicon {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:5px;
+  cursor:pointer;
+  color:#8fb6d1;
+  font-size:8px;
+  letter-spacing:1px;
+}
+.appicon .glyph {
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  border:1px solid #3ac7ef99;
+  background:radial-gradient(circle at 40% 30%,#164d6b,#06162a 75%);
+  box-shadow:0 0 15px #008bc944,inset 0 0 12px #31cfff22;
+  font-size:19px;
+  color:#9cf7ff;
+  transition:.2s;
+}
+.appicon:active .glyph {
+  transform:scale(.9);
+  box-shadow:0 0 24px #28dfff;
+}
+.panel {
+  background:linear-gradient(145deg,#081a2bd9,#061120eF);
+  border:1px solid #1a668455;
+  border-radius:16px;
+  padding:13px;
+  margin-top:12px;
+  box-shadow:0 12px 30px #0005;
+}
+.paneltitle {
+  font-size:9px;
+  letter-spacing:2px;
+  color:var(--cyan);
+  margin-bottom:10px;
+}
+.row {display:flex;gap:8px}
+input {
+  min-width:0;
+  flex:1;
+  background:#020b17;
+  border:1px solid #245675;
+  border-radius:10px;
+  color:white;
+  padding:12px;
+  font-size:13px;
+  outline:none;
+}
+input:focus {border-color:var(--cyan)}
+#log {
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+  max-height:155px;
+  overflow:auto;
+  margin-top:10px;
+}
+.msg {
+  padding:8px 10px;
+  border-radius:10px;
+  font-size:12px;
+  line-height:1.4;
+  white-space:pre-wrap;
+  max-width:92%;
+}
+.user {align-self:flex-end;background:#10486b}
+.bot {
+  align-self:flex-start;
+  background:#10243a;
+  border:1px solid #1d5877;
+}
+.hidden {display:none!important}
+.hint {font-size:10px;color:#7798b4;line-height:1.6}
+#workshop {
+  height:310px;
+  position:relative;
+  overflow:hidden;
+  border:1px solid #1a789c66;
+  border-radius:13px;
+  background:radial-gradient(ellipse,#0b2c47,#030b17 72%);
+  touch-action:pan-y;
+}
+#modelCanvas {width:100%;height:100%;display:block}
+.blueprint-prompt {margin-top:10px}
+.blueprint-prompt input {font-size:12px}
+.blueprint-active #workshop {
+  background:linear-gradient(0deg,#061b36dd,#061b36dd),repeating-linear-gradient(0deg,transparent 0 19px,#1b8ac755 20px),repeating-linear-gradient(90deg,transparent 0 19px,#1b8ac755 20px);
+}
+.worktools {display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
+footer {
+  text-align:center;
+  color:#547b9c;
+  font-size:9px;
+  letter-spacing:1px;
+  padding:18px 0;
+}
+@media(max-width:380px) {
+  .reactor-card {padding:13px 8px;grid-template-columns:1fr 1.25fr 1fr}
+  .reactor-status,.voice-status {font-size:7px}
+  .stats-strip>div {padding:8px 4px}
+  .stats-strip small {font-size:9px}
+  .stats-strip strong {font-size:13px}
+}
+@media(min-width:650px) {
+  .reactor-card {max-width:680px;margin:14px auto}
+  .iconorbit {grid-template-columns:repeat(8,1fr)}
+}
 </style>
 </head>
+
 <body>
-<header><div class="brand">J.A.R.V.I.S.<small>PERSONAL INTELLIGENCE SYSTEM</small></div><div class="topright">MARK VII INTERFACE<br><span style="color:#58eaff">ONLINE</span></div></header>
+<header>
+  <div class="brand">J.A.R.V.I.S.<small>PERSONAL INTELLIGENCE SYSTEM</small></div>
+  <div class="topright">MARK VII INTERFACE<br><span style="color:#58eaff">ONLINE</span></div>
+</header>
+
 <main>
 <div class="statusline"><span class="live" id="status">SYSTEM ONLINE</span><span id="mode">VOICE INTERFACE · READY</span></div>
-<div class="clockrow"><div><div class="clock" id="clock">--:--</div><div class="date" id="date">INITIALISING</div></div><div class="telemetry"><div>POWER <span id="battery">--</span></div><div>NETWORK <span id="network">CHECKING</span></div><div>CORE TEMP <span>OPTIMAL</span></div></div></div>
-<section class="reactor-card" id="hud">
- <div class="reactor-status"><span>ARC REACTOR<br>STATUS</span><strong>ONLINE</strong><div class="power-track"><i></i></div></div>
- <div class="reactor-visual"><div class="reactor"><div class="ring3"></div><div class="reactor-rim"></div><div class="reactor-segments"></div><div class="reactor-inner"></div><div class="reactor"><div class="reactor-core"></div></div></div></div>
- <div class="voice-status"><span>VOICE PROTOCOL</span><strong id="voiceState">STANDBY</strong><div class="waveform" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
-</section>
-<section class="stats-strip">
- <div><span class="stat-icon">▦</span><small>CPU</small><strong id="cpuStat">12%</strong></div>
- <div><span class="stat-icon">♧</span><small>Neural Link</small><strong class="green">ACTIVE</strong></div>
- <div><span class="stat-icon">♨</span><small>Core Temp</small><strong>37°C</strong></div>
-</section>
-<div id="reply">Good evening. All systems are online. How may I assist you?</div>
-<div class="controls"><button id="settings" title="Settings">⚙</button><button id="mic" class="primary" aria-label="Speak">🎙</button><button id="stop" title="Stop speaking">■</button></div>
-<div class="iconorbit" id="appIcons">
-<div class="appicon" data-app="WhatsApp"><div class="glyph">◉</div><span>WHATSAPP</span></div>
-<div class="appicon" data-app="YouTube"><div class="glyph">▶</div><span>YOUTUBE</span></div>
-<div class="appicon" data-app="Google"><div class="glyph">⌕</div><span>GOOGLE</span></div>
-<div class="appicon" data-app="Instagram"><div class="glyph">◎</div><span>INSTAGRAM</span></div>
-<div class="appicon" data-app="Maps"><div class="glyph">⌖</div><span>MAPS</span></div>
-<div class="appicon" data-app="Gmail"><div class="glyph">✉</div><span>GMAIL</span></div>
-<div class="appicon" data-app="Workshop"><div class="glyph">◇</div><span>3D LAB</span></div>
-<div class="appicon" data-app="Settings"><div class="glyph">⚙</div><span>SYSTEM</span></div>
+
+<div class="clockrow">
+  <div>
+    <div class="clock" id="clock">--:--</div>
+    <div class="date" id="date">INITIALISING</div>
+  </div>
+  <div class="telemetry">
+    <div>POWER <span id="battery">--</span></div>
+    <div>NETWORK <span id="network">CHECKING</span></div>
+    <div>CORE TEMP <span>OPTIMAL</span></div>
+  </div>
 </div>
-<section class="panel">
-<div class="paneltitle">HOLOGRAPHIC WORKSHOP · 3D LAB</div>
-<div id="workshop"><canvas id="modelCanvas"></canvas></div>
-<div class="row blueprint-prompt"><input id="designPrompt" placeholder="Describe anything to blueprint… e.g. a futuristic rescue drone"><button id="generateDesign">BUILD</button></div>
-<div class="worktools"><button id="blueprintToggle">BLUEPRINT: ON</button><button id="human">HUMAN</button><button id="robot">ROBOT</button><button id="car">VEHICLE</button><button id="clearModel">CLEAR</button></div>
-<div class="hint" id="workshopHint">Describe a machine, vehicle, building, robot or invention. JARVIS will design a concept from your prompt. Drag to rotate · Scroll/pinch to zoom. Blueprint mode shows a technical wireframe.</div>
+
+<section class="reactor-card" id="hud">
+  <div class="reactor-status">
+    <span>ARC REACTOR<br>STATUS</span>
+    <strong>ONLINE</strong>
+    <div class="power-track"><i></i></div>
+  </div>
+  <div class="reactor-visual">
+    <div class="reactor">
+      <div class="ring3"></div>
+      <div class="reactor-rim"></div>
+      <div class="reactor-segments"></div>
+      <div class="reactor-inner"></div>
+      <div class="reactor-core"></div>
+    </div>
+  </div>
+  <div class="voice-status">
+    <span>VOICE PROTOCOL</span>
+    <strong id="voiceState">STANDBY</strong>
+    <div class="waveform" aria-hidden="true">
+      <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+    </div>
+  </div>
 </section>
-<section class="panel">
-<div class="paneltitle">COMMUNICATION CHANNEL</div>
-<div class="row"><input id="message" placeholder="Speak or type a command..." autocomplete="off"><button id="send">SEND</button></div><div id="log"></div>
+
+<section class="stats-strip">
+  <div><span class="stat-icon">▦</span><small>CPU</small><strong id="cpuStat">12%</strong></div>
+  <div><span class="stat-icon">♧</span><small>Neural Link</small><strong class="green">ACTIVE</strong></div>
+  <div><span class="stat-icon">♨</span><small>Core Temp</small><strong>37°C</strong></div>
 </section>
+
+<div id="reply">Good evening. All systems are online. How may I assist you?</div>
+
+<div class="controls">
+  <button id="settings" title="Settings">⚙</button>
+  <button id="mic" class="primary" aria-label="Speak">🎙</button>
+  <button id="stop" title="Stop speaking">■</button>
+</div>
+
+<div class="iconorbit" id="appIcons">
+  <div class="appicon" data-app="WhatsApp"><div class="glyph">◉</div><span>WHATSAPP</span></div>
+  <div class="appicon" data-app="YouTube"><div class="glyph">▶</div><span>YOUTUBE</span></div>
+  <div class="appicon" data-app="Google"><div class="glyph">⌕</div><span>GOOGLE</span></div>
+  <div class="appicon" data-app="Instagram"><div class="glyph">◎</div><span>INSTAGRAM</span></div>
+  <div class="appicon" data-app="Maps"><div class="glyph">⌖</div><span>MAPS</span></div>
+  <div class="appicon" data-app="Gmail"><div class="glyph">✉</div><span>GMAIL</span></div>
+  <div class="appicon" data-app="Workshop"><div class="glyph">◇</div><span>3D LAB</span></div>
+  <div class="appicon" data-app="Settings"><div class="glyph">⚙</div><span>SYSTEM</span></div>
+</div>
+
+<section class="panel">
+  <div class="paneltitle">HOLOGRAPHIC WORKSHOP · 3D LAB</div>
+  <div id="workshop"><canvas id="modelCanvas"></canvas></div>
+  <div class="row blueprint-prompt">
+    <input id="designPrompt" placeholder="Describe anything to blueprint… e.g. a futuristic rescue drone">
+    <button id="generateDesign">BUILD</button>
+  </div>
+  <div class="worktools">
+    <button id="blueprintToggle">BLUEPRINT: ON</button>
+    <button id="human">HUMAN</button>
+    <button id="robot">ROBOT</button>
+    <button id="car">VEHICLE</button>
+    <button id="clearModel">CLEAR</button>
+  </div>
+  <div class="hint" id="workshopHint">Describe a machine, vehicle, building, robot or invention. JARVIS will design a concept from your prompt. Drag to rotate · Scroll/pinch to zoom. Blueprint mode shows a technical wireframe.</div>
+</section>
+
+<section class="panel">
+  <div class="paneltitle">COMMUNICATION CHANNEL</div>
+  <div class="row">
+    <input id="message" placeholder="Speak or type a command..." autocomplete="off">
+    <button id="send">SEND</button>
+  </div>
+  <div id="log"></div>
+</section>
+
 <section class="panel hidden" id="settingsPanel">
-<div class="paneltitle">AI CONNECTION · OPENROUTER</div>
-<p class="hint">Your existing OpenRouter key is stored locally on this device under the original JARVIS key name. It is not included in this file. Do not paste API keys into public GitHub code.</p>
-<input id="apiKey" type="password" placeholder="OpenRouter API key">
-<div class="row" style="margin-top:9px"><button id="saveKey">SAVE KEY</button><button id="clearKey">CLEAR KEY</button></div>
-<p class="hint">Uses the OpenRouter free model route. Availability and rate limits depend on the provider.</p>
+  <div class="paneltitle">AI CONNECTION · OPENROUTER</div>
+  <p class="hint">Your existing OpenRouter key is stored locally on this device under the original JARVIS key name. It is not included in this file. Do not paste API keys into public GitHub code.</p>
+  <input id="apiKey" type="password" placeholder="OpenRouter API key">
+  <div class="row" style="margin-top:9px">
+    <button id="saveKey">SAVE KEY</button>
+    <button id="clearKey">CLEAR KEY</button>
+  </div>
+  <p class="hint">Uses the OpenRouter free model route. Availability and rate limits depend on the provider.</p>
 </section>
+
 <footer>J.A.R.V.I.S. · PERSONAL HOLOGRAPHIC INTERFACE · V4</footer>
 </main>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 const $=id=>document.getElementById(id),reply=$('reply'),status=$('status'),hud=$('hud'),log=$('log');
 let history=[];
+
 function speak(text){
- if(!window.speechSynthesis)return;
- speechSynthesis.cancel();
- const voices=speechSynthesis.getVoices(),u=new SpeechSynthesisUtterance(text);
- u.lang='en-GB';u.rate=.88;u.pitch=.85;u.volume=1;
- const british=voices.filter(v=>v.lang.toLowerCase().includes('en-gb'));
- const voice=british.find(v=>/male|daniel|george/i.test(v.name))||british[0];
- if(voice)u.voice=voice;
- speechSynthesis.speak(u);
+  if(!window.speechSynthesis)return;
+  speechSynthesis.cancel();
+  const voices=speechSynthesis.getVoices(),u=new SpeechSynthesisUtterance(text);
+  u.lang='en-GB';
+  u.rate=.88;
+  u.pitch=.85;
+  u.volume=1;
+  const british=voices.filter(v=>v.lang.toLowerCase().includes('en-gb'));
+  const voice=british.find(v=>/male|daniel|george/i.test(v.name))||british[0];
+  if(voice)u.voice=voice;
+  speechSynthesis.speak(u);
 }
 function say(text){reply.textContent=text;speak(text)}
-function add(who,text){const d=document.createElement('div');d.className='msg '+(who==='You'?'user':'bot');d.textContent=(who==='You'?'YOU: ':'JARVIS: ')+text;log.appendChild(d);log.scrollTop=log.scrollHeight}
-function updateClock(){const n=new Date();$('clock').textContent=n.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});$('date').textContent=n.toLocaleDateString('en-GB',{weekday:'long',day:'2-digit',month:'long'}).toUpperCase()}
-updateClock();setInterval(updateClock,1000);
-$('network').textContent=navigator.onLine?'CONNECTED':'OFFLINE';window.addEventListener('online',()=>$('network').textContent='CONNECTED');window.addEventListener('offline',()=>$('network').textContent='OFFLINE');
-if('getBattery'in navigator){navigator.getBattery().then(b=>{const draw=()=> $('battery').textContent=Math.round(b.level*100)+'%';draw();b.addEventListener('levelchange',draw)})}else $('battery').textContent='N/A';
+function add(who,text){
+  const d=document.createElement('div');
+  d.className='msg '+(who==='You'?'user':'bot');
+  d.textContent=(who==='You'?'YOU: ':'JARVIS: ')+text;
+  log.appendChild(d);
+  log.scrollTop=log.scrollHeight;
+}
+function updateClock(){
+  const n=new Date();
+  $('clock').textContent=n.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  $('date').textContent=n.toLocaleDateString('en-GB',{weekday:'long',day:'2-digit',month:'long'}).toUpperCase();
+}
+updateClock();
+setInterval(updateClock,1000);
+
+$('network').textContent=navigator.onLine?'CONNECTED':'OFFLINE';
+window.addEventListener('online',()=>$('network').textContent='CONNECTED');
+window.addEventListener('offline',()=>$('network').textContent='OFFLINE');
+
+if('getBattery'in navigator){
+  navigator.getBattery().then(b=>{
+    const draw=()=>$('battery').textContent=Math.round(b.level*100)+'%';
+    draw();
+    b.addEventListener('levelchange',draw);
+  }).catch(()=>$('battery').textContent='N/A');
+}else $('battery').textContent='N/A';
+
 function openApp(name){
- const urls={whatsapp:'https://wa.me/',youtube:'https://youtube.com',google:'https://google.com',instagram:'https://instagram.com',maps:'https://maps.google.com',gmail:'https://mail.google.com'};
- const url=urls[name.toLowerCase()];
- if(url){window.open(url,'_blank','noopener');return 'Opening '+name+'.'}
- return null;
+  const urls={
+    whatsapp:'https://wa.me/',
+    youtube:'https://youtube.com',
+    google:'https://google.com',
+    instagram:'https://instagram.com',
+    maps:'https://maps.google.com',
+    gmail:'https://mail.google.com'
+  };
+  const url=urls[name.toLowerCase()];
+  if(url){window.open(url,'_blank','noopener');return 'Opening '+name+'.'}
+  return null;
 }
+
 function localCommand(t){
- const s=t.toLowerCase();
- if(/\b(hello|hi|hey)\b/.test(s))return 'Hello. I am online and ready. What can I do for you?';
- if(s.includes('time'))return 'The time is '+new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})+'.';
- if(s.includes('date')||s.includes('today'))return 'Today is '+new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'})+'.';
- for(const app of ['whatsapp','youtube','google','instagram','maps','gmail'])if(s.includes('open '+app))return openApp(app.charAt(0).toUpperCase()+app.slice(1));
- if(s.includes('who are you'))return 'I am JARVIS, your personal AI assistant. Always at your service.';
- if(s.includes('what can you do'))return 'I can converse, answer questions, open supported web apps, and create interactive procedural 3D previews in my holographic workshop.';
- if(s.startsWith('design ')||s.startsWith('build ')||s.startsWith('create ')||s.startsWith('make a model of ')||s.startsWith('blueprint ')){const p=t.replace(/^(design|build|create|make a model of|blueprint)\s+/i,'');buildFromPrompt(p);return 'Understood. I am drafting a 3D blueprint for '+p+'.'}
- if(s.includes('human')||s.includes('person model')){showModel('human');return 'Displaying a human-form 3D preview in the workshop.'}
- if(s.includes('robot')||s.includes('iron man')||s.includes('suit')){showModel('robot');return 'Constructing a robotic armour-inspired 3D preview.'}
- if(s.includes('car')||s.includes('vehicle')){showModel('car');return 'Displaying a vehicle 3D preview.'}
- if(s.includes('3d')||s.includes('workshop')||s.includes('model')){showModel('robot');return 'The holographic workshop is ready. You can rotate and zoom the model.'}
- return null;
+  const s=t.toLowerCase();
+  if(/\b(hello|hi|hey)\b/.test(s))return 'Hello. I am online and ready. What can I do for you?';
+  if(s.includes('time'))return 'The time is '+new Date().toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})+'.';
+  if(s.includes('date')||s.includes('today'))return 'Today is '+new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'})+'.';
+  for(const app of ['whatsapp','youtube','google','instagram','maps','gmail']){
+    if(s.includes('open '+app))return openApp(app.charAt(0).toUpperCase()+app.slice(1));
+  }
+  if(s.includes('who are you'))return 'I am JARVIS, your personal AI assistant. Always at your service.';
+  if(s.includes('what can you do'))return 'I can converse, answer questions, open supported web apps, and create interactive procedural 3D previews in my holographic workshop.';
+  if(s.startsWith('design ')||s.startsWith('build ')||s.startsWith('create ')||s.startsWith('make a model of ')||s.startsWith('blueprint ')){
+    const p=t.replace(/^(design|build|create|make a model of|blueprint)\s+/i,'');
+    buildFromPrompt(p);
+    return 'Understood. I am drafting a 3D blueprint for '+p+'.';
+  }
+  if(s.includes('human')||s.includes('person model')){showModel('human');return 'Displaying a human-form 3D preview in the workshop.'}
+  if(s.includes('robot')||s.includes('iron man')||s.includes('suit')){showModel('robot');return 'Constructing a robotic armour-inspired 3D preview.'}
+  if(s.includes('car')||s.includes('vehicle')){showModel('car');return 'Displaying a vehicle 3D preview.'}
+  if(s.includes('3d')||s.includes('workshop')||s.includes('model')){showModel('robot');return 'The holographic workshop is ready. You can rotate and zoom the model.'}
+  return null;
 }
+
 async function ask(text){
- if(!text.trim())return;add('You',text);$('message').value='';status.textContent='PROCESSING';$('mode').textContent='AI THINKING';
- const cmd=localCommand(text);
- if(cmd){add('JARVIS',cmd);say(cmd);status.textContent='SYSTEM ONLINE';$('mode').textContent='VOICE INTERFACE · READY';return}
- const key=localStorage.getItem('jarvis_gemini_key');
- if(!key){const m='Please add your existing OpenRouter API key in settings.';add('JARVIS',m);say(m);status.textContent='API KEY REQUIRED';$('mode').textContent='CONNECTION REQUIRED';return}
- const messages=[{role:'system',content:'You are JARVIS, a warm, witty, intelligent personal assistant with a calm British butler-like manner. Speak naturally and concisely. The user is using a holographic assistant interface. You can display built-in procedural 3D previews when asked for a human, robot, armour or car. Never claim to have performed a phone action unless it happened. Explain Android/PWA limitations honestly.'},...history.slice(-12),{role:'user',content:text}];
- try{
-  const res=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({model:'openrouter/free',messages,temperature:.7,max_tokens:500})});
-  const data=await res.json();if(!res.ok)throw new Error(data.error?.message||'API request failed');
-  const answer=data.choices?.[0]?.message?.content||'I could not generate a response.';
-  history.push({role:'user',content:text},{role:'assistant',content:answer});add('JARVIS',answer);say(answer);status.textContent='SYSTEM ONLINE';$('mode').textContent='VOICE INTERFACE · READY';
- }catch(e){const m='Connection error: '+e.message;add('JARVIS',m);say(m);status.textContent='CONNECTION ERROR';$('mode').textContent='CHECK CONNECTION'}
+  if(!text.trim())return;
+  add('You',text);
+  $('message').value='';
+  status.textContent='PROCESSING';
+  $('mode').textContent='AI THINKING';
+  const cmd=localCommand(text);
+  if(cmd){
+    add('JARVIS',cmd);
+    say(cmd);
+    status.textContent='SYSTEM ONLINE';
+    $('mode').textContent='VOICE INTERFACE · READY';
+    return;
+  }
+  const key=localStorage.getItem('jarvis_gemini_key');
+  if(!key){
+    const m='Please add your existing OpenRouter API key in settings.';
+    add('JARVIS',m);
+    say(m);
+    status.textContent='API KEY REQUIRED';
+    $('mode').textContent='CONNECTION REQUIRED';
+    return;
+  }
+  const messages=[
+    {role:'system',content:'You are JARVIS, a warm, witty, intelligent personal assistant with a calm British butler-like manner. Speak naturally and concisely. The user is using a holographic assistant interface. You can display built-in procedural 3D previews when asked for a human, robot, armour or car. Never claim to have performed a phone action unless it happened. Explain Android/PWA limitations honestly.'},
+    ...history.slice(-12),
+    {role:'user',content:text}
+  ];
+  try{
+    const res=await fetch('https://openrouter.ai/api/v1/chat/completions',{
+      method:'POST',
+      headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},
+      body:JSON.stringify({model:'openrouter/free',messages,temperature:.7,max_tokens:500})
+    });
+    const data=await res.json();
+    if(!res.ok)throw new Error(data.error?.message||'API request failed');
+    const answer=data.choices?.[0]?.message?.content||'I could not generate a response.';
+    history.push({role:'user',content:text},{role:'assistant',content:answer});
+    add('JARVIS',answer);
+    say(answer);
+    status.textContent='SYSTEM ONLINE';
+    $('mode').textContent='VOICE INTERFACE · READY';
+  }catch(e){
+    const m='Connection error: '+e.message;
+    add('JARVIS',m);
+    say(m);
+    status.textContent='CONNECTION ERROR';
+    $('mode').textContent='CHECK CONNECTION';
+  }
 }
-$('send').onclick=()=>ask($('message').value);$('message').addEventListener('keydown',e=>{if(e.key==='Enter')ask($('message').value)});
-$('settings').onclick=()=>{$('settingsPanel').classList.toggle('hidden');$('apiKey').value=localStorage.getItem('jarvis_gemini_key')||''};
-$('saveKey').onclick=()=>{const k=$('apiKey').value.trim();if(k){localStorage.setItem('jarvis_gemini_key',k);say('OpenRouter connection key saved on this device.')}else say('Please paste your OpenRouter key first.')};
-$('clearKey').onclick=()=>{localStorage.removeItem('jarvis_gemini_key');$('apiKey').value='';say('API key cleared.')};
+
+$('send').onclick=()=>ask($('message').value);
+$('message').addEventListener('keydown',e=>{if(e.key==='Enter')ask($('message').value)});
+
+$('settings').onclick=()=>{
+  $('settingsPanel').classList.toggle('hidden');
+  $('apiKey').value=localStorage.getItem('jarvis_gemini_key')||'';
+};
+$('saveKey').onclick=()=>{
+  const k=$('apiKey').value.trim();
+  if(k){
+    localStorage.setItem('jarvis_gemini_key',k);
+    say('OpenRouter connection key saved on this device.');
+  }else say('Please paste your OpenRouter key first.');
+};
+$('clearKey').onclick=()=>{
+  localStorage.removeItem('jarvis_gemini_key');
+  $('apiKey').value='';
+  say('API key cleared.');
+};
 $('stop').onclick=()=>speechSynthesis.cancel();
+
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 $('mic').onclick=()=>{
- if(!SR){say('Speech recognition is unavailable in this browser. Please use Chrome or type your message.');return}
- const r=new SR();r.lang='en-IN';r.interimResults=false;r.maxAlternatives=1;
- r.onstart=()=>{status.textContent='LISTENING';$('mode').textContent='VOICE INPUT ACTIVE';$('voiceState').textContent='LISTENING';hud.classList.add('listening');reply.textContent='Listening...'};
- r.onend=()=>{hud.classList.remove('listening');$('voiceState').textContent='STANDBY';if(status.textContent==='LISTENING')status.textContent='SYSTEM ONLINE';$('mode').textContent='VOICE INTERFACE · READY'};
- r.onerror=e=>{hud.classList.remove('listening');say('Microphone error: '+e.error+'. Check Chrome microphone permission.');status.textContent='MIC ERROR'};
- r.onresult=e=>ask(e.results[0][0].transcript);try{r.start()}catch(e){say('Could not start microphone. Please try again.')}
+  if(!SR){
+    say('Speech recognition is unavailable in this browser. Please use Chrome or type your message.');
+    return;
+  }
+  const r=new SR();
+  r.lang='en-IN';
+  r.interimResults=false;
+  r.maxAlternatives=1;
+  r.onstart=()=>{
+    status.textContent='LISTENING';
+    $('mode').textContent='VOICE INPUT ACTIVE';
+    $('voiceState').textContent='LISTENING';
+    hud.classList.add('listening');
+    reply.textContent='Listening...';
+  };
+  r.onend=()=>{
+    hud.classList.remove('listening');
+    $('voiceState').textContent='STANDBY';
+    if(status.textContent==='LISTENING')status.textContent='SYSTEM ONLINE';
+    $('mode').textContent='VOICE INTERFACE · READY';
+  };
+  r.onerror=e=>{
+    hud.classList.remove('listening');
+    say('Microphone error: '+e.error+'. Check Chrome microphone permission.');
+    status.textContent='MIC ERROR';
+  };
+  r.onresult=e=>ask(e.results[0][0].transcript);
+  try{r.start()}catch(e){say('Could not start microphone. Please try again.')}
 };
-document.querySelectorAll('.appicon').forEach(el=>el.onclick=()=>{const name=el.dataset.app;if(name==='Workshop'){showModel('robot');$('workshop').scrollIntoView({behavior:'smooth'});say('Holographic workshop ready.')}else if(name==='Settings'){$('settings').click()}else{const result=openApp(name);if(result)say(result)}});
-/* Three.js procedural hologram viewer */
-let scene,camera,renderer,model,group,drag=false,lastX=0,lastY=0,zoom=1;
+
+document.querySelectorAll('.appicon').forEach(el=>el.onclick=()=>{
+  const name=el.dataset.app;
+  if(name==='Workshop'){
+    showModel('robot');
+    $('workshop').scrollIntoView({behavior:'smooth'});
+    say('Holographic workshop ready.');
+  }else if(name==='Settings'){
+    $('settings').click();
+  }else{
+    const result=openApp(name);
+    if(result)say(result);
+  }
+});
+
+/* THREE.JS PROCEDURAL HOLOGRAM VIEWER */
+let scene,camera,renderer,model,group,drag=false,lastX=0,lastY=0;
+
 function init3D(){
- const canvas=$('modelCanvas');if(!window.THREE){canvas.insertAdjacentHTML('afterend','<p class="hint">3D library could not load. Check your internet connection.</p>');return}
- scene=new THREE.Scene();camera=new THREE.PerspectiveCamera(42,1,.1,100);camera.position.set(0,1.2,5.8);
- renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));
- scene.add(new THREE.AmbientLight(0x66cfff,.8));const light=new THREE.PointLight(0x42dfff,2.2);light.position.set(3,4,5);scene.add(light);
- const floor=new THREE.GridHelper(9,28,0x167fa8,0x10324b);floor.position.y=-1.25;scene.add(floor);
- group=new THREE.Group();scene.add(group);showModel('robot');
- const resize=()=>{const w=canvas.clientWidth,h=canvas.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()};new ResizeObserver(resize).observe(canvas);resize();
- const animate=()=>{requestAnimationFrame(animate);if(model&&!drag)model.rotation.y+=.003;renderer.render(scene,camera)};animate();
- canvas.addEventListener('pointerdown',e=>{drag=true;lastX=e.clientX;lastY=e.clientY;canvas.setPointerCapture(e.pointerId)});
- canvas.addEventListener('pointermove',e=>{if(!drag||!model)return;model.rotation.y+=(e.clientX-lastX)*.012;model.rotation.x+=(e.clientY-lastY)*.008;lastX=e.clientX;lastY=e.clientY});
- canvas.addEventListener('pointerup',()=>drag=false);canvas.addEventListener('pointercancel',()=>drag=false);
- canvas.addEventListener('wheel',e=>{e.preventDefault();camera.position.z=Math.max(3,Math.min(9,camera.position.z+e.deltaY*.005))},{passive:false});
+  const canvas=$('modelCanvas');
+  if(!window.THREE){
+    canvas.insertAdjacentHTML('afterend','<p class="hint">3D library could not load. Check your internet connection.</p>');
+    return;
+  }
+  scene=new THREE.Scene();
+  camera=new THREE.PerspectiveCamera(42,1,.1,100);
+  camera.position.set(0,1.2,5.8);
+  renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  scene.add(new THREE.AmbientLight(0x66cfff,.8));
+  const light=new THREE.PointLight(0x42dfff,2.2);
+  light.position.set(3,4,5);
+  scene.add(light);
+  const floor=new THREE.GridHelper(9,28,0x167fa8,0x10324b);
+  floor.position.y=-1.25;
+  scene.add(floor);
+  group=new THREE.Group();
+  scene.add(group);
+  showModel('robot');
+
+  const resize=()=>{
+    const w=canvas.clientWidth,h=canvas.clientHeight;
+    if(!w||!h)return;
+    renderer.setSize(w,h,false);
+    camera.aspect=w/h;
+    camera.updateProjectionMatrix();
+  };
+  if(window.ResizeObserver)new ResizeObserver(resize).observe(canvas);
+  window.addEventListener('resize',resize);
+  resize();
+
+  const animate=()=>{
+    requestAnimationFrame(animate);
+    if(model&&!drag)model.rotation.y+=.003;
+    renderer.render(scene,camera);
+  };
+  animate();
+
+  canvas.addEventListener('pointerdown',e=>{
+    drag=true;
+    lastX=e.clientX;
+    lastY=e.clientY;
+    canvas.setPointerCapture(e.pointerId);
+  });
+  canvas.addEventListener('pointermove',e=>{
+    if(!drag||!model)return;
+    model.rotation.y+=(e.clientX-lastX)*.012;
+    model.rotation.x+=(e.clientY-lastY)*.008;
+    lastX=e.clientX;
+    lastY=e.clientY;
+  });
+  canvas.addEventListener('pointerup',()=>drag=false);
+  canvas.addEventListener('pointercancel',()=>drag=false);
+  canvas.addEventListener('wheel',e=>{
+    e.preventDefault();
+    camera.position.z=Math.max(3,Math.min(9,camera.position.z+e.deltaY*.005));
+  },{passive:false});
 }
-function mat(){return new THREE.MeshStandardMaterial({color:0x1c9dcc,metalness:.65,roughness:.28,emissive:0x073b5b,wireframe:false})}
-function mesh(geo,m,x,y,z,sx=1,sy=1,sz=1){const o=new THREE.Mesh(geo,m);o.position.set(x,y,z);o.scale.set(sx,sy,sz);group.add(o);return o}
+
+function mat(){
+  return new THREE.MeshStandardMaterial({
+    color:0x1c9dcc,
+    metalness:.65,
+    roughness:.28,
+    emissive:0x073b5b,
+    wireframe:false
+  });
+}
+function mesh(geo,m,x,y,z,sx=1,sy=1,sz=1){
+  const o=new THREE.Mesh(geo,m);
+  o.position.set(x,y,z);
+  o.scale.set(sx,sy,sz);
+  group.add(o);
+  return o;
+}
 function showModel(kind){
- if(!scene)return;if(model)scene.remove(model);model=new THREE.Group();scene.add(model);group=model;
- const m=mat(),glow=new THREE.MeshStandardMaterial({color:0x76f5ff,emissive:0x087da9,metalness:.4,roughness:.25});
- if(kind==='human'){
-  mesh(new THREE.SphereGeometry(.34,24,18),glow,0,.72,0, .8,1.05,.8);
-  mesh(new THREE.CylinderGeometry(.22,.34,.95,18),m,0,.05,0);
-  for(const side of [-1,1]){mesh(new THREE.CylinderGeometry(.09,.12,.82,12),m,side*.43,.12,0);mesh(new THREE.CylinderGeometry(.11,.14,.82,12),m,side*.16,-.85,0)}
- }else if(kind==='car'){
-  mesh(new THREE.BoxGeometry(2.2,.48,1.05),m,0,-.25,0);
-  mesh(new THREE.BoxGeometry(1.15,.5,.9),glow,0,.18,0);
-  for(const x of [-.72,.72])for(const z of [-.58,.58]){const w=mesh(new THREE.CylinderGeometry(.23,.23,.13,20),glow,x,-.53,z);w.rotation.z=Math.PI/2}
- }else{
-  mesh(new THREE.SphereGeometry(.3,20,16),glow,0,.78,0,1,.9,.9);
-  mesh(new THREE.BoxGeometry(.78,.9,.42),m,0,.05,0);
-  mesh(new THREE.BoxGeometry(.5,.15,.48),glow,0,.48,0);
-  for(const side of [-1,1]){mesh(new THREE.CylinderGeometry(.12,.15,.72,12),m,side*.53,.08,0);mesh(new THREE.CylinderGeometry(.14,.17,.82,12),m,side*.2,-.78,0)}
-  mesh(new THREE.ConeGeometry(.18,.42,12),glow,0,-1.28,0);
- }
+  if(!scene)return;
+  if(model)scene.remove(model);
+  model=new THREE.Group();
+  scene.add(model);
+  group=model;
+  const m=mat();
+  const glow=new THREE.MeshStandardMaterial({
+    color:0x76f5ff,
+    emissive:0x087da9,
+    metalness:.4,
+    roughness:.25
+  });
+  if(kind==='human'){
+    mesh(new THREE.SphereGeometry(.34,24,18),glow,0,.72,0,.8,1.05,.8);
+    mesh(new THREE.CylinderGeometry(.22,.34,.95,18),m,0,.05,0);
+    for(const side of [-1,1]){
+      mesh(new THREE.CylinderGeometry(.09,.12,.82,12),m,side*.43,.12,0);
+      mesh(new THREE.CylinderGeometry(.11,.14,.82,12),m,side*.16,-.85,0);
+    }
+  }else if(kind==='car'){
+    mesh(new THREE.BoxGeometry(2.2,.48,1.05),m,0,-.25,0);
+    mesh(new THREE.BoxGeometry(1.15,.5,.9),glow,0,.18,0);
+    for(const x of [-.72,.72])for(const z of [-.58,.58]){
+      const w=mesh(new THREE.CylinderGeometry(.23,.23,.13,20),glow,x,-.53,z);
+      w.rotation.z=Math.PI/2;
+    }
+  }else{
+    mesh(new THREE.SphereGeometry(.3,20,16),glow,0,.78,0,1,.9,.9);
+    mesh(new THREE.BoxGeometry(.78,.9,.42),m,0,.05,0);
+    mesh(new THREE.BoxGeometry(.5,.15,.48),glow,0,.48,0);
+    for(const side of [-1,1]){
+      mesh(new THREE.CylinderGeometry(.12,.15,.72,12),m,side*.53,.08,0);
+      mesh(new THREE.CylinderGeometry(.14,.17,.82,12),m,side*.2,-.78,0);
+    }
+    mesh(new THREE.ConeGeometry(.18,.42,12),glow,0,-1.28,0);
+  }
 }
-$('human').onclick=()=>showModel('human');$('robot').onclick=()=>showModel('robot');$('car').onclick=()=>showModel('car');$('clearModel').onclick=()=>{if(model){scene.remove(model);model=null}};
+
+$('human').onclick=()=>showModel('human');
+$('robot').onclick=()=>showModel('robot');
+$('car').onclick=()=>showModel('car');
+$('clearModel').onclick=()=>{
+  if(model){scene.remove(model);model=null;}
+};
+
 if(window.THREE)init3D();
 
 let blueprintMode=true;
-$('blueprintToggle').onclick=()=>{blueprintMode=!blueprintMode;$('blueprintToggle').textContent='BLUEPRINT: '+(blueprintMode?'ON':'OFF');$('workshop').classList.toggle('blueprint-active',blueprintMode);if(model)applyBlueprintStyle(model)};
+$('blueprintToggle').onclick=()=>{
+  blueprintMode=!blueprintMode;
+  $('blueprintToggle').textContent='BLUEPRINT: '+(blueprintMode?'ON':'OFF');
+  $('workshop').classList.toggle('blueprint-active',blueprintMode);
+  if(model)applyBlueprintStyle(model);
+};
 $('workshop').classList.add('blueprint-active');
-function applyBlueprintStyle(root){
- root.traverse(o=>{if(o.isMesh&&o.material){o.material=o.material.clone();o.material.wireframe=blueprintMode;o.material.color.set(blueprintMode?0x54dfff:0x1c9dcc);o.material.emissive.set(blueprintMode?0x063d75:0x073b5b);}});
-}
-function clearCurrentModel(){if(model){scene.remove(model);model=null}}
-function addPart(part){
- const material=new THREE.MeshStandardMaterial({color:blueprintMode?0x55dcff:0x1c9dcc,emissive:blueprintMode?0x063e79:0x073b5b,metalness:.45,roughness:.3,wireframe:blueprintMode});
- let geo;
- const size=Array.isArray(part.size)?part.size:[.5,.5,.5];
- switch((part.shape||'box').toLowerCase()){
-  case 'sphere':geo=new THREE.SphereGeometry(Math.max(.08,size[0]),20,14);break;
-  case 'cylinder':geo=new THREE.CylinderGeometry(Math.max(.06,size[0]),Math.max(.06,size[1]||size[0]),Math.max(.1,size[2]||.8),20);break;
-  case 'cone':geo=new THREE.ConeGeometry(Math.max(.08,size[0]),Math.max(.1,size[1]||.8),18);break;
-  case 'torus':geo=new THREE.TorusGeometry(Math.max(.12,size[0]),Math.max(.025,size[1]||.06),10,36);break;
-  default:geo=new THREE.BoxGeometry(Math.max(.08,size[0]),Math.max(.08,size[1]),Math.max(.08,size[2]));
- }
- const obj=new THREE.Mesh(geo,material);
- const pos=part.position||[0,0,0],rot=part.rotation||[0,0,0];
- obj.position.set(pos[0]||0,pos[1]||0,pos[2]||0);
- obj.rotation.set(rot[0]||0,rot[1]||0,rot[2]||0);
- model.add(obj);
-}
-async function requestBlueprint(key,prompt,repair=false){
- const compact=`Return ONLY compact valid JSON, no markdown. Schema: {"name":"title","parts":[{"shape":"box|sphere|cylinder|cone|torus","size":[a,b,c],"position":[x,y,z],"rotation":[x,y,z]}]}. Create 12-22 parts for a recognisable ${prompt}. Coordinates -2 to 2, dimensions 0.08 to 2. Use boxes for body/wings/panels, cylinders for shafts/legs, torus for rings, spheres for joints/lights. Keep object centred and symmetrical where appropriate. Ensure every bracket and quote is closed. Concept art only, not certified engineering.`;
- const messages=[{role:'system',content:'You create compact 3D primitive geometry. Output syntactically valid JSON only. No explanation.'},{role:'user',content:compact+(repair?' Previous output was incomplete. Produce a shorter valid JSON object with at most 14 parts.':'')}];
- const res=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({model:'openrouter/free',messages,temperature:.2,max_tokens:2400})});
- const data=await res.json();if(!res.ok)throw new Error(data.error?.message||'AI request failed');
- let content=data.choices?.[0]?.message?.content;
- if(Array.isArray(content))content=content.map(x=>x.text||'').join('');
- if(typeof content!=='string'||!content.trim())throw new Error('The AI provider returned an empty model description.');
- const raw=content.replace(/```(?:json)?/gi,'').trim();
- const first=raw.indexOf('{'),last=raw.lastIndexOf('}');
- if(first<0||last<first)throw new Error('The AI response did not contain a JSON model.');
- return JSON.parse(raw.slice(first,last+1));
-}
-async function buildFromPrompt(prompt){
- const key=localStorage.getItem('jarvis_gemini_key');
- if(!key){const m='Please add your existing OpenRouter API key in settings before asking me to design a custom model.';add('JARVIS',m);say(m);return}
- if(!window.THREE||!scene){const m='The 3D workshop has not loaded. Check your internet connection and reload.';add('JARVIS',m);say(m);return}
- $('status').textContent='GENERATING BLUEPRINT';$('voiceState').textContent='DESIGNING';$('workshopHint').textContent='JARVIS is translating your description into a 3D concept…';
- $('workshop').scrollIntoView({behavior:'smooth',block:'center'});
- try{
-  let spec;
-  try{spec=await requestBlueprint(key,prompt,false)}catch(firstError){spec=await requestBlueprint(key,prompt,true)}
-  if(!Array.isArray(spec.parts)||!spec.parts.length)throw new Error('The AI returned no usable model components.');
-  clearCurrentModel();model=new THREE.Group();scene.add(model);
-  spec.parts.slice(0,24).forEach(addPart);
-  const box=new THREE.Box3().setFromObject(model),center=box.getCenter(new THREE.Vector3());model.position.sub(center);
-  const size=box.getSize(new THREE.Vector3()),maxDim=Math.max(size.x,size.y,size.z,1);model.scale.setScalar(2.5/maxDim);
-  $('workshopHint').textContent=(spec.name||'Custom concept')+' · '+Math.min(spec.parts.length,24)+' components · AI-generated 3D concept blueprint. Rotate and zoom to inspect.';
-  const done='Blueprint ready: '+(spec.name||prompt)+'. I have assembled a 3D concept from '+Math.min(spec.parts.length,24)+' components.';
-  add('JARVIS',done);say(done);
- }catch(e){const m='Blueprint generation failed: '+e.message+'. The existing preview has been kept. Check your OpenRouter key, connection and free-model availability.';add('JARVIS',m);say(m);$('workshopHint').textContent=m}
- $('status').textContent='SYSTEM ONLINE';$('voiceState').textContent='STANDBY';
-}
-$('generateDesign').onclick=()=>{const p=$('designPrompt').value.trim();if(p)buildFromPrompt(p)};
-$('designPrompt').addEventListener('keydown',e=>{if(e.key==='Enter'){$('generateDesign').click()}});
 
-if('serviceWorker'in navigator&&location.protocol.startsWith('http'))window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+function applyBlueprintStyle(root){
+  root.traverse(o=>{
+    if(o.isMesh&&o.material){
+      o.material=o.material.clone();
+      o.material.wireframe=blueprintMode;
+      o.material.color.set(blueprintMode?0x54dfff:0x1c9dcc);
+      o.material.emissive.set(blueprintMode?0x063d75:0x073b5b);
+    }
+  });
+}
+function clearCurrentModel(){
+  if(model){scene.remove(model);model=null;}
+}
+function addPart(part){
+  const material=new THREE.MeshStandardMaterial({
+    color:blueprintMode?0x55dcff:0x1c9dcc,
+    emissive:blueprintMode?0x063e79:0x073b5b,
+    metalness:.45,
+    roughness:.3,
+    wireframe:blueprintMode
+  });
+  let geo;
+  const size=Array.isArray(part.size)?part.size:[.5,.5,.5];
+  switch((part.shape||'box').toLowerCase()){
+    case 'sphere':
+      geo=new THREE.SphereGeometry(Math.max(.08,size[0]),20,14);
+      break;
+    case 'cylinder':
+      geo=new THREE.CylinderGeometry(Math.max(.06,size[0]),Math.max(.06,size[1]||size[0]),Math.max(.1,size[2]||.8),20);
+      break;
+    case 'cone':
+      geo=new THREE.ConeGeometry(Math.max(.08,size[0]),Math.max(.1,size[1]||.8),18);
+      break;
+    case 'torus':
+      geo=new THREE.TorusGeometry(Math.max(.12,size[0]),Math.max(.025,size[1]||.06),10,36);
+      break;
+    default:
+      geo=new THREE.BoxGeometry(Math.max(.08,size[0]),Math.max(.08,size[1]),Math.max(.08,size[2]));
+  }
+  const obj=new THREE.Mesh(geo,material);
+  const pos=part.position||[0,0,0],rot=part.rotation||[0,0,0];
+  obj.position.set(pos[0]||0,pos[1]||0,pos[2]||0);
+  obj.rotation.set(rot[0]||0,rot[1]||0,rot[2]||0);
+  model.add(obj);
+}
+
+async function requestBlueprint(key,prompt,repair=false){
+  const compact=`Return ONLY compact valid JSON, no markdown. Schema: {"name":"title","parts":[{"shape":"box|sphere|cylinder|cone|torus","size":[a,b,c],"position":[x,y,z],"rotation":[x,y,z]}]}. Create 12-22 parts for a recognisable ${prompt}. Coordinates -2 to 2, dimensions 0.08 to 2. Use boxes for body/wings/panels, cylinders for shafts/legs, torus for rings, spheres for joints/lights. Keep object centred and symmetrical where appropriate. Ensure every bracket and quote is closed. Concept art only, not certified engineering.`;
+  const messages=[
+    {role:'system',content:'You create compact 3D primitive geometry. Output syntactically valid JSON only. No explanation.'},
+    {role:'user',content:compact+(repair?' Previous output was incomplete. Produce a shorter valid JSON object with at most 14 parts.':'')}
+  ];
+  const res=await fetch('https://openrouter.ai/api/v1/chat/completions',{
+    method:'POST',
+    headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'},
+    body:JSON.stringify({model:'openrouter/free',messages,temperature:.2,max_tokens:2400})
+  });
+  const data=await res.json();
+  if(!res.ok)throw new Error(data.error?.message||'AI request failed');
+  let content=data.choices?.[0]?.message?.content;
+  if(Array.isArray(content))content=content.map(x=>x.text||'').join('');
+  if(typeof content!=='string'||!content.trim())throw new Error('The AI provider returned an empty model description.');
+  const raw=content.replace(/```(?:json)?/gi,'').trim();
+  const first=raw.indexOf('{'),last=raw.lastIndexOf('}');
+  if(first<0||last<first)throw new Error('The AI response did not contain a JSON model.');
+  return JSON.parse(raw.slice(first,last+1));
+}
+
+async function buildFromPrompt(prompt){
+  const key=localStorage.getItem('jarvis_gemini_key');
+  if(!key){
+    const m='Please add your existing OpenRouter API key in settings before asking me to design a custom model.';
+    add('JARVIS',m);
+    say(m);
+    return;
+  }
+  if(!window.THREE||!scene){
+    const m='The 3D workshop has not loaded. Check your internet connection and reload.';
+    add('JARVIS',m);
+    say(m);
+    return;
+  }
+  $('status').textContent='GENERATING BLUEPRINT';
+  $('voiceState').textContent='DESIGNING';
+  $('workshopHint').textContent='JARVIS is translating your description into a 3D concept…';
+  $('workshop').scrollIntoView({behavior:'smooth',block:'center'});
+  try{
+    let spec;
+    try{spec=await requestBlueprint(key,prompt,false)}
+    catch(firstError){spec=await requestBlueprint(key,prompt,true)}
+    if(!Array.isArray(spec.parts)||!spec.parts.length)throw new Error('The AI returned no usable model components.');
+    clearCurrentModel();
+    model=new THREE.Group();
+    scene.add(model);
+    spec.parts.slice(0,24).forEach(addPart);
+    const box=new THREE.Box3().setFromObject(model);
+    const center=box.getCenter(new THREE.Vector3());
+    model.position.sub(center);
+    const size=box.getSize(new THREE.Vector3());
+    const maxDim=Math.max(size.x,size.y,size.z,1);
+    model.scale.setScalar(2.5/maxDim);
+    $('workshopHint').textContent=(spec.name||'Custom concept')+' · '+Math.min(spec.parts.length,24)+' components · AI-generated 3D concept blueprint. Rotate and zoom to inspect.';
+    const done='Blueprint ready: '+(spec.name||prompt)+'. I have assembled a 3D concept from '+Math.min(spec.parts.length,24)+' components.';
+    add('JARVIS',done);
+    say(done);
+  }catch(e){
+    const m='Blueprint generation failed: '+e.message+'. The existing preview has been kept. Check your OpenRouter key, connection and free-model availability.';
+    add('JARVIS',m);
+    say(m);
+    $('workshopHint').textContent=m;
+  }
+  $('status').textContent='SYSTEM ONLINE';
+  $('voiceState').textContent='STANDBY';
+}
+
+$('generateDesign').onclick=()=>{
+  const p=$('designPrompt').value.trim();
+  if(p)buildFromPrompt(p);
+};
+$('designPrompt').addEventListener('keydown',e=>{
+  if(e.key==='Enter')$('generateDesign').click();
+});
+
+if('serviceWorker'in navigator&&location.protocol.startsWith('http')){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+}
 </script>
-</body></html>
+</body>
+</html>
