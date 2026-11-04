@@ -7,6 +7,67 @@
 <meta name="description" content="JARVIS personal holographic AI assistant">
 <link rel="manifest" href="manifest.json">
 <title>J.A.R.V.I.S. — Personal AI</title>
+ /* JARVIS LANDSCAPE COMMAND CENTRE */
+@media (orientation: landscape) and (min-width: 600px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  header {
+    height: 48px;
+  }
+
+  main {
+    max-width: 1500px;
+    padding: 8px 22px 20px;
+    display: grid;
+    grid-template-columns: minmax(280px, 0.85fr) minmax(350px, 1.5fr);
+    grid-template-areas:
+      "status status"
+      "clock clock"
+      "reactor workshop"
+      "stats workshop"
+      "reply workshop"
+      "controls workshop"
+      "apps apps"
+      "chat chat"
+      "settings settings";
+    gap: 10px 18px;
+  }
+
+  .statusline { grid-area: status; }
+  .clockrow { grid-area: clock; }
+  .reactor-card { grid-area: reactor; min-height: 250px; }
+  .stats-strip { grid-area: stats; }
+  #reply { grid-area: reply; }
+  .controls { grid-area: controls; }
+  .iconorbit { grid-area: apps; max-width: 800px; }
+  main > .section-placeholder { display: none; }
+
+  #settingsPanel { grid-area: settings; }
+
+  #workshop {
+    height: min(62vh, 540px);
+  }
+
+  .reactor {
+    width: min(17vw, 210px);
+  }
+
+  .iconorbit {
+    grid-template-columns: repeat(8, 1fr);
+  }
+
+  .panel {
+    margin-top: 0;
+  }
+}
+
+@media (orientation: portrait) {
+  main {
+    display: block;
+  }
+}
 <style>
 :root{--cyan:#65efff;--blue:#248cff;--ice:#d9fbff;--muted:#759ab8;--line:#1c759b;--bg:#030914}
 *{box-sizing:border-box}html,body{margin:0;width:100%;min-height:100%;background:var(--bg);color:var(--ice);font-family:system-ui,-apple-system,Segoe UI,sans-serif}
