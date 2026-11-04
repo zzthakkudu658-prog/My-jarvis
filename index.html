@@ -8,20 +8,13 @@
 <link rel="manifest" href="manifest.json">
 <title>J.A.R.V.I.S. — Personal AI</title>
  /* JARVIS LANDSCAPE COMMAND CENTRE */
+/* JARVIS LANDSCAPE COMMAND CENTRE - FIXED */
 @media (orientation: landscape) and (min-width: 600px) {
-  body {
-    overflow-x: hidden;
-  }
-
-  header {
-    height: 48px;
-  }
-
   main {
     max-width: 1500px;
-    padding: 8px 22px 20px;
+    padding: 8px 20px 20px;
     display: grid;
-    grid-template-columns: minmax(280px, 0.85fr) minmax(350px, 1.5fr);
+    grid-template-columns: minmax(270px, .85fr) minmax(360px, 1.4fr);
     grid-template-areas:
       "status status"
       "clock clock"
@@ -31,36 +24,30 @@
       "controls workshop"
       "apps apps"
       "chat chat"
-      "settings settings";
+      "settings settings"
+      "footer footer";
     gap: 10px 18px;
   }
 
   .statusline { grid-area: status; }
   .clockrow { grid-area: clock; }
-  .reactor-card { grid-area: reactor; min-height: 250px; }
-  .stats-strip { grid-area: stats; }
+  .reactor-card { grid-area: reactor; margin: 5px 0; }
+  .stats-strip { grid-area: stats; margin: 0; }
   #reply { grid-area: reply; }
   .controls { grid-area: controls; }
-  .iconorbit { grid-area: apps; max-width: 800px; }
-  main > .section-placeholder { display: none; }
-
+  #appIcons { grid-area: apps; max-width: 850px; width: 100%; }
+  main > section.panel:nth-of-type(3) { grid-area: workshop; }
+  main > section.panel:nth-of-type(4) { grid-area: chat; }
   #settingsPanel { grid-area: settings; }
+  footer { grid-area: footer; }
 
   #workshop {
-    height: min(62vh, 540px);
+    height: 55vh;
+    min-height: 260px;
   }
 
-  .reactor {
-    width: min(17vw, 210px);
-  }
-
-  .iconorbit {
-    grid-template-columns: repeat(8, 1fr);
-  }
-
-  .panel {
-    margin-top: 0;
-  }
+  .reactor { width: min(17vw, 180px); }
+  .panel { margin-top: 0; }
 }
 
 @media (orientation: portrait) {
