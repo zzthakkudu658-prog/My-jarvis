@@ -3,356 +3,490 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#020914">
+<meta name="theme-color" content="#08090b">
 <title>J.A.R.V.I.S. — Stark Interface</title>
 <link rel="manifest" href="manifest.json">
 
 <style>
 :root {
-  --cyan:#39d9ff;
-  --blue:#087bff;
-  --line:rgba(65,204,255,.48);
-  --muted:#8bbbd0;
+  --gold:#d99a39;
+  --gold-light:#ffd58a;
+  --gold-dim:#8b602b;
+  --line:rgba(205,153,83,.28);
+  --muted:#aaa49a;
+  --panel:rgba(17,17,18,.92);
 }
-* { box-sizing:border-box; }
+* {box-sizing:border-box}
 html,body {
   margin:0;
   min-height:100%;
-  background:radial-gradient(ellipse at 50% 45%,#09233a,#030c18 48%,#01040a);
-  color:#dff8ff;
+  background:#08090b;
+  color:#eee9df;
   font-family:Inter,system-ui,Segoe UI,Arial,sans-serif;
 }
-body { overflow-x:hidden; }
+body {overflow-x:hidden}
 body:before {
   content:"";
   position:fixed;
   inset:0;
   pointer-events:none;
-  opacity:.16;
+  opacity:.12;
   background-image:
-    linear-gradient(rgba(40,170,230,.12) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(40,170,230,.12) 1px,transparent 1px);
-  background-size:42px 42px;
+    linear-gradient(rgba(190,145,80,.12) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(190,145,80,.12) 1px,transparent 1px);
+  background-size:48px 48px;
 }
-.shell { max-width:1500px;margin:auto;padding:16px; }
+.shell {max-width:1500px;margin:auto;padding:14px}
 header {
   display:flex;
-  justify-content:space-between;
   align-items:center;
+  justify-content:space-between;
   gap:12px;
-  border:1px solid var(--line);
-  background:linear-gradient(110deg,rgba(3,35,58,.9),rgba(2,12,25,.8));
   padding:16px 20px;
-  border-radius:18px;
-  box-shadow:0 0 28px #00aaff18;
+  border:1px solid var(--line);
+  border-radius:13px;
+  background:linear-gradient(110deg,#171719,#0b0b0d);
 }
 .brand {
+  color:#e8c58f;
   font-weight:800;
-  letter-spacing:.23em;
-  font-size:clamp(20px,3vw,32px);
-  color:#a9efff;
-  text-shadow:0 0 18px #00bfff;
+  letter-spacing:.24em;
+  font-size:clamp(20px,3vw,30px);
 }
 .brand small {
   display:block;
-  font-size:9px;
-  letter-spacing:.28em;
-  color:#69cbe8;
   margin-top:4px;
+  color:#999084;
+  font-size:9px;
+  letter-spacing:.22em;
 }
-.status { font-size:12px;color:#69ffcf;letter-spacing:.12em; }
+.status {
+  font-size:10px;
+  letter-spacing:.13em;
+  color:#b8c79e;
+}
 .status:before {
   content:"";
   display:inline-block;
-  width:8px;height:8px;
+  width:7px;height:7px;
   border-radius:50%;
-  background:#42ffc2;
-  box-shadow:0 0 12px #42ffc2;
+  background:#9bbd75;
   margin-right:8px;
 }
 .grid {
   display:grid;
   grid-template-columns:minmax(210px,1fr) minmax(320px,1.7fr) minmax(230px,1fr);
-  gap:14px;
-  margin-top:14px;
+  gap:13px;
+  margin-top:13px;
 }
 .panel {
   border:1px solid var(--line);
-  background:linear-gradient(145deg,rgba(6,35,57,.76),rgba(2,10,22,.84));
-  border-radius:17px;
+  border-radius:14px;
   padding:15px;
-  box-shadow:inset 0 0 24px #00aaff0b,0 8px 30px #0008;
-  backdrop-filter:blur(12px);
+  background:linear-gradient(145deg,rgba(27,26,25,.94),rgba(10,10,11,.96));
+  box-shadow:0 8px 25px #0008;
 }
 .panel h3 {
+  color:#d6b17a;
   font-size:11px;
-  letter-spacing:.2em;
-  color:#70dfff;
+  letter-spacing:.18em;
   margin:0 0 13px;
   text-transform:uppercase;
 }
+.data {
+  color:#aaa49a;
+  font-size:11px;
+  line-height:2;
+}
+.data strong {color:#e8dfd0}
+.metrics {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:7px;
+  margin-top:12px;
+}
+.metric {
+  text-align:center;
+  padding:10px 5px;
+  background:#171615;
+  border:1px solid #74552f55;
+  border-radius:9px;
+}
+.metric b {
+  display:block;
+  color:#e3c18a;
+  font-size:16px;
+}
+.metric span {
+  font-size:8px;
+  letter-spacing:.1em;
+  color:#999084;
+}
 .core {
-  min-height:490px;
+  min-height:530px;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
   position:relative;
   overflow:hidden;
+  background:
+    radial-gradient(ellipse at 50% 43%,#292016 0%,#171411 35%,#0b0b0c 76%);
 }
-.core:before,.core:after {
+.core:before {
   content:"";
   position:absolute;
-  border:1px solid #25cfff35;
-  border-radius:50%;
-  width:390px;height:390px;
-  animation:spin 24s linear infinite;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(transparent 49.8%,#b58a4a12 50%,transparent 50.2%);
 }
-.core:after {
-  width:310px;height:310px;
-  border-style:dashed;
-  animation-direction:reverse;
-  animation-duration:18s;
-}
-@keyframes spin { to { transform:rotate(360deg); } }
-.reactor {
-  width:min(52vw,240px);
-  aspect-ratio:1;
-  position:relative;
-  display:grid;
-  place-items:center;
-  z-index:1;
-  border-radius:50%;
-  background:radial-gradient(circle,#8cf4ff 0 3%,#087fb9 5%,#03223e 30%,#020a17 60%);
-  box-shadow:0 0 25px #19cfff,0 0 75px #078bff88,inset 0 0 30px #56eaff;
-}
-.react-inner {
-  width:68%;height:68%;
-  border:2px solid #9ff7ff;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  box-shadow:0 0 22px #4bdcff,inset 0 0 20px #4bdcff;
-}
-.triangle {
-  width:0;height:0;
-  border-left:43px solid transparent;
-  border-right:43px solid transparent;
-  border-top:74px solid #8cf6ff;
-  filter:drop-shadow(0 0 12px #26dfff);
-  position:relative;
-}
-.triangle:after {
-  content:"";
-  position:absolute;
-  left:-30px;top:-68px;
-  border-left:30px solid transparent;
-  border-right:30px solid transparent;
-  border-top:52px solid #073c68;
+.sub {
+  color:#a99a83;
+  font-size:10px;
+  letter-spacing:.2em;
+  z-index:2;
+  text-align:center;
 }
 .greeting {
   z-index:2;
   text-align:center;
-  margin:25px 0 15px;
-  font-size:clamp(16px,2vw,22px);
-  text-shadow:0 0 12px #20cfff;
+  color:#eadbc2;
+  font-size:clamp(15px,2vw,21px);
+  line-height:1.5;
+  margin:15px 0 8px;
 }
-.sub {
-  z-index:2;
-  color:#83bdd1;
-  font-size:11px;
-  letter-spacing:.16em;
-}
-.metrics {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
+.controls {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
   gap:8px;
+  z-index:2;
   margin-top:12px;
 }
-.metric {
-  padding:10px 7px;
-  text-align:center;
-  border:1px solid #26bce755;
-  border-radius:12px;
-  background:#03182b99;
-}
-.metric b { display:block;color:#b9f5ff;font-size:19px; }
-.metric span { font-size:9px;letter-spacing:.12em;color:#7db9d0; }
 button {
-  border:1px solid #36cfff88;
-  background:linear-gradient(120deg,#063451,#041426);
-  color:#c9f6ff;
+  border:1px solid #9a7546;
+  color:#e9dcc8;
+  background:linear-gradient(130deg,#30271c,#171512);
   padding:11px 14px;
-  border-radius:11px;
+  border-radius:9px;
   font-weight:650;
   cursor:pointer;
   transition:.2s;
 }
 button:hover {
-  box-shadow:0 0 18px #16bfff66;
-  border-color:#8df0ff;
+  background:#463722;
+  border-color:#d7ae6e;
 }
-button:disabled { opacity:.45;cursor:not-allowed; }
-.controls {
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  justify-content:center;
-  z-index:2;
-  margin-top:13px;
-}
+button:disabled {opacity:.45;cursor:not-allowed}
 .primary {
-  background:linear-gradient(120deg,#087fbd,#06345a);
-  box-shadow:0 0 18px #00aaff33;
+  background:linear-gradient(130deg,#98703a,#48331d);
+  border-color:#d4aa69;
+  color:#fff2d9;
 }
-.data { font-size:12px;color:#a9d9e9;line-height:1.9; }
-.data strong { color:#e3fbff; }
 .orb {
   width:100%;
+  max-width:170px;
   aspect-ratio:1;
-  max-height:180px;
+  margin:10px auto 15px;
   border-radius:50%;
-  background:radial-gradient(circle at 35% 30%,#8af6ff,#087dc4 25%,#03203e 60%,#010914 72%);
-  box-shadow:0 0 34px #00aaff77;
+  background:
+    radial-gradient(circle at 35% 30%,#b18b50,#51402a 24%,#191715 62%,#090909 75%);
+  border:1px solid #a37c4555;
+  box-shadow:0 0 22px #a77b3930;
   position:relative;
-  overflow:hidden;
-  margin:10px auto;
 }
 .orb:before,.orb:after {
   content:"";
   position:absolute;
   inset:15%;
-  border:1px solid #b7f8ff88;
+  border:1px solid #c8a46a66;
   border-radius:50%;
-  transform:rotateX(68deg) rotateZ(25deg);
+  transform:rotateX(70deg) rotateZ(25deg);
 }
-.orb:after { transform:rotateX(68deg) rotateZ(-35deg); }
-
-/* APP SHORTCUTS */
+.orb:after {transform:rotateX(70deg) rotateZ(-35deg)}
+/* Golden reactor */
+.reactor-stage {
+  width:min(100%,420px);
+  height:310px;
+  position:relative;
+  display:grid;
+  place-items:center;
+  z-index:1;
+  perspective:900px;
+}
+.reactor-glow {
+  position:absolute;
+  width:64%;
+  aspect-ratio:1;
+  border-radius:50%;
+  background:radial-gradient(circle,#ffdb8a44 0%,#bd772122 38%,transparent 70%);
+  filter:blur(12px);
+  animation:energyPulse 4s ease-in-out infinite;
+}
+.reactor-rings {
+  position:absolute;
+  width:75%;
+  aspect-ratio:1;
+  border:1px solid #dca34d55;
+  border-radius:50%;
+  animation:rotateRing 28s linear infinite;
+}
+.reactor-rings:before,.reactor-rings:after {
+  content:"";
+  position:absolute;
+  inset:9%;
+  border:1px dashed #d9a14c88;
+  border-radius:50%;
+}
+.reactor-rings:after {
+  inset:20%;
+  border-style:solid;
+  border-color:#e5bd7966;
+}
+.reactor-ring-two {
+  position:absolute;
+  width:83%;
+  height:34%;
+  border:2px solid #e5ad54;
+  border-radius:50%;
+  transform:rotateX(68deg) rotateZ(-12deg);
+  box-shadow:0 0 13px #d9903377;
+  animation:orbitTwo 13s linear infinite;
+}
+.reactor-ring-three {
+  position:absolute;
+  width:88%;
+  height:39%;
+  border:1px solid #ffcc7777;
+  border-radius:50%;
+  transform:rotateX(68deg) rotateZ(32deg);
+  animation:orbitThree 19s linear infinite;
+}
+.reactor-ring-four {
+  position:absolute;
+  width:57%;
+  height:90%;
+  border:1px solid #c18b4388;
+  border-radius:50%;
+  transform:rotateY(70deg) rotateZ(20deg);
+  animation:rotateRing 17s linear infinite reverse;
+}
+.reactor-circuit {
+  position:absolute;
+  width:66%;
+  aspect-ratio:1;
+  border-radius:50%;
+  background:
+    repeating-conic-gradient(
+      from 0deg,
+      transparent 0deg 5deg,
+      #dca24c88 5.2deg 5.8deg,
+      transparent 6deg 11deg
+    );
+  mask:radial-gradient(circle,transparent 44%,#000 45% 65%,transparent 66%);
+  -webkit-mask:radial-gradient(circle,transparent 44%,#000 45% 65%,transparent 66%);
+  animation:rotateRing 35s linear infinite;
+}
+.reactor-core {
+  width:31%;
+  aspect-ratio:1;
+  position:relative;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:
+    radial-gradient(circle,#fff4ce 0 3%,#ffcf70 7%,#b86e1d 19%,#4c2e12 38%,#17100a 68%);
+  border:2px solid #e9bb6a;
+  box-shadow:
+    0 0 10px #ffe0a4,
+    0 0 28px #e6a344,
+    0 0 65px #b76b1d88,
+    inset 0 0 18px #ffdf9a;
+  animation:corePulse 3.5s ease-in-out infinite;
+}
+.reactor-core:before {
+  content:"";
+  position:absolute;
+  inset:15%;
+  border:1px solid #ffdc91;
+  border-radius:50%;
+  box-shadow:0 0 12px #f4bd64;
+}
+.reactor-core:after {
+  content:"";
+  position:absolute;
+  width:25%;
+  height:25%;
+  border-radius:50%;
+  background:#fff6d7;
+  box-shadow:0 0 22px 9px #ffbd51;
+}
+.reactor-base {
+  position:absolute;
+  bottom:5px;
+  width:78%;
+  height:32px;
+  border:2px solid #c18a3e;
+  border-radius:50%;
+  transform:rotateX(66deg);
+  box-shadow:0 0 14px #c78b3c88,inset 0 0 15px #d69a4d44;
+}
+.reactor-base:after {
+  content:"";
+  position:absolute;
+  inset:6px 12%;
+  border:1px solid #f3c77d;
+  border-radius:50%;
+}
+.reactor-particles {
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+.spark {
+  position:absolute;
+  width:3px;height:3px;
+  border-radius:50%;
+  background:#ffd27b;
+  box-shadow:0 0 8px 2px #e7a448;
+  animation:sparkFloat var(--duration) ease-in-out infinite alternate;
+}
+@keyframes rotateRing {to{transform:rotate(360deg)}}
+@keyframes orbitTwo {to{transform:rotateX(68deg) rotateZ(348deg)}}
+@keyframes orbitThree {to{transform:rotateX(68deg) rotateZ(392deg)}}
+@keyframes energyPulse {
+  50%{opacity:.55;transform:scale(1.13)}
+}
+@keyframes corePulse {
+  50%{filter:brightness(1.25);box-shadow:0 0 16px #ffe0a4,0 0 80px #d99137}
+}
+@keyframes sparkFloat {
+  to{transform:translate3d(var(--dx),var(--dy),0);opacity:.2}
+}
 .shortcuts {
   display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:8px;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:7px;
 }
 .app-shortcut {
-  min-height:78px;
+  min-height:72px;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  gap:7px;
-  text-align:center;
+  gap:6px;
   text-decoration:none;
-  color:#d9f8ff;
-  border:1px solid #36cfff66;
-  border-radius:12px;
-  background:linear-gradient(145deg,#082d48,#031322);
-  font-size:10px;
+  text-align:center;
+  color:#e8dfd0;
+  border:1px solid #8d704b66;
+  border-radius:10px;
+  background:linear-gradient(145deg,#27221b,#121110);
+  font-size:8px;
   font-weight:700;
-  letter-spacing:.08em;
-  padding:8px 3px;
-  transition:.2s;
+  padding:6px 2px;
 }
 .app-shortcut:hover {
-  border-color:#8df0ff;
-  box-shadow:0 0 18px #16bfff66;
-  transform:translateY(-2px);
+  border-color:#d8b477;
+  background:#30271d;
 }
 .app-icon {
-  width:30px;
-  height:30px;
+  width:28px;height:28px;
   display:grid;
   place-items:center;
-  border-radius:9px;
-  font-size:19px;
+  border-radius:8px;
+  font-size:18px;
   font-weight:900;
   color:white;
-  background:#124b70;
+  background:#4a3a27;
 }
-.instagram .app-icon { background:linear-gradient(135deg,#7845c7,#e1306c,#ff9a44); }
-.gmail .app-icon { background:#f4f7ff;color:#d94b3d; }
-.youtube .app-icon { background:#ed2424; }
-.phone .app-icon { background:#159c72; }
-.messages .app-icon { background:#237ee8; }
-
-nav { display:flex;gap:8px;flex-wrap:wrap;margin:14px 0; }
-.tab { flex:1;min-width:90px; }
-.tab.active { background:#087eb6;box-shadow:0 0 20px #00bfff55; }
-.view { display:none; }
-.view.active { display:block; }
-.two { display:grid;grid-template-columns:1fr 1fr;gap:14px; }
+.instagram .app-icon {background:linear-gradient(135deg,#7845c7,#e1306c,#ff9a44)}
+.gmail .app-icon {background:#f4f7ff;color:#d94b3d}
+.youtube .app-icon {background:#ed2424}
+.phone .app-icon {background:#25835d}
+.messages .app-icon {background:#3275b7}
+nav {display:flex;gap:8px;flex-wrap:wrap;margin:13px 0}
+.tab {flex:1;min-width:90px}
+.tab.active {background:#6f522e;border-color:#d2a76b}
+.view {display:none}
+.view.active {display:block}
+.two {display:grid;grid-template-columns:1fr 1fr;gap:13px}
 input,textarea,select {
   width:100%;
-  background:#020d1a;
-  border:1px solid #2aaed866;
-  border-radius:10px;
-  color:#e4faff;
+  background:#0c0c0d;
+  border:1px solid #8b704c66;
+  border-radius:9px;
+  color:#eee5d6;
   padding:12px;
   font:inherit;
   margin:6px 0 10px;
 }
-textarea { min-height:88px;resize:vertical; }
+textarea {min-height:88px;resize:vertical}
 .chatlog {
   height:260px;
   overflow:auto;
-  border:1px solid #1e719055;
-  border-radius:12px;
+  border:1px solid #6b563b66;
+  border-radius:10px;
   padding:10px;
-  background:#010914;
+  background:#080808;
 }
 .msg {
   padding:9px 11px;
-  border-radius:10px;
+  border-radius:9px;
   margin:7px 0;
   white-space:pre-wrap;
   font-size:13px;
   line-height:1.5;
 }
-.user { background:#073a59;margin-left:12%; }
-.ai { background:#092033;margin-right:12%;border:1px solid #167ba044; }
-.muted { color:#8ab6c9;font-size:11px;line-height:1.5; }
+.user {background:#292117;margin-left:12%}
+.ai {background:#191816;margin-right:12%;border:1px solid #765b3766}
+.muted {color:#aaa49a;font-size:11px;line-height:1.6}
 .canvasbox {
   height:360px;
-  border:1px solid var(--line);
-  border-radius:13px;
+  border:1px solid #8b704c66;
+  border-radius:11px;
   overflow:hidden;
-  background:radial-gradient(circle,#092b45,#010812);
+  background:radial-gradient(circle,#211b13,#080808);
 }
-canvas { display:block;width:100%;height:100%; }
-.row { display:flex;gap:8px;align-items:center; }
-.row>* { flex:1; }
-.wide { width:100%; }
+canvas {display:block;width:100%;height:100%}
+.row {display:flex;gap:8px;align-items:center}
+.row>* {flex:1}
+.wide {width:100%}
 #imageResult img {
   max-width:100%;
-  border-radius:12px;
+  border-radius:10px;
   margin-top:12px;
   border:1px solid var(--line);
 }
 .log {
   font:11px/1.8 ui-monospace,monospace;
-  color:#80cfe8;
+  color:#c4a77b;
   max-height:120px;
   overflow:auto;
 }
-footer { text-align:center;color:#507d91;font-size:10px;padding:22px; }
-
+footer {
+  text-align:center;
+  color:#746b5e;
+  font-size:10px;
+  padding:22px;
+}
+[hidden] {display:none!important}
 @media(max-width:850px) {
-  .grid { grid-template-columns:1fr; }
-  .core { min-height:430px; }
-  .two { grid-template-columns:1fr; }
-  .orb { max-width:140px; }
-  .shell { padding:10px; }
-  .shortcuts { grid-template-columns:repeat(5,minmax(0,1fr)); }
-  .app-shortcut { font-size:8px;min-height:70px; }
-  .app-icon { width:27px;height:27px; }
+  .grid {grid-template-columns:1fr}
+  .core {min-height:460px}
+  .two {grid-template-columns:1fr}
+  .orb {max-width:140px}
+  .shell {padding:9px}
+  .reactor-stage {height:285px}
 }
 @media(max-width:390px) {
-  .shortcuts { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .app-shortcut {font-size:7px;min-height:65px}
+  .app-icon {width:25px;height:25px}
+  .reactor-stage {height:255px}
 }
 @media(orientation:landscape) and (max-height:600px) {
-  .grid { grid-template-columns:220px 1fr 240px; }
-  .core { min-height:360px; }
-  .reactor { width:170px; }
+  .grid {grid-template-columns:220px 1fr 240px}
+  .core {min-height:360px}
+  .reactor-stage {height:230px}
 }
 </style>
 </head>
@@ -390,8 +524,17 @@ footer { text-align:center;color:#507d91;font-size:10px;padding:22px; }
 
 <main class="panel core">
   <div class="sub">HOLOGRAPHIC INTERFACE • MARK VII</div>
-  <div class="reactor">
-    <div class="react-inner"><div class="triangle"></div></div>
+
+  <div class="reactor-stage" aria-label="Animated golden holographic reactor">
+    <div class="reactor-glow"></div>
+    <div class="reactor-rings"></div>
+    <div class="reactor-ring-two"></div>
+    <div class="reactor-ring-three"></div>
+    <div class="reactor-ring-four"></div>
+    <div class="reactor-circuit"></div>
+    <div class="reactor-core"></div>
+    <div class="reactor-base"></div>
+    <div class="reactor-particles" id="reactorParticles"></div>
   </div>
 
   <div class="greeting" id="greeting">
@@ -413,12 +556,12 @@ footer { text-align:center;color:#507d91;font-size:10px;padding:22px; }
   <div class="orb"></div>
 
   <div class="data">
-    SYSTEM <strong style="float:right;color:#58ffc2">● NOMINAL</strong><br>
+    SYSTEM <strong style="float:right;color:#b8c79e">● NOMINAL</strong><br>
     SECURITY <strong style="float:right">ACTIVE</strong><br>
     AI ENGINE <strong style="float:right">OPENROUTER</strong>
   </div>
 
-  <h3 style="margin-top:20px">Apps</h3>
+  <h3 style="margin-top:20px">Quick Access</h3>
 
   <div class="shortcuts">
     <a class="app-shortcut instagram" href="https://www.instagram.com/">
@@ -448,7 +591,6 @@ footer { text-align:center;color:#507d91;font-size:10px;padding:22px; }
   <button class="tab" data-tab="settings">Settings</button>
 </nav>
 
-<!-- AI CHAT -->
 <section class="view active" id="chat">
 <div class="two">
 
@@ -497,7 +639,6 @@ footer { text-align:center;color:#507d91;font-size:10px;padding:22px; }
 </div>
 </section>
 
-<!-- IMAGE GENERATOR -->
 <section class="view" id="images">
 <div class="two">
 
@@ -510,7 +651,7 @@ footer { text-align:center;color:#507d91;font-size:10px;padding:22px; }
   </p>
 
   <textarea id="imagePrompt"
-    placeholder="Example: A photorealistic blue holographic sports car in a dark futuristic workshop..."></textarea>
+    placeholder="Describe the image you want to create..."></textarea>
 
   <label class="muted">Image Model</label>
   <input id="imageModel"
@@ -536,7 +677,6 @@ footer { text-align:center;color:#507d91;font-size:10px;padding:22px; }
 </div>
 </section>
 
-<!-- 3D WORKSHOP -->
 <section class="view" id="workshop">
 <div class="two">
 
@@ -544,13 +684,13 @@ footer { text-align:center;color:#507d91;font-size:10px;padding:22px; }
   <h3>AI Text-to-3D Workshop</h3>
 
   <p class="muted">
-    Describe almost any object, creature, place or design in your own words.
+    Describe any object, creature, place or design in your own words.
     The free generator attempts to create a real 3D model file.
-    Results and detail depend on the free service.
+    Results and detail depend on the service.
   </p>
 
   <textarea id="modelPrompt"
-    placeholder="Example: A realistic ancient Kerala wooden house with a sloping tiled roof, pillars and carved doors..."></textarea>
+    placeholder="Describe the 3D model you want..."></textarea>
 
   <div class="row">
     <button class="primary" id="buildModel">✧ GENERATE 3D MODEL</button>
@@ -559,7 +699,7 @@ footer { text-align:center;color:#507d91;font-size:10px;padding:22px; }
 
   <p class="muted">
     Drag to rotate • pinch/scroll to zoom.
-    Generation uses an external free service and needs an internet connection.
+    Generation requires an internet connection.
   </p>
 
   <input type="file" id="modelFile" accept=".glb,.gltf">
@@ -583,7 +723,6 @@ footer { text-align:center;color:#507d91;font-size:10px;padding:22px; }
 </div>
 </section>
 
-<!-- SETTINGS -->
 <section class="view" id="settings">
 <div class="two">
 
@@ -601,7 +740,7 @@ footer { text-align:center;color:#507d91;font-size:10px;padding:22px; }
 
   <p class="muted">
     Stored locally on this device under the existing key name
-    jarvis_gemini_key for compatibility with your earlier version.
+    jarvis_gemini_key.
   </p>
 </div>
 
@@ -647,6 +786,40 @@ const KEY = 'jarvis_gemini_key';
 let apiKey = localStorage.getItem(KEY) || '';
 $('apiKey').value = apiKey;
 
+/* Golden floating particles */
+const particleBox = $('reactorParticles');
+
+for (let i=0;i<38;i++) {
+  const particle = document.createElement('span');
+  particle.className = 'spark';
+
+  const angle = Math.random()*Math.PI*2;
+  const radius = 15+Math.random()*34;
+
+  particle.style.left =
+    (50+Math.cos(angle)*radius)+'%';
+
+  particle.style.top =
+    (50+Math.sin(angle)*radius)+'%';
+
+  particle.style.setProperty(
+    '--duration',(2+Math.random()*5)+'s'
+  );
+
+  particle.style.setProperty(
+    '--dx',((Math.random()-.5)*35)+'px'
+  );
+
+  particle.style.setProperty(
+    '--dy',((Math.random()-.5)*35)+'px'
+  );
+
+  particle.style.animationDelay =
+    (-Math.random()*5)+'s';
+
+  particleBox.appendChild(particle);
+}
+
 function addMsg(text,who='ai') {
   const d = document.createElement('div');
   d.className = 'msg '+who;
@@ -665,13 +838,16 @@ function speak(text) {
   u.rate = Number($('rate').value || 1);
 
   const voices = speechSynthesis.getVoices();
+  const chosenIndex = $('voiceSelect').value;
 
-  const selected =
-    voices.find(v => /en-GB/i.test(v.lang) &&
-    /Daniel|George|Male/i.test(v.name))
-    || voices.find(v => /en-GB/i.test(v.lang));
+  const selected = chosenIndex !== ''
+    ? voices[Number(chosenIndex)]
+    : voices.find(v => /en-GB/i.test(v.lang) &&
+        /Daniel|George|Male/i.test(v.name))
+      || voices.find(v => /en-GB/i.test(v.lang));
 
   if (selected) u.voice = selected;
+
   speechSynthesis.speak(u);
 }
 
@@ -858,7 +1034,6 @@ if ('speechSynthesis' in window) {
 }
 
 /* IMAGE GENERATION */
-
 $('generateImage').onclick = async () => {
   const prompt = $('imagePrompt').value.trim();
   const model = $('imageModel').value.trim();
@@ -907,7 +1082,6 @@ $('generateImage').onclick = async () => {
         if (part.type==='image_url' && part.image_url?.url) {
           urls.push(part.image_url.url);
         }
-
         if (part.type==='image' && part.url) {
           urls.push(part.url);
         }
@@ -946,11 +1120,11 @@ $('generateImage').onclick = async () => {
   }
 };
 
-/* THREE.JS REAL AI TEXT-TO-3D WORKSHOP */
+/* THREE.JS 3D WORKSHOP */
 
 const host = $('modelCanvas');
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x020b17);
+scene.background = new THREE.Color(0x100d09);
 
 const camera = new THREE.PerspectiveCamera(
   45,
@@ -975,18 +1149,18 @@ host.appendChild(renderer.domElement);
 const controls = new OrbitControls(camera,renderer.domElement);
 controls.enableDamping = true;
 
-scene.add(new THREE.HemisphereLight(0xbceeff,0x102033,2));
+scene.add(new THREE.HemisphereLight(0xffe6c2,0x20170c,2));
 
 const keyLight = new THREE.DirectionalLight(0xffffff,3);
 keyLight.position.set(4,7,5);
 scene.add(keyLight);
 
-const rimLight = new THREE.PointLight(0x16bfff,35);
+const rimLight = new THREE.PointLight(0xd99a39,35);
 rimLight.position.set(-4,2,-3);
 scene.add(rimLight);
 
 const grid = new THREE.GridHelper(
-  12,24,0x087da9,0x06304b
+  12,24,0x80613a,0x382a19
 );
 grid.position.y = -1.1;
 scene.add(grid);
@@ -1029,12 +1203,7 @@ function fitModel(root) {
   const max = Math.max(size.x,size.y,size.z) || 1;
   const distance = max*1.8;
 
-  camera.position.set(
-    distance*.9,
-    distance*.65,
-    distance*1.15
-  );
-
+  camera.position.set(distance*.9,distance*.65,distance*1.15);
   camera.near = Math.max(.01,max/1000);
   camera.far = max*100;
   camera.updateProjectionMatrix();
@@ -1044,16 +1213,6 @@ function fitModel(root) {
   controls.maxDistance = max*8;
   controls.update();
 }
-
-/*
-  FREE TEXT-TO-3D PROVIDER
-
-  Provider endpoint:
-  https://three.ws/api/3d/generate
-
-  This service is external. Its API response format or availability
-  may change. The code checks common model URL and job ID fields.
-*/
 
 function extractModelUrl(data) {
   return data?.glbUrl ||
@@ -1075,8 +1234,7 @@ function extractJob(data) {
     null;
 }
 
-const wait = ms =>
-  new Promise(resolve => setTimeout(resolve,ms));
+const wait = ms => new Promise(resolve => setTimeout(resolve,ms));
 
 async function generate3D(prompt) {
   const endpoint = 'https://three.ws/api/3d/generate';
@@ -1110,14 +1268,9 @@ async function generate3D(prompt) {
     );
   }
 
-  for (
-    let attempt=0;
-    !modelUrl && job && attempt<80;
-    attempt++
-  ) {
+  for (let attempt=0;!modelUrl && job && attempt<80;attempt++) {
     $('modelStatus').textContent =
-      'Creating your 3D model... ' +
-      Math.round((attempt+1)/80*100) + '%';
+      'Creating your 3D model... '+(attempt+1)+'/80';
 
     await wait(3000);
 
@@ -1129,30 +1282,20 @@ async function generate3D(prompt) {
     data = await response.json().catch(()=>({}));
 
     if (!response.ok) {
-      throw new Error(
-        data?.error || 'Could not check 3D generation progress.'
-      );
+      throw new Error(data?.error || 'Could not check generation progress.');
     }
 
     modelUrl = extractModelUrl(data);
 
-    const state = String(
-      data?.status || data?.state || ''
-    ).toLowerCase();
+    const state = String(data?.status || data?.state || '').toLowerCase();
 
     if (['failed','error','cancelled'].includes(state)) {
-      throw new Error(
-        data?.error ||
-        data?.message ||
-        '3D generation failed. Try a different prompt.'
-      );
+      throw new Error(data?.error || data?.message || '3D generation failed.');
     }
   }
 
   if (!modelUrl) {
-    throw new Error(
-      'The model is taking too long. Please try again later.'
-    );
+    throw new Error('The model is taking too long. Please try again later.');
   }
 
   return modelUrl;
@@ -1162,22 +1305,18 @@ $('buildModel').onclick = async () => {
   const prompt = $('modelPrompt').value.trim();
 
   if (!prompt) {
-    $('modelStatus').textContent =
-      'Describe the model you want first.';
+    $('modelStatus').textContent = 'Describe the model you want first.';
     return;
   }
 
   $('buildModel').disabled = true;
   $('downloadModel').hidden = true;
-
-  $('modelStatus').textContent =
-    'Connecting to the free AI 3D generator...';
+  $('modelStatus').textContent = 'Connecting to the free AI 3D generator...';
 
   try {
     const url = await generate3D(prompt);
 
-    $('modelStatus').textContent =
-      'Model generated. Loading the 3D projection...';
+    $('modelStatus').textContent = 'Loading your 3D model...';
 
     const gltf = await loader.loadAsync(url);
 
@@ -1185,22 +1324,19 @@ $('buildModel').onclick = async () => {
 
     currentModel = gltf.scene;
     scene.add(currentModel);
-
     fitModel(currentModel);
 
     $('downloadModel').href = url;
     $('downloadModel').hidden = false;
-    $('downloadModel').textContent =
-      '⬇ Download generated 3D model (.glb)';
+    $('downloadModel').textContent = '⬇ Download generated 3D model (.glb)';
 
     $('modelStatus').textContent =
       'Your AI-generated model is ready. Drag to rotate and pinch to zoom.';
 
   } catch (error) {
     $('modelStatus').textContent =
-      '3D generation unavailable: ' +
-      error.message +
-      ' You can still import a GLB/GLTF model below.';
+      '3D generation unavailable: '+error.message+
+      ' You can still import a GLB/GLTF model.';
   } finally {
     $('buildModel').disabled = false;
   }
@@ -1226,14 +1362,11 @@ $('modelFile').onchange = async event => {
     const gltf = await loader.loadAsync(url);
 
     clearModel();
-
     currentModel = gltf.scene;
     scene.add(currentModel);
-
     fitModel(currentModel);
 
-    $('modelStatus').textContent =
-      'Imported 3D model: '+file.name;
+    $('modelStatus').textContent = 'Imported 3D model: '+file.name;
 
   } catch {
     $('modelStatus').textContent =
