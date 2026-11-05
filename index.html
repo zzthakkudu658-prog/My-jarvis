@@ -1090,32 +1090,120 @@ function listen(target) {
     return;
   }
 
+function speak(text) {
+  if (!('speechSynthesis' in window)) {
+    $('voiceState').textContent = 'VOICE UNAVAILABLE';
+    return;
+  }
+
+  const message = String(text || '').trim();
+  if (!message) return;
+
+  speechSynthesis.cancel();
+
+  const utterance = new SpeechSynthesisUtterance(message);
+  utterance.lang = 'en-GB';
+  utterance.rate = Number($('rate').value || 1);
+  utterance.pitch = 1;
+  utterance.volume = 1;
+
+  const voices = speechSynthesis.getVoices();
+  const selectedIndex = $('voiceSelect').value;
+
+  const voice = selectedIndex !== ''
+    ? voices[Number(selectedIndex)]
+    : voices.find(v => /en-GB/i.test(v.lang) &&
+        /Daniel|George|Male/i.test(v.name))
+      || voices.find(v => /en-GB/i.test(v.lang))
+      || voices.find(v => /en/i.test(v.lang));
+
+  if (voice) utterance.voice = voice;
+
+  utterance.onstart = () => {
+    $('voiceState').textContent = 'SPEAKING';
+    $('liveCaption').textContent = 'JARVIS IS SPEAKING';
+  };
+
+  utterance.onend = () => {
+    $('voiceState').textContent = 'READY';
+    $('liveCaption').textContent = 'VOICE INTERFACE • STANDBY';
+  };
+
+  utterance.onerror = () => {
+    $('voiceState').textContent = 'VOICE ERROR';
+    $('liveCaption').textContent = 'SPEECH COULD NOT PLAY';
+  };
+
+  speechSynthesis.speak(utterance);
+}
+
+$('speakBtn').onclick = () => speak($('greeting').innerText);
+
+$('stopBtn').onclick = () => {
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+  $('voiceState').textContent = 'READY';
+  $('liveCaption').textContent = 'VOICE INTERFACE • STANDBY';
+};
+
+const SpeechRecognition =
+  window.SpeechRecognition || window.webkitSpeechRecognition;
+
+function listen(target) {
+  if (!SpeechRecognition) {
+    addMsg('Speech recognition is unavailable. Try Chrome.');
+    return;
+  }
+
+  if (window.jarvisRecognition) {
+    window.jarvisRecognition.stop();
+  }
+
   const rec = new SpeechRecognition();
-  rec.lang = 'en-GB';
+  window.jarvisRecognition = rec;
+
+  rec.lang = 'en-IN';
+  rec.continuous = false;
   rec.interimResults = false;
+  rec.maxAlternatives = 1;
 
   rec.onstart = () => {
     $('voiceState').textContent = 'LISTENING';
     $('liveCaption').textContent = 'LISTENING FOR COMMAND';
   };
 
-  rec.onresult = e => {
-    target.value = e.results[0][0].transcript;
-    if (target === $('prompt')) send();
+  rec.onresult = event => {
+    const command = event.results[0][0].transcript.trim();
+
+    target.value = command;
+    $('liveCaption').textContent = 'COMMAND RECEIVED';
+
+    if (target === $('prompt')) {
+      send();
+    }
   };
 
-  rec.onerror = e => addMsg('Voice input: '+e.error);
+  rec.onerror = event => {
+    $('voiceState').textContent = 'VOICE ERROR';
+    $('liveCaption').textContent = 'ERROR: ' + event.error;
+  };
 
   rec.onend = () => {
     $('voiceState').textContent = 'READY';
     $('liveCaption').textContent = 'VOICE INTERFACE • STANDBY';
+    window.jarvisRecognition = null;
   };
 
-  rec.start();
+  try {
+    rec.start();
+  } catch (error) {
+    $('voiceState').textContent = 'VOICE ERROR';
+    $('liveCaption').textContent = error.message;
+  }
 }
 
 $('listenBtn').onclick = () => listen($('prompt'));
 $('chatVoice').onclick = () => listen($('prompt'));
+
 
 $('testVoice').onclick = () => {
   speak('Good evening. All systems are online. How may I assist you?');
