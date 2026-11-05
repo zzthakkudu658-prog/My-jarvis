@@ -290,13 +290,11 @@ footer {text-align:center;color:#46728a;font-size:8px;padding:8px;letter-spacing
   <div class="metric-row"><span>BACKGROUND SERVICE</span><span>ACTIVE STICKY</span></div>
 </aside>
 
-<!-- COLUMN 2: CENTER 3D REACTOR CORE (SPLIT, ZOOM, ROTATE) -->
+<!-- COLUMN 2: CENTER 3D REACTOR CORE -->
 <main class="panel core-deck">
-  <div class="sub">ARC REACTOR CORE MATRIX (TOUCH TO SPLIT/ZOOM)[span_3](start_span)[span_3](end_span)</div>
+  <div class="sub">ARC REACTOR CORE MATRIX (TOUCH TO SPLIT/ZOOM)</div>
 
-  <div class="reactor-stage" id="reactorStage">
-    {/* Interactive 3D Reactor Core Rendered Here */}
-  </div>
+  <div class="reactor-stage" id="reactorStage"></div>
 
   <div class="greeting" id="greeting">
     My sir, all systems online. How may I assist you today?
@@ -314,16 +312,16 @@ footer {text-align:center;color:#46728a;font-size:8px;padding:8px;letter-spacing
 <!-- COLUMN 3: PROTOCOLS & OVERLAY CONTROLS -->
 <aside class="panel">
   <h3>Operational Protocols</h3>
-  <div class="metric-row"><span>WAKE WORD</span><span>"HEY JARVIS[span_4](start_span)"[span_4](end_span)</span></div>
+  <div class="metric-row"><span>WAKE WORD</span><span>"HEY JARVIS"</span></div>
   <div class="metric-row"><span>RESPONSE</span><span>"My sir, all systems online"</span></div>
-  <div class="metric-row"><span>AI BACKEND</span><span>OPENROUTER (GPT-4O)</span></div>
+  <div class="metric-row"><span>AI BACKEND</span><span>OPENROUTER (GPT-4O-MINI)</span></div>
   <div class="metric-row"><span>OVERLAY PERMISSION</span><span>GRANTED / ACTIVE</span></div>
 
   <h3 style="margin-top:12px">Android Native Bridge</h3>
   <p class="muted">
     • Background wake word service listens even when minimized.<br>
     • Screen overlay permits floating reactor control widget.<br>
-    • Secure local storage for API credentials[span_5](start_span)[span_5](end_span).
+    • Secure local storage for API credentials.
   </p>
 </aside>
 
@@ -352,9 +350,9 @@ footer {text-align:center;color:#46728a;font-size:8px;padding:8px;letter-spacing
 <div class="panel">
   <h3>Enterprise Manual</h3>
   <p class="muted">
-    • Touch/drag center reactor core to split plates apart[span_6](start_span)[span_6](end_span).<br>
-    • Fully functional image synthesizer and 3D Blueprint Lab[span_7](start_span)[span_7](end_span).<br>
-    • Native Android APK compilation instructions included below.
+    • Touch/drag center reactor core to split plates apart.<br>
+    • Fully functional image synthesizer and 3D Blueprint Lab.<br>
+    • Native Android APK compilation instructions active.
   </p>
 </div>
 </div>
@@ -386,7 +384,7 @@ footer {text-align:center;color:#46728a;font-size:8px;padding:8px;letter-spacing
     <button id="resetModel">RESET</button>
   </div>
   <input type="file" id="modelFile" accept=".glb,.gltf" style="margin-top:6px">
-  <p class="muted" id="modelStatus">Lab systems online. Unrestricted generation ready[span_8](start_span)[span_8](end_span).</p>
+  <p class="muted" id="modelStatus">Lab systems online. Unrestricted generation ready.</p>
   <a id="downloadModel" class="muted" hidden download="jarvis-model.glb">Download GLB Model</a>
 </div>
 <div class="panel">
@@ -467,6 +465,20 @@ function speak(text) {
   speechSynthesis.speak(utterance);
 }
 
+if ('speechSynthesis' in window) {
+  speechSynthesis.onvoiceschanged = () => {
+    const voices = speechSynthesis.getVoices();
+    const select = $('voiceSelect');
+    select.innerHTML = '<option value="">Default Voice</option>';
+    voices.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = `${v.name} (${v.lang})`;
+      select.appendChild(opt);
+    });
+  };
+}
+
 $('speakBtn').onclick = () => speak($('greeting').innerText);
 $('stopBtn').onclick = () => { if ('speechSynthesis' in window) speechSynthesis.cancel(); };
 
@@ -483,7 +495,7 @@ if (navigator.getBattery) {
   }).catch(()=>{ $('battery').textContent = '100%'; });
 }
 
-// --- CENTER: 3D ARC REACTOR CORE (RED-GOLD & BLUE WITH SPLIT/ZOOM) ---
+// --- CENTER: 3D ARC REACTOR CORE ---
 const reactorStage = $('reactorStage');
 const rScene = new THREE.Scene();
 const rCamera = new THREE.PerspectiveCamera(45, reactorStage.clientWidth / reactorStage.clientHeight, 0.1, 1000);
@@ -622,7 +634,7 @@ $('listenBtn').onclick = () => listen($('prompt'));
 $('chatVoice').onclick = () => listen($('prompt'));
 $('testVoice').onclick = () => speak('My sir, all tactical systems nominal.');
 
-// --- UNRESTRICTED VISIBLE 3D BLUEPRINT GENERATOR LAB ---
+// --- 3D BLUEPRINT GENERATOR LAB ---
 const host = $('modelCanvas');
 const bScene = new THREE.Scene(); bScene.background = new THREE.Color(0x010204);
 const bCamera = new THREE.PerspectiveCamera(45, host.clientWidth / host.clientHeight, 0.1, 1000);
@@ -660,38 +672,28 @@ $('buildModel').onclick = async () => {
   $('modelStatus').textContent = 'Constructing 3D blueprint matrix...';
   try {
     if(currentModel) bScene.remove(currentModel);
-    
-    let modelLoaded = false;
-    try {
-      const endpoint = 'https://three.ws/api/3d/generate';
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({ prompt: prompt, format: 'glb' })
-      });
-      if (response.ok) {
-        let data = await response.json();
-        if (data.status === 'done' && data.glbUrl) {
-          const gltf = await loader.loadAsync(data.glbUrl);
-          currentModel = gltf.scene;
-          currentModel.traverse(child => { if(child.isMesh) child.material = new THREE.MeshBasicMaterial({ color: 0x00f0ff, wireframe: true }); });
-          modelLoaded = true;
-          $('downloadModel').href = data.glbUrl;
-          $('downloadModel').hidden = false;
-        }
-      }
-    } catch(e) {}
-
-    if(!modelLoaded) {
-      currentModel = createProceduralBlueprint(prompt);
-      $('downloadModel').hidden = true;
-    }
-
+    currentModel = createProceduralBlueprint(prompt);
     bScene.add(currentModel);
-    $('modelStatus').textContent = '3D Blueprint generated successfully, my sir[span_9](start_span)[span_9](end_span).';
+    $('downloadModel').hidden = true;
+    $('modelStatus').textContent = '3D Blueprint generated successfully, my sir.';
   } catch(e) {
     $('modelStatus').textContent = 'Error building model.';
   }
+};
+
+$('modelFile').onchange = (e) => {
+  const file = e.target.files[0];
+  if(!file) return;
+  const url = URL.createObjectURL(file);
+  loader.load(url, (gltf) => {
+    if(currentModel) bScene.remove(currentModel);
+    currentModel = gltf.scene;
+    currentModel.traverse(child => { if(child.isMesh) child.material = new THREE.MeshBasicMaterial({ color: 0x00f0ff, wireframe: true }); });
+    bScene.add(currentModel);
+    $('modelStatus').textContent = 'Custom GLB model loaded successfully.';
+  }, undefined, () => {
+    $('modelStatus').textContent = 'Failed to load model file.';
+  });
 };
 
 $('resetModel').onclick = () => {
