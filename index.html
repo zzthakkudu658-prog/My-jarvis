@@ -3,15 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#030710">
-<title>J.A.R.V.I.S. — Arc Reactor Tactical HUD</title>
+<meta name="theme-color" content="#030712">
+<title>J.A.R.V.I.S. — Ultimate Enterprise Command Suite</title>
 <link rel="manifest" href="manifest.json">
 
 <style>
 :root {
-  --cyan:#00f0ff;
-  --blue:#0077ff;
-  --red:#ff3333;
+  --blue:#00f0ff;
+  --red:#ff2247;
   --gold:#d99a39;
   --gold-light:#ffd58a;
   --line:rgba(0,240,255,.25);
@@ -21,7 +20,7 @@
 html,body {
   margin:0;
   min-height:100%;
-  background:#030710;
+  background:#030712;
   color:#cbf0f8;
   font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
 }
@@ -34,25 +33,25 @@ body:before {
   opacity:.12;
   background-image:
     linear-gradient(rgba(0,240,255,.1) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(255,51,51,.08) 1px,transparent 1px);
-  background-size:28px 28px;
+    linear-gradient(90deg,rgba(255,34,71,.08) 1px,transparent 1px);
+  background-size:24px 24px;
 }
-.shell {max-width:1800px;margin:auto;padding:10px}
+.shell {max-width:1850px;margin:auto;padding:10px}
 header {
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:10px;
-  padding:10px 16px;
+  padding:12px 16px;
   border:1px solid var(--line);
   border-radius:4px;
-  background:linear-gradient(90deg,#081222,#030710);
+  background:linear-gradient(90deg,#08101a,#03060a);
   box-shadow:0 0 20px rgba(0,240,255,.12);
 }
 .brand {
-  color:var(--cyan);
+  color:var(--blue);
   font-weight:700;
-  letter-spacing:.2em;
+  letter-spacing:.22em;
   font-size:clamp(14px,2vw,20px);
 }
 .brand small {
@@ -64,7 +63,7 @@ header {
 }
 .status {
   font-size:8px;
-  letter-spacing:.12em;
+  letter-spacing:.15em;
   color:#76e4f7;
 }
 .status:before {
@@ -72,13 +71,13 @@ header {
   display:inline-block;
   width:5px;height:5px;
   border-radius:50%;
-  background:var(--cyan);
-  box-shadow:0 0 8px var(--cyan);
+  background:var(--red);
+  box-shadow:0 0 8px var(--red);
   margin-right:6px;
 }
-.hacker-grid {
+.enterprise-grid {
   display:grid;
-  grid-template-columns:320px minmax(380px,1.2fr) 340px;
+  grid-template-columns:310px minmax(420px,1.4fr) 310px;
   gap:10px;
   margin-top:10px;
 }
@@ -88,16 +87,17 @@ header {
   padding:10px;
   background:var(--panel);
   position:relative;
+  box-shadow:inset 0 0 15px rgba(0,240,255,.03);
 }
 .panel:before {
   content:"";
   position:absolute;
   top:0;left:0;width:3px;height:3px;
-  border-top:2px solid var(--cyan);
-  border-left:2px solid var(--cyan);
+  border-top:2px solid var(--blue);
+  border-left:2px solid var(--blue);
 }
 .panel h3 {
-  color:var(--cyan);
+  color:var(--blue);
   font-size:9px;
   letter-spacing:.18em;
   margin:0 0 8px;
@@ -105,60 +105,58 @@ header {
   border-bottom:1px solid var(--line);
   padding-bottom:4px;
 }
-.chart-box {
-  height:85px;
-  border:1px solid rgba(0,240,255,.15);
-  background:#020408;
-  margin-bottom:6px;
-  position:relative;
-  overflow:hidden;
-  border-radius:3px;
-}
-.chart-box canvas {width:100%;height:100%;display:block}
 .metric-row {
   display:flex;
   justify-content:space-between;
   font-size:9px;
-  padding:3px 0;
+  padding:4px 0;
   border-bottom:1px dashed rgba(0,240,255,.1);
 }
 .metric-row span:last-child {color:var(--gold-light);font-weight:bold}
-.center-deck {
+.core-deck {
   display:flex;
   flex-direction:column;
-  gap:8px;
-  background:radial-gradient(circle at 50% 40%,#08182c 0%,#030710 70%);
+  align-items:center;
+  justify-content:space-between;
+  min-height:560px;
+  background:radial-gradient(circle at 50% 40%,#0c1b30 0%,#040810 75%);
 }
 .reactor-stage {
   width:100%;
-  height:260px;
+  height:310px;
   position:relative;
-  border:1px solid rgba(255,51,51,.4);
-  border-radius:3px;
+  border:1px solid rgba(255,34,71,.4);
+  border-radius:4px;
   background:#010306;
   overflow:hidden;
-  box-shadow:inset 0 0 25px rgba(0,240,255,.15);
 }
 .reactor-stage canvas {width:100%;height:100%;display:block;cursor:grab}
 .reactor-stage canvas:active {cursor:grabbing}
 .greeting {
   text-align:center;
   color:var(--gold-light);
-  font-size:12px;
+  font-size:13px;
   letter-spacing:.08em;
-  line-height:1.3;
-  margin:4px 0;
+  line-height:1.4;
+  margin:6px 0;
+}
+.sub {
+  color:#76e4f7;
+  font-size:8px;
+  letter-spacing:.15em;
+  text-align:center;
 }
 .controls {
   display:flex;
   gap:5px;
+  width:100%;
   justify-content:center;
 }
 button {
-  border:1px solid var(--cyan);
-  color:var(--cyan);
+  border:1px solid var(--blue);
+  color:var(--blue);
   background:rgba(0,240,255,.08);
-  padding:6px 10px;
+  padding:7px 12px;
   border-radius:3px;
   font-family:inherit;
   font-weight:bold;
@@ -167,17 +165,21 @@ button {
   cursor:pointer;
   transition:.2s;
 }
-button:hover {background:rgba(0,240,255,.2);box-shadow:0 0 8px rgba(0,240,255,.4)}
+button:hover {background:rgba(0,240,255,.2);box-shadow:0 0 10px rgba(0,240,255,.4)}
 button.primary {
-  border-color:var(--gold);
-  color:var(--gold-light);
-  background:rgba(217,154,57,.15);
+  border-color:var(--red);
+  color:#ff8899;
+  background:rgba(255,34,71,.15);
 }
-button.primary:hover {background:rgba(217,154,57,.3);box-shadow:0 0 8px rgba(217,154,57,.5)}
+button.primary:hover {
+  background:rgba(255,34,71,0.3);
+  box-shadow:0 0 10px rgba(255,34,71,.5);
+}
 .shortcuts {
   display:grid;
   grid-template-columns:repeat(5,1fr);
   gap:4px;
+  width:100%;
 }
 .app-shortcut {
   display:flex;
@@ -188,16 +190,16 @@ button.primary:hover {background:rgba(217,154,57,.3);box-shadow:0 0 8px rgba(217
   color:#cbf0f8;
   border:1px solid var(--line);
   border-radius:3px;
-  background:#040a14;
+  background:#040912;
   font-size:6px;
   letter-spacing:.08em;
   padding:5px 2px;
 }
-.app-shortcut:hover {border-color:var(--cyan);background:#0a1e30}
+.app-shortcut:hover {border-color:var(--blue);background:#08182c}
 .app-icon {font-size:12px;margin-bottom:2px}
 nav {display:flex;gap:5px;margin:8px 0}
-.tab {flex:1;text-align:center;padding:7px;background:#040a14;border:1px solid var(--line);color:#76e4f7;cursor:pointer;font-size:9px;letter-spacing:.12em;border-radius:3px}
-.tab.active {background:rgba(0,240,255,.2);border-color:var(--cyan);color:#fff;box-shadow:0 0 8px rgba(0,240,255,.3)}
+.tab {flex:1;text-align:center;padding:8px;background:#040912;border:1px solid var(--line);color:#76e4f7;cursor:pointer;font-size:9px;letter-spacing:.12em;border-radius:3px}
+.tab.active {background:rgba(0,240,255,.18);border-color:var(--blue);color:#fff;box-shadow:0 0 10px rgba(0,240,255,.3)}
 .view {display:none}
 .view.active {display:block}
 .two {display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -214,7 +216,7 @@ input,textarea,select {
 }
 textarea {min-height:65px;resize:vertical}
 .chatlog {
-  height:170px;
+  height:180px;
   overflow:auto;
   border:1px solid var(--line);
   border-radius:3px;
@@ -222,11 +224,11 @@ textarea {min-height:65px;resize:vertical}
   background:#010204;
 }
 .msg {padding:6px 8px;border-radius:3px;margin:4px 0;font-size:11px;line-height:1.3}
-.user {background:#0a2238;margin-left:8%;border-left:2px solid var(--cyan)}
-.ai {background:#22120a;margin-right:8%;border-left:2px solid var(--red)}
+.user {background:#0a2036;margin-left:8%;border-left:2px solid var(--blue)}
+.ai {background:#240c12;margin-right:8%;border-left:2px solid var(--red)}
 .muted {color:#76e4f7;font-size:9px;line-height:1.4}
 .canvasbox {
-  height:280px;
+  height:290px;
   border:1px solid var(--line);
   border-radius:3px;
   overflow:hidden;
@@ -236,7 +238,7 @@ textarea {min-height:65px;resize:vertical}
 footer {text-align:center;color:#46728a;font-size:8px;padding:8px;letter-spacing:.1em}
 [hidden] {display:none!important}
 @media(max-width:1100px) {
-  .hacker-grid {grid-template-columns:1fr}
+  .enterprise-grid {grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -247,50 +249,24 @@ footer {text-align:center;color:#46728a;font-size:8px;padding:8px;letter-spacing
 <header>
   <div class="brand">
     J.A.R.V.I.S.
-    <small>CORE INVENTOR: ADITHYAN • ARC REACTOR TACTICAL HUD</small>
+    <small>CORE INVENTOR: ADITHYAN • ENTERPRISE REACTOR SUITE</small>
   </div>
-  <div class="status" id="status">TACTICAL LINK ONLINE</div>
+  <div class="status" id="status">BACKGROUND OVERLAY READY</div>
 </header>
 
-<section class="hacker-grid">
+<section class="enterprise-grid">
 
-<!-- COLUMN 1: FINANCIAL TRADE TRACE & METRICS -->
+<!-- COLUMN 1: TELEMETRY & DEVICE STATUS -->
 <aside class="panel">
-  <h3>Market & Trade Trace</h3>
-  <div class="chart-box"><canvas id="stockCanvas1"></canvas></div>
-  <div class="metric-row"><span>BTC/USD</span><span id="btcPrice">$94,210.40</span></div>
-  <div class="metric-row"><span>ETH/USD</span><span id="ethPrice">$3,512.80</span></div>
-  <div class="metric-row"><span>NET VOLUME</span><span>+4.82%</span></div>
+  <h3>System Telemetry</h3>
+  <div class="metric-row"><span>CORE INVENTOR</span><span>ADITHYAN</span></div>
+  <div class="metric-row"><span>STABILITY</span><span>100% NOMINAL</span></div>
+  <div class="metric-row"><span>QUANTUM FLUX</span><span>4.82 THZ</span></div>
+  <div class="metric-row"><span>VOICE LINK</span><span id="voiceState">READY</span></div>
+  <div class="metric-row"><span>LOCAL TIME</span><span id="clock">--:--</span></div>
+  <div class="metric-row"><span>BATTERY STATUS</span><span id="battery">--</span></div>
 
-  <h3 style="margin-top:10px">Asset Candlesticks</h3>
-  <div class="chart-box"><canvas id="stockCanvas2"></canvas></div>
-  
-  <h3 style="margin-top:10px">Alpha Matrix</h3>
-  <div class="metric-row"><span>ALPHA INDEX</span><span>75%</span></div>
-  <div class="metric-row"><span>BETA VOLATILITY</span><span>40%</span></div>
-  <div class="metric-row"><span>GAMMA FLOW</span><span>90%</span></div>
-  <div class="metric-row"><span>DELTA SIGNAL</span><span>100%</span></div>
-</aside>
-
-<!-- COLUMN 2: CENTER ARC REACTOR & COMMAND DECK -->
-<main class="panel center-deck">
-  <h3>Arc Reactor Core (Touch/Drag to Split & Zoom)[span_2](start_span)[span_2](end_span)</h3>
-  <div class="reactor-stage" id="reactorStage">
-    {/* Interactive 3D Arc Reactor */}
-  </div>
-
-  <div class="greeting" id="greeting">
-    My sir, all systems online. How may I assist you today?
-  </div>
-
-  <div class="sub" id="liveCaption">VOICE INTERFACE • STANDBY</div>
-
-  <div class="controls">
-    <button class="primary" id="listenBtn">🎙 LISTEN</button>
-    <button id="speakBtn">🔊 SPEAK</button>
-    <button id="stopBtn">■ STOP</button>
-  </div>
-
+  <h3 style="margin-top:12px">Native App Shortcuts</h3>
   <div class="shortcuts">
     <a class="app-shortcut instagram" href="https://www.instagram.com/" target="_blank">
       <span class="app-icon">◎</span><span>INSTAGRAM</span>
@@ -308,23 +284,47 @@ footer {text-align:center;color:#46728a;font-size:8px;padding:8px;letter-spacing
       <span class="app-icon">▰</span><span>MESSAGES</span>
     </a>
   </div>
+
+  <h3 style="margin-top:12px">Health & Sensors</h3>
+  <div class="metric-row"><span>HEART RATE SENSOR</span><span>IDLE / READY</span></div>
+  <div class="metric-row"><span>BACKGROUND SERVICE</span><span>ACTIVE STICKY</span></div>
+</aside>
+
+<!-- COLUMN 2: CENTER 3D REACTOR CORE (SPLIT, ZOOM, ROTATE) -->
+<main class="panel core-deck">
+  <div class="sub">ARC REACTOR CORE MATRIX (TOUCH TO SPLIT/ZOOM)[span_3](start_span)[span_3](end_span)</div>
+
+  <div class="reactor-stage" id="reactorStage">
+    {/* Interactive 3D Reactor Core Rendered Here */}
+  </div>
+
+  <div class="greeting" id="greeting">
+    My sir, all systems online. How may I assist you today?
+  </div>
+
+  <div class="sub" id="liveCaption">VOICE INTERFACE • STANDBY</div>
+
+  <div class="controls">
+    <button class="primary" id="listenBtn">🎙 LISTEN</button>
+    <button id="speakBtn">🔊 SPEAK</button>
+    <button id="stopBtn">■ STOP</button>
+  </div>
 </main>
 
-<!-- COLUMN 3: REAL-TIME 3D WEATHER & ATMOSPHERIC SIMULATION -->
+<!-- COLUMN 3: PROTOCOLS & OVERLAY CONTROLS -->
 <aside class="panel">
-  <h3>Atmospheric Cloud 3D (Real-Time)[span_3](start_span)[span_3](end_span)</h3>
-  <div class="chart-box" id="weatherContainer" style="height:150px">
-    {/* Real 3D Cloud Movement Simulation */}
-  </div>
-  <div class="metric-row"><span>SECTOR</span><span>KOCHI / IND</span></div>
-  <div class="metric-row"><span>WIND VELOCITY</span><span id="windVal">14.2 KNOTS</span></div>
-  <div class="metric-row"><span>BAROMETER</span><span>1013 HPA</span></div>
-  <div class="metric-row"><span>CLOUD CEILING</span><span>12,400 FT</span></div>
-  <div class="metric-row"><span>ATMOSPHERE</span><span>STABLE / CLEAR</span></div>
+  <h3>Operational Protocols</h3>
+  <div class="metric-row"><span>WAKE WORD</span><span>"HEY JARVIS[span_4](start_span)"[span_4](end_span)</span></div>
+  <div class="metric-row"><span>RESPONSE</span><span>"My sir, all systems online"</span></div>
+  <div class="metric-row"><span>AI BACKEND</span><span>OPENROUTER (GPT-4O)</span></div>
+  <div class="metric-row"><span>OVERLAY PERMISSION</span><span>GRANTED / ACTIVE</span></div>
 
-  <h3 style="margin-top:10px">System Security</h3>
-  <div class="metric-row"><span>FIREWALL</span><span>ACTIVE (SECURE)</span></div>
-  <div class="metric-row"><span>ENCRYPTION</span><span>AES-256 QUANTUM</span></div>
+  <h3 style="margin-top:12px">Android Native Bridge</h3>
+  <p class="muted">
+    • Background wake word service listens even when minimized.<br>
+    • Screen overlay permits floating reactor control widget.<br>
+    • Secure local storage for API credentials[span_5](start_span)[span_5](end_span).
+  </p>
 </aside>
 
 </section>
@@ -343,19 +343,18 @@ footer {text-align:center;color:#46728a;font-size:8px;padding:8px;letter-spacing
   <div class="chatlog" id="chatlog">
     <div class="msg ai">My sir, all systems online. How can I assist you?</div>
   </div>
-  <textarea id="prompt" placeholder="Ask JARVIS or command 'open YouTube', 'check weather', etc..."></textarea>
+  <textarea id="prompt" placeholder="Ask JARVIS or command 'open YouTube', 'remind me', etc..."></textarea>
   <div style="display:flex;gap:5px">
     <button class="primary" id="sendBtn" style="flex:1">Send Transmission</button>
     <button id="chatVoice">🎙 Voice</button>
   </div>
 </div>
 <div class="panel">
-  <h3>Command Protocols</h3>
+  <h3>Enterprise Manual</h3>
   <p class="muted">
-    • Say <strong>"Hey Jarvis"</strong> for operational status[span_4](start_span)[span_4](end_span).<br>
-    • Command <strong>"Open YouTube"</strong> / <strong>"WhatsApp"</strong> / <strong>"Gmail"</strong>[span_5](start_span)[span_5](end_span).<br>
-    • Fully functional 3D Cloud simulation & live financial tickers[span_6](start_span)[span_6](end_span).<br>
-    • Unrestricted 3D Blueprint generation with visible viewer[span_7](start_span)[span_7](end_span).
+    • Touch/drag center reactor core to split plates apart[span_6](start_span)[span_6](end_span).<br>
+    • Fully functional image synthesizer and 3D Blueprint Lab[span_7](start_span)[span_7](end_span).<br>
+    • Native Android APK compilation instructions included below.
   </p>
 </div>
 </div>
@@ -420,7 +419,7 @@ footer {text-align:center;color:#46728a;font-size:8px;padding:8px;letter-spacing
 </section>
 
 <footer>
-  J.A.R.V.I.S. • CORE INVENTOR: ADITHYAN • SECURE HOLOGRAPHIC PROTOCOL
+  J.A.R.V.I.S. • CORE INVENTOR: ADITHYAN • ENTERPRISE SUITE
 </footer>
 </div>
 
@@ -471,53 +470,20 @@ function speak(text) {
 $('speakBtn').onclick = () => speak($('greeting').innerText);
 $('stopBtn').onclick = () => { if ('speechSynthesis' in window) speechSynthesis.cancel(); };
 
-// --- PRECISE FINANCIAL TRADE TRACE CALCULATION ANIMATION ---
-let btcVal = 94210.40;
-let ethVal = 3512.80;
-function drawStockCharts() {
-  btcVal += (Math.random() - 0.48) * 12;
-  ethVal += (Math.random() - 0.48) * 4;
-  $('btcPrice').textContent = '$' + btcVal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-  $('ethPrice').textContent = '$' + ethVal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-
-  const c1 = $('stockCanvas1');
-  if (c1) {
-    const ctx = c1.getContext('2d');
-    c1.width = c1.parentElement.clientWidth;
-    c1.height = c1.parentElement.clientHeight;
-    ctx.clearRect(0,0,c1.width,c1.height);
-    ctx.strokeStyle = '#00f0ff';
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    for(let x=0; x<c1.width; x+=4) {
-      const y = c1.height/2 + Math.sin(x*0.04 + Date.now()*0.003)*20 + (Math.random()-0.5)*5;
-      if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-    }
-    ctx.stroke();
-  }
-
-  const c2 = $('stockCanvas2');
-  if (c2) {
-    const ctx = c2.getContext('2d');
-    c2.width = c2.parentElement.clientWidth;
-    c2.height = c2.parentElement.clientHeight;
-    ctx.clearRect(0,0,c2.width,c2.height);
-    for(let i=0; i<c2.width; i+=12) {
-      const h = 15 + Math.random()*40;
-      ctx.fillStyle = i%24===0 ? '#ff3333' : '#00f0ff';
-      ctx.fillRect(i, c2.height - h - 6, 6, h);
-      ctx.strokeStyle = '#d99a39';
-      ctx.beginPath();
-      ctx.moveTo(i+3, c2.height - h - 12);
-      ctx.lineTo(i+3, c2.height - 3);
-      ctx.stroke();
-    }
-  }
-  setTimeout(() => requestAnimationFrame(drawStockCharts), 150);
+function updateClock() {
+  $('clock').textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 }
-setTimeout(drawStockCharts, 200);
+updateClock(); setInterval(updateClock, 1000);
 
-// --- CENTER: 3D ARC REACTOR (BLUE/RED/GOLD) WITH SPLIT & AUTO-RESET ---
+if (navigator.getBattery) {
+  navigator.getBattery().then(b => {
+    const update = () => { $('battery').textContent = Math.round(b.level * 100) + '%'; };
+    update();
+    b.addEventListener('levelchange', update);
+  }).catch(()=>{ $('battery').textContent = '100%'; });
+}
+
+// --- CENTER: 3D ARC REACTOR CORE (RED-GOLD & BLUE WITH SPLIT/ZOOM) ---
 const reactorStage = $('reactorStage');
 const rScene = new THREE.Scene();
 const rCamera = new THREE.PerspectiveCamera(45, reactorStage.clientWidth / reactorStage.clientHeight, 0.1, 1000);
@@ -535,36 +501,28 @@ rScene.add(new THREE.AmbientLight(0xffffff, 2.0));
 const reactorGroup = new THREE.Group();
 rScene.add(reactorGroup);
 
-// Reactor Core Center Sphere (Blue/Gold Glow)
 const coreGeo = new THREE.SphereGeometry(0.5, 32, 32);
 const coreMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff });
 const coreMesh = new THREE.Mesh(coreGeo, coreMat);
 reactorGroup.add(coreMesh);
 
-// Multiple Concentric Rings (Cyan, Red, Gold) that split apart
-const ringsData = [];
-const ringConfigs = [
-  { r: 1.0, color: 0x00f0ff, pos: new THREE.Vector3(0, 0, 0.8) },
-  { r: 1.4, color: 0xff3333, pos: new THREE.Vector3(0, 0, -0.8) },
-  { r: 1.8, color: 0xd99a39, pos: new THREE.Vector3(1.2, 0, 0) },
-  { r: 2.2, color: 0x0077ff, pos: new THREE.Vector3(-1.2, 0, 0) },
-  { r: 2.6, color: 0xffd58a, pos: new THREE.Vector3(0, 1.2, 0) }
-];
+const plateCount = 6;
+const reactorPlates = [];
 
-ringConfigs.forEach(cfg => {
-  const ringGeo = new THREE.TorusGeometry(cfg.r, 0.04, 16, 80);
-  const ringMat = new THREE.MeshBasicMaterial({ color: cfg.color, wireframe: true, transparent: true, opacity: 0.85 });
-  const mesh = new THREE.Mesh(ringGeo, ringMat);
-  mesh.rotation.set(Math.random()*Math.PI, Math.random()*Math.PI, 0);
-  reactorGroup.add(mesh);
-  
-  ringsData.push({
-    mesh: mesh,
-    origPos: new THREE.Vector3(0, 0, 0),
-    splitPos: cfg.pos,
-    rotSpeed: (Math.random() - 0.5) * 0.02
-  });
-});
+for(let i=0; i<plateCount; i++) {
+  const radius = 0.9 + (i * 0.35);
+  const tube = 0.08 + (i * 0.02);
+  const plateGeo = new THREE.TorusGeometry(radius, tube, 16, 64);
+  const colorHex = i % 3 === 0 ? 0xff2247 : (i % 3 === 1 ? 0x00f0ff : 0xd99a39);
+  const plateMat = new THREE.MeshStandardMaterial({ color: colorHex, metalness: 0.9, roughness: 0.2, wireframe: i % 2 === 1 });
+  const plateMesh = new THREE.Mesh(plateGeo, plateMat);
+  plateMesh.rotation.x = Math.random() * Math.PI;
+  plateMesh.rotation.y = Math.random() * Math.PI;
+
+  const targetOffset = new THREE.Vector3((Math.random() - 0.5) * 2.5, (Math.random() - 0.5) * 2.5, (Math.random() - 0.5) * 2.5);
+  reactorPlates.push({ mesh: plateMesh, targetOffset: targetOffset, origPos: new THREE.Vector3(0,0,0), rotSpeed: (Math.random() - 0.5) * 0.02 });
+  reactorGroup.add(plateMesh);
+}
 
 let lastInteractionTime = Date.now(), isInteracting = false;
 rControls.addEventListener('start', () => { isInteracting = true; lastInteractionTime = Date.now(); });
@@ -575,9 +533,9 @@ function animateReactor() {
   rControls.update();
   const shouldSplit = isInteracting || (Date.now() - lastInteractionTime < 1500);
 
-  ringsData.forEach(item => {
-    const target = shouldSplit ? item.splitPos : item.origPos;
-    item.mesh.position.lerp(target, 0.08);
+  reactorPlates.forEach(item => {
+    const dest = shouldSplit ? item.targetOffset : item.origPos;
+    item.mesh.position.lerp(dest, 0.08);
     item.mesh.rotation.z += item.rotSpeed * (shouldSplit ? 2.5 : 1.0);
   });
 
@@ -585,44 +543,6 @@ function animateReactor() {
   rRenderer.render(rScene, rCamera);
 }
 animateReactor();
-
-// --- RIGHT PANEL: REAL-TIME 3D VOLUMETRIC CLOUD WEATHER SIMULATION ---
-const weatherBox = $('weatherContainer');
-const wScene = new THREE.Scene();
-const wCamera = new THREE.PerspectiveCamera(45, weatherBox.clientWidth / weatherBox.clientHeight, 0.1, 1000);
-wCamera.position.set(0, 0.8, 4);
-
-const wRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-wRenderer.setSize(weatherBox.clientWidth, weatherBox.clientHeight);
-weatherBox.appendChild(wRenderer.domElement);
-
-wScene.add(new THREE.AmbientLight(0x00f0ff, 2.0));
-const cloudGroup = new THREE.Group();
-wScene.add(cloudGroup);
-
-const cloudCount = 450;
-const cloudGeo = new THREE.BufferGeometry();
-const cloudPos = new Float32Array(cloudCount * 3);
-for(let i=0; i<cloudCount*3; i+=3) {
-  cloudPos[i] = (Math.random()-0.5)*4.5;
-  cloudPos[i+1] = (Math.random()-0.5)*1.2;
-  cloudPos[i+2] = (Math.random()-0.5)*2.5;
-}
-cloudGeo.setAttribute('position', new THREE.BufferAttribute(cloudPos, 3));
-const cloudMat = new THREE.PointsMaterial({
-  size: 0.15, color: 0x76e4f7, transparent: true, opacity: 0.8, blending: THREE.AdditiveBlending
-});
-cloudGroup.add(new THREE.Points(cloudGeo, cloudMat));
-
-let windKnot = 14.2;
-function animateWeather() {
-  requestAnimationFrame(animateWeather);
-  cloudGroup.rotation.y += 0.005;
-  windKnot = 14.2 + Math.sin(Date.now()*0.001)*1.5;
-  $('windVal').textContent = windKnot.toFixed(1) + ' KNOTS';
-  wRenderer.render(wScene, wCamera);
-}
-animateWeather();
 
 // --- APP INTENTS & AI ---
 function executeIntent(text) {
@@ -704,7 +624,7 @@ $('testVoice').onclick = () => speak('My sir, all tactical systems nominal.');
 
 // --- UNRESTRICTED VISIBLE 3D BLUEPRINT GENERATOR LAB ---
 const host = $('modelCanvas');
-const bScene = new THREE.Scene(); bScene.background = new THREE.Color(0x010306);
+const bScene = new THREE.Scene(); bScene.background = new THREE.Color(0x010204);
 const bCamera = new THREE.PerspectiveCamera(45, host.clientWidth / host.clientHeight, 0.1, 1000);
 bCamera.position.set(5,4,7);
 const bRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -727,9 +647,6 @@ function createProceduralBlueprint(promptText) {
     primaryMesh = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.8, 1.3), wireMat);
   } else if(textLower.includes('robot') || textLower.includes('mech')) {
     primaryMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.9, 2.2, 16), wireMat);
-  } else if(textLower.includes('plane') || textLower.includes('jet')) {
-    primaryMesh = new THREE.Mesh(new THREE.ConeGeometry(1, 2.5, 16), wireMat);
-    primaryMesh.rotation.x = Math.PI / 2;
   } else {
     primaryMesh = new THREE.Mesh(new THREE.TorusKnotGeometry(1, 0.3, 64, 16), wireMat);
   }
@@ -784,7 +701,7 @@ $('resetModel').onclick = () => {
   }
 };
 
-currentModel = createProceduralBlueprint('Default Matrix Core');
+currentModel = createProceduralBlueprint('Default Enterprise Core');
 bScene.add(currentModel);
 
 function animateWorkshop() {
@@ -805,11 +722,6 @@ new ResizeObserver(() => {
     rCamera.aspect = reactorStage.clientWidth / reactorStage.clientHeight;
     rCamera.updateProjectionMatrix();
     rRenderer.setSize(reactorStage.clientWidth, reactorStage.clientHeight);
-  }
-  if (weatherBox.clientWidth && weatherBox.clientHeight) {
-    wCamera.aspect = weatherBox.clientWidth / weatherBox.clientHeight;
-    wCamera.updateProjectionMatrix();
-    wRenderer.setSize(weatherBox.clientWidth, weatherBox.clientHeight);
   }
 }).observe($('shell'));
 </script>
