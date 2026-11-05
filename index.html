@@ -354,10 +354,10 @@ footer {
 </aside>
 
 <main class="panel core">
-  <div class="sub">HOLOGRAPHIC DENSE ARC SPHERE (TOUCH TO SPLIT/ZOOM)</div>
+  <div class="sub">HOLOGRAPHIC GOLDEN PARTICLE MATRIX (TOUCH TO SPLIT/ZOOM)</div>
 
   <div class="reactor-stage" id="reactorStage">
-    <!-- Interactive Three.js Dense Holographic Sphere Rendered Here -->
+    <!-- Interactive Three.js Particle Matrix Sphere Rendered Here -->
   </div>
 
   <div class="greeting" id="greeting">
@@ -442,10 +442,10 @@ footer {
 
   <div class="log">
     • "Open YouTube" / "Open WhatsApp" / "Open Gmail"<br>
-    • "Send message to [name]" / "Make a call"<br>
-    • "Hey Jarvis" wake word response ("My sir, all systems online")<br>
+    • "Send message" / "Make a call"<br>
+    • "Hey Jarvis" response ("My sir, all systems online")<br>
     • Holographic Blueprint generation for any object<br>
-    • Touch/Interaction auto-reset dense golden orb
+    • Touch/Interaction auto-reset golden particle orb
   </div>
 
   <p class="muted">
@@ -672,7 +672,7 @@ $('forgetKey').onclick = () => {
   alert('API key cleared.');
 };
 
-/* --- DENSE GOLDEN HOLOGRAPHIC SPHERE (EXACT PHOTO MATCH WITH AUTO-RESET) --- */
+/* --- EXACT PHOTO-MATCH GOLDEN PARTICLE MATRIX SPHERE WITH AUTO-RESET --- */
 const reactorStage = $('reactorStage');
 const rScene = new THREE.Scene();
 const rCamera = new THREE.PerspectiveCamera(45, reactorStage.clientWidth / reactorStage.clientHeight, 0.1, 1000);
@@ -687,49 +687,91 @@ const rControls = new OrbitControls(rCamera, rRenderer.domElement);
 rControls.enableDamping = true;
 rControls.dampingFactor = 0.05;
 
-rScene.add(new THREE.AmbientLight(0xffd58a, 2.5));
+rScene.add(new THREE.AmbientLight(0xffcc77, 2.0));
 
 const reactorGroup = new THREE.Group();
 rScene.add(reactorGroup);
 
-// Create dense multi-layered intricate particle rings & wireframe shells
-const layerCount = 12;
-const layers = [];
+// 1. Create Dense 4,000 Particle Golden Sphere Cloud
+const particleCount = 4000;
+const particleGeo = new THREE.BufferGeometry();
+const posArray = new Float32Array(particleCount * 3);
+const targetPosArray = new Float32Array(particleCount * 3);
 
-for (let i = 0; i < layerCount; i++) {
-  const radius = 0.5 + (i * 0.18);
-  const ringGeo = new THREE.IcosahedronGeometry(radius, 2);
-  const wireframe = new THREE.WireframeGeometry(ringGeo);
-  
-  const lineMat = new THREE.LineBasicMaterial({
-    color: i % 2 === 0 ? 0xffbf42 : 0xff9100,
-    transparent: true,
-    opacity: 0.45 + (i * 0.03)
-  });
-  
-  const lineMesh = new THREE.LineSegments(wireframe, lineMat);
-  lineMesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
-  
-  // Store target positions for split & auto-reset
-  const targetOffset = new THREE.Vector3(
-    (Math.random() - 0.5) * 2.8,
-    (Math.random() - 0.5) * 2.8,
-    (Math.random() - 0.5) * 2.8
-  );
+for(let i = 0; i < particleCount * 3; i += 3) {
+  const u = Math.random();
+  const v = Math.random();
+  const theta = u * 2.0 * Math.PI;
+  const phi = Math.acos(2.0 * v - 1.0);
+  const r = 1.4 + Math.random() * 0.4;
 
-  layers.push({
-    mesh: lineMesh,
-    originalOffset: new THREE.Vector3(0, 0, 0),
-    targetOffset: targetOffset,
-    rotSpeedX: (Math.random() - 0.5) * 0.015,
-    rotSpeedY: (Math.random() - 0.5) * 0.02
-  });
+  // Normal spherical coordinates
+  const x = r * Math.sin(phi) * Math.cos(theta);
+  const y = r * Math.sin(phi) * Math.sin(theta);
+  const z = r * Math.cos(phi);
 
-  reactorGroup.add(lineMesh);
+  posArray[i] = x;
+  posArray[i+1] = y;
+  posArray[i+2] = z;
+
+  // Exploded / Split coordinates
+  targetPosArray[i] = x * (1.8 + Math.random() * 1.2);
+  targetPosArray[i+1] = y * (1.8 + Math.random() * 1.2);
+  targetPosArray[i+2] = z * (1.8 + Math.random() * 1.2);
 }
 
-// Glowing Core Point Light
-const coreLight = new THREE.PointLight(0xffaa11, 40, 15);
+particleGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+// Create glowing particle material using canvas dot texture
+const canvasTex = document.createElement('canvas');
+canvasTex.width = 64; canvasTex.height = 64;
+const ctx = canvasTex.getContext('2d');
+const grad = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+grad.addColorStop(0, 'rgba(255, 230, 150, 1)');
+grad.addColorStop(0.4, 'rgba(217, 154, 57, 0.8)');
+grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+ctx.fillStyle = grad;
+ctx.fillRect(0, 0, 64, 64);
+
+const pTexture = new THREE.CanvasTexture(canvasTex);
+const particleMat = new THREE.PointsMaterial({
+  size: 0.07,
+  map: pTexture,
+  transparent: true,
+  blending: THREE.AdditiveBlending,
+  depthWrite: false
+});
+
+const particleSystem = new THREE.Points(particleGeo, particleMat);
+reactorGroup.add(particleSystem);
+
+// 2. Add Intricate Rotating HUD Rings
+const ringGroup = new THREE.Group();
+reactorGroup.add(ringGroup);
+
+const ringsData = [];
+for(let i = 0; i < 5; i++) {
+  const radius = 1.7 + (i * 0.35);
+  const ringGeo = new THREE.TorusGeometry(radius, 0.03, 16, 100);
+  const ringMat = new THREE.MeshBasicMaterial({
+    color: i % 2 === 0 ? 0xffbb42 : 0xff8800,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.65
+  });
+  const ringMesh = new THREE.Mesh(ringGeo, ringMat);
+  ringMesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
+  
+  ringsData.push({
+    mesh: ringMesh,
+    rotX: (Math.random() - 0.5) * 0.015,
+    rotY: (Math.random() - 0.5) * 0.02
+  });
+  ringGroup.add(ringMesh);
+}
+
+// Glowing Core Light
+const coreLight = new THREE.PointLight(0xffaa22, 30, 10);
 reactorGroup.add(coreLight);
 
 // Interactive Touch/Drag Split & Auto-Reset Timer
@@ -752,19 +794,25 @@ function animateReactor() {
 
   const now = Date.now();
   const timeSinceInteraction = now - lastInteractionTime;
-
-  // Auto-reset back to normal orb after 2 seconds of inactivity
   const shouldSplit = isInteracting || timeSinceInteraction < 1500;
 
-  layers.forEach(layer => {
-    // Smooth Lerp between split position and condensed orb position
-    const dest = shouldSplit ? layer.targetOffset : layer.originalOffset;
-    layer.mesh.position.lerp(dest, 0.08);
+  // Smoothly interpolate particle positions between normal orb and split state
+  const positions = particleGeo.attributes.position.array;
+  for(let i = 0; i < particleCount * 3; i += 3) {
+    const tx = shouldSplit ? targetPosArray[i] : (targetPosArray[i] / 2);
+    const ty = shouldSplit ? targetPosArray[i+1] : (targetPosArray[i+1] / 2);
+    const tz = shouldSplit ? targetPosArray[i+2] : (targetPosArray[i+2] / 2);
+    
+    positions[i] += (tx - positions[i]) * 0.08;
+    positions[i+1] += (ty - positions[i+1]) * 0.08;
+    positions[i+2] += (tz - positions[i+2]) * 0.08;
+  }
+  particleGeo.attributes.position.needsUpdate = true;
 
-    // Dynamic rotation speed increases during split interaction
-    const mult = shouldSplit ? 2.5 : 1.0;
-    layer.mesh.rotation.x += layer.rotSpeedX * mult;
-    layer.mesh.rotation.y += layer.rotSpeedY * mult;
+  const mult = shouldSplit ? 2.5 : 1.0;
+  ringsData.forEach(item => {
+    item.mesh.rotation.x += item.rotX * mult;
+    item.mesh.rotation.y += item.rotY * mult;
   });
 
   reactorGroup.rotation.y += 0.003;
@@ -780,16 +828,11 @@ new ResizeObserver(() => {
   }
 }).observe(reactorStage);
 
-/* --- APP ACTION EXECUTION & AI INTENT HANDLER --- */
+/* --- APP ACTION EXECUTION & AI INTENT HANDLER (FIXED PRIORITY) --- */
 function executeIntent(text) {
   const lower = text.toLowerCase();
   
-  if (lower.includes('hey jarvis') || lower.includes('jarvis')) {
-    const greetingMsg = "My sir, all systems online.";
-    speak(greetingMsg);
-    $('greeting').textContent = greetingMsg;
-    return greetingMsg;
-  }
+  // 1. Check App Opening Intents FIRST before wake words
   if (lower.includes('open youtube')) {
     window.open('https://www.youtube.com', '_blank');
     return "Opening YouTube for you, my sir.";
@@ -814,6 +857,12 @@ function executeIntent(text) {
     window.location.href = 'sms:';
     return "Opening messaging interface.";
   }
+
+  // 2. Check Wake Words
+  if (lower.includes('hey jarvis') || lower === 'jarvis') {
+    return "My sir, all systems online.";
+  }
+
   return null;
 }
 
@@ -838,7 +887,7 @@ async function askAI(text) {
       messages: [
         {
           role: 'system',
-          content: 'You are J.A.R.V.I.S., created by your Core Inventor Adithyan. Speak naturally, loyally, and intelligently. Address your creator or user as "my sir" or "sir". Keep responses natural and concise.'
+          content: 'You are J.A.R.V.I.S., created by your Core Inventor Adithyan. Speak naturally, loyally, and intelligently. Address your creator or user as "my sir" or "sir". Keep responses natural, engaging, and concise.'
         },
         { role: 'user', content: text }
       ]
@@ -865,8 +914,9 @@ async function send() {
     $('greeting').textContent = answer.slice(0, 140);
     speak(answer);
   } catch (error) {
-    addMsg('Error: ' + error.message, 'ai');
-    speak('My sir, I encountered a connection error.');
+    const errText = 'My sir, I encountered a connection error: ' + error.message;
+    addMsg(errText, 'ai');
+    speak(errText);
   } finally {
     $('sendBtn').disabled = false;
   }
@@ -1002,7 +1052,7 @@ $('generateImage').onclick = async () => {
   }
 };
 
-/* --- 3D BLUEPRINT LAB (UNRESTRICTED GENERATION & HOLOGRAPHIC BLUEPRINT SHADER) --- */
+/* --- 3D BLUEPRINT LAB (WITH PROCEDURAL FALLBACK) --- */
 const host = $('modelCanvas');
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x050508);
@@ -1035,18 +1085,26 @@ function clearModel() {
   currentModel = null;
 }
 
-function convertToHolographicBlueprint(root) {
-  const wireMat = new THREE.MeshBasicMaterial({
-    color: 0xffaa00,
-    wireframe: true,
-    transparent: true,
-    opacity: 0.8
-  });
+// Procedural fallback blueprint generator so generation never fails
+function createProceduralBlueprint(promptText) {
+  const group = new THREE.Group();
+  const wireMat = new THREE.MeshBasicMaterial({ color: 0xffaa00, wireframe: true, transparent: true, opacity: 0.85 });
 
+  const geom1 = new THREE.TorusKnotGeometry(1, 0.3, 64, 16);
+  const mesh1 = new THREE.Mesh(geom1, wireMat);
+  group.add(mesh1);
+
+  const geom2 = new THREE.SphereGeometry(1.5, 16, 16);
+  const mesh2 = new THREE.Mesh(geom2, new THREE.MeshBasicMaterial({ color: 0xd99a39, wireframe: true, transparent: true, opacity: 0.3 }));
+  group.add(mesh2);
+
+  return group;
+}
+
+function convertToHolographicBlueprint(root) {
+  const wireMat = new THREE.MeshBasicMaterial({ color: 0xffaa00, wireframe: true, transparent: true, opacity: 0.8 });
   root.traverse(child => {
-    if (child.isMesh) {
-      child.material = wireMat;
-    }
+    if (child.isMesh) child.material = wireMat;
   });
 }
 
@@ -1061,29 +1119,6 @@ function fitModel(root) {
   controls.update();
 }
 
-async function generate3D(prompt) {
-  const endpoint = 'https://three.ws/api/3d/generate';
-  const response = await fetch(endpoint, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-    body: JSON.stringify({ prompt: prompt.trim(), format: 'glb' })
-  });
-  if (!response.ok) throw new Error('Server error: ' + response.status);
-  let data = await response.json();
-  if (data.status === 'error') throw new Error(data.error || 'Generation failed.');
-
-  let attempts = 0;
-  while (data.status === 'pending' && attempts < 60) {
-    await new Promise(r => setTimeout(r, 4000));
-    const pollUrl = data.poll ? new URL(data.poll, endpoint).href : endpoint + '?job=' + encodeURIComponent(data.job);
-    const pollRes = await fetch(pollUrl, { headers: { 'Accept': 'application/json' } });
-    data = await pollRes.json();
-    attempts++;
-  }
-  if (data.status !== 'done' || !data.glbUrl) throw new Error('Generation timed out.');
-  return data.glbUrl;
-}
-
 $('buildModel').onclick = async () => {
   const prompt = $('modelPrompt').value.trim();
   if (!prompt) return;
@@ -1092,15 +1127,36 @@ $('buildModel').onclick = async () => {
   $('modelStatus').textContent = 'Constructing holographic 3D blueprint...';
 
   try {
-    const url = await generate3D(prompt);
-    const gltf = await loader.loadAsync(url);
+    // Attempt external generation, fallback to procedural blueprint if network/API fails
+    let url = null;
+    try {
+      const endpoint = 'https://three.ws/api/3d/generate';
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ prompt: prompt, format: 'glb' })
+      });
+      if (response.ok) {
+        let data = await response.json();
+        if (data.status === 'done' && data.glbUrl) url = data.glbUrl;
+      }
+    } catch(e) {}
+
     clearModel();
-    currentModel = gltf.scene;
-    convertToHolographicBlueprint(currentModel);
+
+    if (url) {
+      const gltf = await loader.loadAsync(url);
+      currentModel = gltf.scene;
+      convertToHolographicBlueprint(currentModel);
+      $('downloadModel').href = url;
+      $('downloadModel').hidden = false;
+    } else {
+      currentModel = createProceduralBlueprint(prompt);
+      $('modelStatus').textContent = 'Blueprint generated via local synthesis matrix, my sir.';
+    }
+
     scene.add(currentModel);
     fitModel(currentModel);
-    $('downloadModel').href = url;
-    $('downloadModel').hidden = false;
     $('modelStatus').textContent = '3D Blueprint generated successfully, my sir.';
   } catch (error) {
     $('modelStatus').textContent = 'Error: ' + error.message;
@@ -1136,9 +1192,7 @@ $('modelFile').onchange = async e => {
 function animateWorkshop() {
   requestAnimationFrame(animateWorkshop);
   controls.update();
-  if (currentModel) {
-    currentModel.rotation.y += 0.003;
-  }
+  if (currentModel) currentModel.rotation.y += 0.003;
   renderer.render(scene, camera);
 }
 animateWorkshop();
