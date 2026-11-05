@@ -3,24 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#030508">
-<title>J.A.R.V.I.S. — Hacker Tactical Command Center</title>
+<meta name="theme-color" content="#030710">
+<title>J.A.R.V.I.S. — Arc Reactor Tactical HUD</title>
 <link rel="manifest" href="manifest.json">
 
 <style>
 :root {
   --cyan:#00f0ff;
-  --cyan-dim:#003344;
+  --blue:#0077ff;
+  --red:#ff3333;
   --gold:#d99a39;
   --gold-light:#ffd58a;
   --line:rgba(0,240,255,.25);
-  --panel:rgba(5,10,16,.96);
+  --panel:rgba(5,10,18,.96);
 }
 * {box-sizing:border-box}
 html,body {
   margin:0;
   min-height:100%;
-  background:#030508;
+  background:#030710;
   color:#cbf0f8;
   font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
 }
@@ -32,9 +33,9 @@ body:before {
   pointer-events:none;
   opacity:.12;
   background-image:
-    linear-gradient(rgba(0,240,255,.12) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(0,240,255,.12) 1px,transparent 1px);
-  background-size:24px 24px;
+    linear-gradient(rgba(0,240,255,.1) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,51,51,.08) 1px,transparent 1px);
+  background-size:28px 28px;
 }
 .shell {max-width:1800px;margin:auto;padding:10px}
 header {
@@ -45,8 +46,8 @@ header {
   padding:10px 16px;
   border:1px solid var(--line);
   border-radius:4px;
-  background:linear-gradient(90deg,#08101a,#03060a);
-  box-shadow:0 0 15px rgba(0,240,255,.1);
+  background:linear-gradient(90deg,#081222,#030710);
+  box-shadow:0 0 20px rgba(0,240,255,.12);
 }
 .brand {
   color:var(--cyan);
@@ -72,10 +73,9 @@ header {
   width:5px;height:5px;
   border-radius:50%;
   background:var(--cyan);
-  box-shadow:0 0 6px var(--cyan);
+  box-shadow:0 0 8px var(--cyan);
   margin-right:6px;
 }
-/* HACKER LANDSCAPE 3-COLUMN GRID */
 .hacker-grid {
   display:grid;
   grid-template-columns:320px minmax(380px,1.2fr) 340px;
@@ -108,7 +108,7 @@ header {
 .chart-box {
   height:85px;
   border:1px solid rgba(0,240,255,.15);
-  background:#020407;
+  background:#020408;
   margin-bottom:6px;
   position:relative;
   overflow:hidden;
@@ -127,15 +127,17 @@ header {
   display:flex;
   flex-direction:column;
   gap:8px;
+  background:radial-gradient(circle at 50% 40%,#08182c 0%,#030710 70%);
 }
 .reactor-stage {
   width:100%;
-  height:240px;
+  height:260px;
   position:relative;
-  border:1px solid rgba(217,154,57,.3);
+  border:1px solid rgba(255,51,51,.4);
   border-radius:3px;
-  background:#010204;
+  background:#010306;
   overflow:hidden;
+  box-shadow:inset 0 0 25px rgba(0,240,255,.15);
 }
 .reactor-stage canvas {width:100%;height:100%;display:block;cursor:grab}
 .reactor-stage canvas:active {cursor:grabbing}
@@ -169,9 +171,9 @@ button:hover {background:rgba(0,240,255,.2);box-shadow:0 0 8px rgba(0,240,255,.4
 button.primary {
   border-color:var(--gold);
   color:var(--gold-light);
-  background:rgba(217,154,57,.12);
+  background:rgba(217,154,57,.15);
 }
-button.primary:hover {background:rgba(217,154,57,.25);box-shadow:0 0 8px rgba(217,154,57,.5)}
+button.primary:hover {background:rgba(217,154,57,.3);box-shadow:0 0 8px rgba(217,154,57,.5)}
 .shortcuts {
   display:grid;
   grid-template-columns:repeat(5,1fr);
@@ -186,22 +188,22 @@ button.primary:hover {background:rgba(217,154,57,.25);box-shadow:0 0 8px rgba(21
   color:#cbf0f8;
   border:1px solid var(--line);
   border-radius:3px;
-  background:#04080e;
+  background:#040a14;
   font-size:6px;
   letter-spacing:.08em;
   padding:5px 2px;
 }
-.app-shortcut:hover {border-color:var(--cyan);background:#081420}
+.app-shortcut:hover {border-color:var(--cyan);background:#0a1e30}
 .app-icon {font-size:12px;margin-bottom:2px}
 nav {display:flex;gap:5px;margin:8px 0}
-.tab {flex:1;text-align:center;padding:7px;background:#04080e;border:1px solid var(--line);color:#76e4f7;cursor:pointer;font-size:9px;letter-spacing:.12em;border-radius:3px}
-.tab.active {background:rgba(0,240,255,.15);border-color:var(--cyan);color:#fff;box-shadow:0 0 8px rgba(0,240,255,.2)}
+.tab {flex:1;text-align:center;padding:7px;background:#040a14;border:1px solid var(--line);color:#76e4f7;cursor:pointer;font-size:9px;letter-spacing:.12em;border-radius:3px}
+.tab.active {background:rgba(0,240,255,.2);border-color:var(--cyan);color:#fff;box-shadow:0 0 8px rgba(0,240,255,.3)}
 .view {display:none}
 .view.active {display:block}
 .two {display:grid;grid-template-columns:1fr 1fr;gap:8px}
 input,textarea,select {
   width:100%;
-  background:#020407;
+  background:#020408;
   border:1px solid var(--line);
   border-radius:3px;
   color:#cbf0f8;
@@ -220,8 +222,8 @@ textarea {min-height:65px;resize:vertical}
   background:#010204;
 }
 .msg {padding:6px 8px;border-radius:3px;margin:4px 0;font-size:11px;line-height:1.3}
-.user {background:#081824;margin-left:8%;border-left:2px solid var(--cyan)}
-.ai {background:#14140c;margin-right:8%;border-left:2px solid var(--gold)}
+.user {background:#0a2238;margin-left:8%;border-left:2px solid var(--cyan)}
+.ai {background:#22120a;margin-right:8%;border-left:2px solid var(--red)}
 .muted {color:#76e4f7;font-size:9px;line-height:1.4}
 .canvasbox {
   height:280px;
@@ -245,7 +247,7 @@ footer {text-align:center;color:#46728a;font-size:8px;padding:8px;letter-spacing
 <header>
   <div class="brand">
     J.A.R.V.I.S.
-    <small>CORE INVENTOR: ADITHYAN • HACKER TACTICAL HUD</small>
+    <small>CORE INVENTOR: ADITHYAN • ARC REACTOR TACTICAL HUD</small>
   </div>
   <div class="status" id="status">TACTICAL LINK ONLINE</div>
 </header>
@@ -270,11 +272,11 @@ footer {text-align:center;color:#46728a;font-size:8px;padding:8px;letter-spacing
   <div class="metric-row"><span>DELTA SIGNAL</span><span>100%</span></div>
 </aside>
 
-<!-- COLUMN 2: CENTER HOLOGRAPHIC CORE & COMMAND DECK -->
+<!-- COLUMN 2: CENTER ARC REACTOR & COMMAND DECK -->
 <main class="panel center-deck">
-  <h3>Holographic Golden Matrix (Touch to Split / Zoom)[span_0](start_span)[span_0](end_span)</h3>
+  <h3>Arc Reactor Core (Touch/Drag to Split & Zoom)[span_2](start_span)[span_2](end_span)</h3>
   <div class="reactor-stage" id="reactorStage">
-    {/* Interactive 3D Particle Sphere */}
+    {/* Interactive 3D Arc Reactor */}
   </div>
 
   <div class="greeting" id="greeting">
@@ -310,7 +312,7 @@ footer {text-align:center;color:#46728a;font-size:8px;padding:8px;letter-spacing
 
 <!-- COLUMN 3: REAL-TIME 3D WEATHER & ATMOSPHERIC SIMULATION -->
 <aside class="panel">
-  <h3>Atmospheric Cloud 3D (Real-Time)[span_1](start_span)[span_1](end_span)</h3>
+  <h3>Atmospheric Cloud 3D (Real-Time)[span_3](start_span)[span_3](end_span)</h3>
   <div class="chart-box" id="weatherContainer" style="height:150px">
     {/* Real 3D Cloud Movement Simulation */}
   </div>
@@ -350,10 +352,10 @@ footer {text-align:center;color:#46728a;font-size:8px;padding:8px;letter-spacing
 <div class="panel">
   <h3>Command Protocols</h3>
   <p class="muted">
-    • Say <strong>"Hey Jarvis"</strong> for operational status[span_2](start_span)[span_2](end_span).<br>
-    • Command <strong>"Open YouTube"</strong> / <strong>"WhatsApp"</strong> / <strong>"Gmail"</strong>[span_3](start_span)[span_3](end_span).<br>
-    • Fully functional 3D Cloud simulation & live financial tickers[span_4](start_span)[span_4](end_span).<br>
-    • Unrestricted 3D Blueprint generation with visible viewer[span_5](start_span)[span_5](end_span).
+    • Say <strong>"Hey Jarvis"</strong> for operational status[span_4](start_span)[span_4](end_span).<br>
+    • Command <strong>"Open YouTube"</strong> / <strong>"WhatsApp"</strong> / <strong>"Gmail"</strong>[span_5](start_span)[span_5](end_span).<br>
+    • Fully functional 3D Cloud simulation & live financial tickers[span_6](start_span)[span_6](end_span).<br>
+    • Unrestricted 3D Blueprint generation with visible viewer[span_7](start_span)[span_7](end_span).
   </p>
 </div>
 </div>
@@ -385,7 +387,7 @@ footer {text-align:center;color:#46728a;font-size:8px;padding:8px;letter-spacing
     <button id="resetModel">RESET</button>
   </div>
   <input type="file" id="modelFile" accept=".glb,.gltf" style="margin-top:6px">
-  <p class="muted" id="modelStatus">Lab systems online. Unrestricted generation ready[span_6](start_span)[span_6](end_span).</p>
+  <p class="muted" id="modelStatus">Lab systems online. Unrestricted generation ready[span_8](start_span)[span_8](end_span).</p>
   <a id="downloadModel" class="muted" hidden download="jarvis-model.glb">Download GLB Model</a>
 </div>
 <div class="panel">
@@ -502,9 +504,9 @@ function drawStockCharts() {
     ctx.clearRect(0,0,c2.width,c2.height);
     for(let i=0; i<c2.width; i+=12) {
       const h = 15 + Math.random()*40;
-      ctx.fillStyle = i%24===0 ? '#d99a39' : '#00f0ff';
+      ctx.fillStyle = i%24===0 ? '#ff3333' : '#00f0ff';
       ctx.fillRect(i, c2.height - h - 6, 6, h);
-      ctx.strokeStyle = '#fff';
+      ctx.strokeStyle = '#d99a39';
       ctx.beginPath();
       ctx.moveTo(i+3, c2.height - h - 12);
       ctx.lineTo(i+3, c2.height - 3);
@@ -515,7 +517,7 @@ function drawStockCharts() {
 }
 setTimeout(drawStockCharts, 200);
 
-// --- CENTER: GOLDEN PARTICLE MATRIX SPHERE (SPLIT & AUTO-RESET) ---
+// --- CENTER: 3D ARC REACTOR (BLUE/RED/GOLD) WITH SPLIT & AUTO-RESET ---
 const reactorStage = $('reactorStage');
 const rScene = new THREE.Scene();
 const rCamera = new THREE.PerspectiveCamera(45, reactorStage.clientWidth / reactorStage.clientHeight, 0.1, 1000);
@@ -529,44 +531,40 @@ reactorStage.appendChild(rRenderer.domElement);
 const rControls = new OrbitControls(rCamera, rRenderer.domElement);
 rControls.enableDamping = true;
 
-rScene.add(new THREE.AmbientLight(0xffcc77, 2.0));
+rScene.add(new THREE.AmbientLight(0xffffff, 2.0));
 const reactorGroup = new THREE.Group();
 rScene.add(reactorGroup);
 
-const particleCount = 3500;
-const particleGeo = new THREE.BufferGeometry();
-const posArray = new Float32Array(particleCount * 3);
-const targetPosArray = new Float32Array(particleCount * 3);
+// Reactor Core Center Sphere (Blue/Gold Glow)
+const coreGeo = new THREE.SphereGeometry(0.5, 32, 32);
+const coreMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff });
+const coreMesh = new THREE.Mesh(coreGeo, coreMat);
+reactorGroup.add(coreMesh);
 
-for(let i = 0; i < particleCount * 3; i += 3) {
-  const u = Math.random(), v = Math.random();
-  const theta = u * 2.0 * Math.PI, phi = Math.acos(2.0 * v - 1.0);
-  const r = 1.2 + Math.random() * 0.4;
-  const x = r * Math.sin(phi) * Math.cos(theta);
-  const y = r * Math.sin(phi) * Math.sin(theta);
-  const z = r * Math.cos(phi);
-  posArray[i] = x; posArray[i+1] = y; posArray[i+2] = z;
-  targetPosArray[i] = x * (1.8 + Math.random() * 1.2);
-  targetPosArray[i+1] = y * (1.8 + Math.random() * 1.2);
-  targetPosArray[i+2] = z * (1.8 + Math.random() * 1.2);
-}
-particleGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+// Multiple Concentric Rings (Cyan, Red, Gold) that split apart
+const ringsData = [];
+const ringConfigs = [
+  { r: 1.0, color: 0x00f0ff, pos: new THREE.Vector3(0, 0, 0.8) },
+  { r: 1.4, color: 0xff3333, pos: new THREE.Vector3(0, 0, -0.8) },
+  { r: 1.8, color: 0xd99a39, pos: new THREE.Vector3(1.2, 0, 0) },
+  { r: 2.2, color: 0x0077ff, pos: new THREE.Vector3(-1.2, 0, 0) },
+  { r: 2.6, color: 0xffd58a, pos: new THREE.Vector3(0, 1.2, 0) }
+];
 
-const canvasTex = document.createElement('canvas');
-canvasTex.width = 64; canvasTex.height = 64;
-const ctxTex = canvasTex.getContext('2d');
-const grad = ctxTex.createRadialGradient(32, 32, 0, 32, 32, 32);
-grad.addColorStop(0, 'rgba(255, 230, 150, 1)');
-grad.addColorStop(0.4, 'rgba(217, 154, 57, 0.8)');
-grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
-ctxTex.fillStyle = grad;
-ctxTex.fillRect(0, 0, 64, 64);
-
-const particleMat = new THREE.PointsMaterial({
-  size: 0.07, map: new THREE.CanvasTexture(canvasTex),
-  transparent: true, blending: THREE.AdditiveBlending, depthWrite: false
+ringConfigs.forEach(cfg => {
+  const ringGeo = new THREE.TorusGeometry(cfg.r, 0.04, 16, 80);
+  const ringMat = new THREE.MeshBasicMaterial({ color: cfg.color, wireframe: true, transparent: true, opacity: 0.85 });
+  const mesh = new THREE.Mesh(ringGeo, ringMat);
+  mesh.rotation.set(Math.random()*Math.PI, Math.random()*Math.PI, 0);
+  reactorGroup.add(mesh);
+  
+  ringsData.push({
+    mesh: mesh,
+    origPos: new THREE.Vector3(0, 0, 0),
+    splitPos: cfg.pos,
+    rotSpeed: (Math.random() - 0.5) * 0.02
+  });
 });
-reactorGroup.add(new THREE.Points(particleGeo, particleMat));
 
 let lastInteractionTime = Date.now(), isInteracting = false;
 rControls.addEventListener('start', () => { isInteracting = true; lastInteractionTime = Date.now(); });
@@ -576,17 +574,14 @@ function animateReactor() {
   requestAnimationFrame(animateReactor);
   rControls.update();
   const shouldSplit = isInteracting || (Date.now() - lastInteractionTime < 1500);
-  const positions = particleGeo.attributes.position.array;
-  for(let i = 0; i < particleCount * 3; i += 3) {
-    const tx = shouldSplit ? targetPosArray[i] : (targetPosArray[i] / 2.2);
-    const ty = shouldSplit ? targetPosArray[i+1] : (targetPosArray[i+1] / 2.2);
-    const tz = shouldSplit ? targetPosArray[i+2] : (targetPosArray[i+2] / 2.2);
-    positions[i] += (tx - positions[i]) * 0.08;
-    positions[i+1] += (ty - positions[i+1]) * 0.08;
-    positions[i+2] += (tz - positions[i+2]) * 0.08;
-  }
-  particleGeo.attributes.position.needsUpdate = true;
-  reactorGroup.rotation.y += 0.003;
+
+  ringsData.forEach(item => {
+    const target = shouldSplit ? item.splitPos : item.origPos;
+    item.mesh.position.lerp(target, 0.08);
+    item.mesh.rotation.z += item.rotSpeed * (shouldSplit ? 2.5 : 1.0);
+  });
+
+  reactorGroup.rotation.y += 0.004;
   rRenderer.render(rScene, rCamera);
 }
 animateReactor();
@@ -605,7 +600,7 @@ wScene.add(new THREE.AmbientLight(0x00f0ff, 2.0));
 const cloudGroup = new THREE.Group();
 wScene.add(cloudGroup);
 
-const cloudCount = 500;
+const cloudCount = 450;
 const cloudGeo = new THREE.BufferGeometry();
 const cloudPos = new Float32Array(cloudCount * 3);
 for(let i=0; i<cloudCount*3; i+=3) {
@@ -615,14 +610,14 @@ for(let i=0; i<cloudCount*3; i+=3) {
 }
 cloudGeo.setAttribute('position', new THREE.BufferAttribute(cloudPos, 3));
 const cloudMat = new THREE.PointsMaterial({
-  size: 0.14, color: 0x99e6ff, transparent: true, opacity: 0.8, blending: THREE.AdditiveBlending
+  size: 0.15, color: 0x76e4f7, transparent: true, opacity: 0.8, blending: THREE.AdditiveBlending
 });
 cloudGroup.add(new THREE.Points(cloudGeo, cloudMat));
 
 let windKnot = 14.2;
 function animateWeather() {
   requestAnimationFrame(animateWeather);
-  cloudGroup.rotation.y += 0.006;
+  cloudGroup.rotation.y += 0.005;
   windKnot = 14.2 + Math.sin(Date.now()*0.001)*1.5;
   $('windVal').textContent = windKnot.toFixed(1) + ' KNOTS';
   wRenderer.render(wScene, wCamera);
@@ -709,7 +704,7 @@ $('testVoice').onclick = () => speak('My sir, all tactical systems nominal.');
 
 // --- UNRESTRICTED VISIBLE 3D BLUEPRINT GENERATOR LAB ---
 const host = $('modelCanvas');
-const bScene = new THREE.Scene(); bScene.background = new THREE.Color(0x010204);
+const bScene = new THREE.Scene(); bScene.background = new THREE.Color(0x010306);
 const bCamera = new THREE.PerspectiveCamera(45, host.clientWidth / host.clientHeight, 0.1, 1000);
 bCamera.position.set(5,4,7);
 const bRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -776,7 +771,7 @@ $('buildModel').onclick = async () => {
     }
 
     bScene.add(currentModel);
-    $('modelStatus').textContent = '3D Blueprint generated successfully, my sir[span_7](start_span)[span_7](end_span).';
+    $('modelStatus').textContent = '3D Blueprint generated successfully, my sir[span_9](start_span)[span_9](end_span).';
   } catch(e) {
     $('modelStatus').textContent = 'Error building model.';
   }
@@ -789,7 +784,6 @@ $('resetModel').onclick = () => {
   }
 };
 
-// Default initial visible blueprint model
 currentModel = createProceduralBlueprint('Default Matrix Core');
 bScene.add(currentModel);
 
