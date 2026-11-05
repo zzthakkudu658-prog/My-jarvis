@@ -1271,66 +1271,73 @@ const wait = ms => new Promise(resolve => setTimeout(resolve,ms));
 async function generate3D(prompt) {
   const endpoint = 'https://three.ws/api/3d/generate';
 
-  let response = await fetch(endpoint,{
-    method:'POST',
-    headers:{
-      'Content-Type':'application/json',
-      'Accept':'application/json'
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
     },
-    body:JSON.stringify({prompt})
+    body: JSON.stringify({
+      prompt: prompt.trim(),
+      format: 'glb'
+    })
   });
 
-  let data = await response.json().catch(()=>({}));
-
   if (!response.ok) {
-    throw new Error(
-      data?.error ||
-      data?.message ||
-      'The free 3D service could not accept the request.'
-    );
+    throw new Error('Server error: ' + response.status);
   }
 
-  let modelUrl = extractModelUrl(data);
-  const job = extractJob(data);
+  let data = await response.json();
 
-  if (!modelUrl && !job) {
-    throw new Error(
-      data?.message ||
-      'The 3D service returned no model link or job ID.'
-    );
+  if (data.status === 'error') {
+    throw new Error(data.error || '3D generation failed.');
   }
 
-  for (let attempt=0;!modelUrl && job && attempt<80;attempt++) {
+  let attempts = 0;
+
+  while (data.status === 'pending' && attempts < 60) {
+    if (!data.job) {
+      throw new Error('The server did not provide a job ID.');
+    }
+
+    const waitSeconds = Math.max(
+      2,
+      Math.min(Number(data.retryAfter) || 5, 30)
+    );
+
     $('modelStatus').textContent =
-      'Creating your 3D model... '+(attempt+1)+'/80';
+      'Generating your 3D model... Please wait.';
 
-    await wait(3000);
-
-    response = await fetch(
-      endpoint+'?job='+encodeURIComponent(job),
-      {headers:{'Accept':'application/json'}}
+    await new Promise(resolve =>
+      setTimeout(resolve, waitSeconds * 1000)
     );
 
-    data = await response.json().catch(()=>({}));
+    const pollUrl = data.poll
+      ? new URL(data.poll, endpoint).href
+      : endpoint + '?job=' + encodeURIComponent(data.job);
 
-    if (!response.ok) {
-      throw new Error(data?.error || 'Could not check generation progress.');
+    const pollResponse = await fetch(pollUrl, {
+      headers: { 'Accept': 'application/json' }
+    });
+
+    if (!pollResponse.ok) {
+      throw new Error('Model check failed: ' + pollResponse.status);
     }
 
-    modelUrl = extractModelUrl(data);
+    data = await pollResponse.json();
 
-    const state = String(data?.status || data?.state || '').toLowerCase();
-
-    if (['failed','error','cancelled'].includes(state)) {
-      throw new Error(data?.error || data?.message || '3D generation failed.');
+    if (data.status === 'error') {
+      throw new Error(data.error || '3D generation failed.');
     }
+
+    attempts++;
   }
 
-  if (!modelUrl) {
-    throw new Error('The model is taking too long. Please try again later.');
+  if (data.status !== 'done' || !data.glbUrl) {
+    throw new Error('Generation timed out. Please try again.');
   }
 
-  return modelUrl;
+  return data.glbUrl;
 }
 
 $('buildModel').onclick = async () => {
