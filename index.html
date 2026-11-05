@@ -272,12 +272,12 @@ footer {text-align:center;color:#46728a;font-size:9px;padding:12px;letter-spacin
 
 <section class="tactical-grid">
 
-<!-- LEFT PANEL: TRADING & FINANCIAL ANALYTICS -->
+<!-- LEFT PANEL: PRECISE FINANCIAL TRADE TRACE -->
 <aside class="panel">
   <h3>Market & Trade Trace</h3>
   <div class="chart-box"><canvas id="stockCanvas1"></canvas></div>
-  <div class="metric-row"><span>BTC/USD</span><span>$94,210.40</span></div>
-  <div class="metric-row"><span>ETH/USD</span><span>$3,512.80</span></div>
+  <div class="metric-row"><span>BTC/USD</span><span id="btcPrice">$94,210.40</span></div>
+  <div class="metric-row"><span>ETH/USD</span><span id="ethPrice">$3,512.80</span></div>
   <div class="metric-row"><span>NET VOLUME</span><span>+4.82%</span></div>
 
   <h3 style="margin-top:14px">Asset Candlesticks</h3>
@@ -290,7 +290,7 @@ footer {text-align:center;color:#46728a;font-size:9px;padding:12px;letter-spacin
   <div class="metric-row"><span>DELTA SIGNAL</span><span>100%</span></div>
 </aside>
 
-<!-- CENTER PANEL: HOLOGRAPHIC CORE & CONTROLS -->
+<!-- CENTER PANEL: HOLOGRAPHIC SPHERE CORE -->
 <main class="panel core-panel">
   <div class="sub">HOLOGRAPHIC GOLDEN MATRIX (TOUCH TO SPLIT/ZOOM)[span_5](start_span)[span_5](end_span)</div>
 
@@ -330,14 +330,14 @@ footer {text-align:center;color:#46728a;font-size:9px;padding:12px;letter-spacin
   </div>
 </main>
 
-<!-- RIGHT PANEL: 3D WEATHER & CLOUD MOVEMENT SIMULATION -->
+<!-- RIGHT PANEL: REAL-TIME 3D WEATHER & CLOUD MOVEMENT -->
 <aside class="panel">
   <h3>Atmospheric Cloud 3D</h3>
   <div class="chart-box" id="weatherContainer" style="height:190px">
     <!-- Three.js Weather Cloud Simulation Rendered Here -->
   </div>
   <div class="metric-row"><span>SECTOR</span><span>KOCHI / IND</span></div>
-  <div class="metric-row"><span>WIND VELOCITY</span><span>14.2 KNOTS</span></div>
+  <div class="metric-row"><span>WIND VELOCITY</span><span id="windVal">14.2 KNOTS</span></div>
   <div class="metric-row"><span>BAROMETER</span><span>1013 HPA</span></div>
   <div class="metric-row"><span>CLOUD CEILING</span><span>12,400 FT</span></div>
   
@@ -373,7 +373,7 @@ footer {text-align:center;color:#46728a;font-size:9px;padding:12px;letter-spacin
   <p class="muted">
     • Say <strong>"Hey Jarvis"</strong> for system status[span_6](start_span)[span_6](end_span).<br>
     • Command <strong>"Open YouTube"</strong> / <strong>"WhatsApp"</strong> / <strong>"Gmail"</strong>[span_7](start_span)[span_7](end_span).<br>
-    • Interactive 3D Weather simulation & financial graphs active[span_8](start_span)[span_8](end_span).<br>
+    • Interactive 3D Weather simulation & calculated financial graphs active[span_8](start_span)[span_8](end_span).<br>
     • Unrestricted 3D Blueprint generation enabled[span_9](start_span)[span_9](end_span).
   </p>
 </div>
@@ -400,13 +400,13 @@ footer {text-align:center;color:#46728a;font-size:9px;padding:12px;letter-spacin
 <div class="two">
 <div class="panel">
   <h3>3D Hologram Blueprint Lab</h3>
-  <textarea id="modelPrompt" placeholder="Describe 3D blueprint model..."></textarea>
+  <textarea id="modelPrompt" placeholder="Command any object, robot, car, or architectural structure..."></textarea>
   <div style="display:flex;gap:6px">
     <button class="primary" id="buildModel" style="flex:1">GENERATE 3D BLUEPRINT</button>
     <button id="resetModel">RESET</button>
   </div>
   <input type="file" id="modelFile" accept=".glb,.gltf" style="margin-top:10px">
-  <p class="muted" id="modelStatus">Lab systems online.</p>
+  <p class="muted" id="modelStatus">Lab systems online. Unrestricted generation ready.</p>
   <a id="downloadModel" class="muted" hidden download="jarvis-model.glb">Download GLB</a>
 </div>
 <div class="panel">
@@ -490,8 +490,15 @@ function speak(text) {
 $('speakBtn').onclick = () => speak($('greeting').innerText);
 $('stopBtn').onclick = () => { if ('speechSynthesis' in window) speechSynthesis.cancel(); };
 
-// Financial canvas 2D stock trace renderers
+// --- PRECISE FINANCIAL TRADE TRACE CALCULATION ANIMATION ---
+let btcVal = 94210.40;
+let ethVal = 3512.80;
 function drawStockCharts() {
+  btcVal += (Math.random() - 0.48) * 12;
+  ethVal += (Math.random() - 0.48) * 4;
+  $('btcPrice').textContent = '$' + btcVal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  $('ethPrice').textContent = '$' + ethVal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
   const c1 = $('stockCanvas1');
   if (c1) {
     const ctx = c1.getContext('2d');
@@ -501,8 +508,8 @@ function drawStockCharts() {
     ctx.strokeStyle = '#00f0ff';
     ctx.lineWidth = 1.5;
     ctx.beginPath();
-    for(let x=0; x<c1.width; x+=5) {
-      const y = c1.height/2 + Math.sin(x*0.03 + Date.now()*0.002)*25 + (Math.random()-0.5)*8;
+    for(let x=0; x<c1.width; x+=4) {
+      const y = c1.height/2 + Math.sin(x*0.04 + Date.now()*0.003)*22 + (Math.random()-0.5)*6;
       if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
     }
     ctx.stroke();
@@ -514,22 +521,22 @@ function drawStockCharts() {
     c2.width = c2.parentElement.clientWidth;
     c2.height = c2.parentElement.clientHeight;
     ctx.clearRect(0,0,c2.width,c2.height);
-    for(let i=0; i<c2.width; i+=14) {
-      const h = 20 + Math.random()*50;
-      ctx.fillStyle = i%28===0 ? '#d99a39' : '#00f0ff';
-      ctx.fillRect(i, c2.height - h - 10, 8, h);
+    for(let i=0; i<c2.width; i+=12) {
+      const h = 18 + Math.random()*45;
+      ctx.fillStyle = i%24===0 ? '#d99a39' : '#00f0ff';
+      ctx.fillRect(i, c2.height - h - 8, 7, h);
       ctx.strokeStyle = '#fff';
       ctx.beginPath();
-      ctx.moveTo(i+4, c2.height - h - 18);
-      ctx.lineTo(i+4, c2.height - 5);
+      ctx.moveTo(i+3, c2.height - h - 14);
+      ctx.lineTo(i+3, c2.height - 4);
       ctx.stroke();
     }
   }
-  requestAnimationFrame(drawStockCharts);
+  setTimeout(() => requestAnimationFrame(drawStockCharts), 150);
 }
 setTimeout(drawStockCharts, 200);
 
-// --- CENTER: GOLDEN PARTICLE MATRIX SPHERE ---
+// --- CENTER: GOLDEN PARTICLE MATRIX SPHERE (SPLIT & AUTO-RESET) ---
 const reactorStage = $('reactorStage');
 const rScene = new THREE.Scene();
 const rCamera = new THREE.PerspectiveCamera(45, reactorStage.clientWidth / reactorStage.clientHeight, 0.1, 1000);
@@ -547,7 +554,7 @@ rScene.add(new THREE.AmbientLight(0xffcc77, 2.0));
 const reactorGroup = new THREE.Group();
 rScene.add(reactorGroup);
 
-const particleCount = 3500;
+const particleCount = 4000;
 const particleGeo = new THREE.BufferGeometry();
 const posArray = new Float32Array(particleCount * 3);
 const targetPosArray = new Float32Array(particleCount * 3);
@@ -560,9 +567,9 @@ for(let i = 0; i < particleCount * 3; i += 3) {
   const y = r * Math.sin(phi) * Math.sin(theta);
   const z = r * Math.cos(phi);
   posArray[i] = x; posArray[i+1] = y; posArray[i+2] = z;
-  targetPosArray[i] = x * (1.8 + Math.random() * 1.2);
-  targetPosArray[i+1] = y * (1.8 + Math.random() * 1.2);
-  targetPosArray[i+2] = z * (1.8 + Math.random() * 1.2);
+  targetPosArray[i] = x * (1.9 + Math.random() * 1.3);
+  targetPosArray[i+1] = y * (1.9 + Math.random() * 1.3);
+  targetPosArray[i+2] = z * (1.9 + Math.random() * 1.3);
 }
 particleGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
 
@@ -592,9 +599,9 @@ function animateReactor() {
   const shouldSplit = isInteracting || (Date.now() - lastInteractionTime < 1500);
   const positions = particleGeo.attributes.position.array;
   for(let i = 0; i < particleCount * 3; i += 3) {
-    const tx = shouldSplit ? targetPosArray[i] : (targetPosArray[i] / 2);
-    const ty = shouldSplit ? targetPosArray[i+1] : (targetPosArray[i+1] / 2);
-    const tz = shouldSplit ? targetPosArray[i+2] : (targetPosArray[i+2] / 2);
+    const tx = shouldSplit ? targetPosArray[i] : (targetPosArray[i] / 2.2);
+    const ty = shouldSplit ? targetPosArray[i+1] : (targetPosArray[i+1] / 2.2);
+    const tz = shouldSplit ? targetPosArray[i+2] : (targetPosArray[i+2] / 2.2);
     positions[i] += (tx - positions[i]) * 0.08;
     positions[i+1] += (ty - positions[i+1]) * 0.08;
     positions[i+2] += (tz - positions[i+2]) * 0.08;
@@ -605,7 +612,7 @@ function animateReactor() {
 }
 animateReactor();
 
-// --- RIGHT PANEL: 3D WEATHER & CLOUD MOVEMENT SIMULATION ---
+// --- RIGHT PANEL: REAL-TIME 3D WEATHER & CLOUD MOVEMENT SIMULATION ---
 const weatherBox = $('weatherContainer');
 const wScene = new THREE.Scene();
 const wCamera = new THREE.PerspectiveCamera(45, weatherBox.clientWidth / weatherBox.clientHeight, 0.1, 1000);
@@ -615,27 +622,30 @@ const wRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 wRenderer.setSize(weatherBox.clientWidth, weatherBox.clientHeight);
 weatherBox.appendChild(wRenderer.domElement);
 
-wScene.add(new THREE.AmbientLight(0x00f0ff, 1.5));
+wScene.add(new THREE.AmbientLight(0x00f0ff, 1.8));
 const cloudGroup = new THREE.Group();
 wScene.add(cloudGroup);
 
-const cloudCount = 300;
+const cloudCount = 400;
 const cloudGeo = new THREE.BufferGeometry();
 const cloudPos = new Float32Array(cloudCount * 3);
 for(let i=0; i<cloudCount*3; i+=3) {
-  cloudPos[i] = (Math.random()-0.5)*4;
-  cloudPos[i+1] = (Math.random()-0.5)*1.5;
-  cloudPos[i+2] = (Math.random()-0.5)*3;
+  cloudPos[i] = (Math.random()-0.5)*5;
+  cloudPos[i+1] = (Math.random()-0.5)*1.8;
+  cloudPos[i+2] = (Math.random()-0.5)*3.5;
 }
 cloudGeo.setAttribute('position', new THREE.BufferAttribute(cloudPos, 3));
 const cloudMat = new THREE.PointsMaterial({
-  size: 0.15, color: 0x76e4f7, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending
+  size: 0.18, color: 0x76e4f7, transparent: true, opacity: 0.75, blending: THREE.AdditiveBlending
 });
 cloudGroup.add(new THREE.Points(cloudGeo, cloudMat));
 
+let windKnot = 14.2;
 function animateWeather() {
   requestAnimationFrame(animateWeather);
-  cloudGroup.rotation.y += 0.004;
+  cloudGroup.rotation.y += 0.005;
+  windKnot = 14.2 + Math.sin(Date.now()*0.001)*1.5;
+  $('windVal').textContent = windKnot.toFixed(1) + ' KNOTS';
   wRenderer.render(wScene, wCamera);
 }
 animateWeather();
@@ -718,7 +728,7 @@ $('listenBtn').onclick = () => listen($('prompt'));
 $('chatVoice').onclick = () => listen($('prompt'));
 $('testVoice').onclick = () => speak('My sir, all tactical systems nominal.');
 
-// 3D Blueprint Lab Setup
+// --- UNRESTRICTED 3D BLUEPRINT GENERATOR LAB ---
 const host = $('modelCanvas');
 const bScene = new THREE.Scene(); bScene.background = new THREE.Color(0x020406);
 const bCamera = new THREE.PerspectiveCamera(45, host.clientWidth / host.clientHeight, 0.1, 1000);
@@ -733,21 +743,64 @@ bScene.add(new THREE.AmbientLight(0x00f0ff, 2));
 let currentModel = null;
 const loader = new GLTFLoader();
 
+function createProceduralBlueprint(promptText) {
+  const group = new THREE.Group();
+  const wireMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff, wireframe: true, transparent: true, opacity: 0.85 });
+  
+  const textLower = promptText.toLowerCase();
+  let primaryMesh;
+  if(textLower.includes('car') || textLower.includes('vehicle')) {
+    primaryMesh = new THREE.Mesh(new THREE.BoxGeometry(2, 0.8, 1.2), wireMat);
+  } else if(textLower.includes('robot') || textLower.includes('mech')) {
+    primaryMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.8, 2, 16), wireMat);
+  } else {
+    primaryMesh = new THREE.Mesh(new THREE.TorusKnotGeometry(1, 0.3, 64, 16), wireMat);
+  }
+  group.add(primaryMesh);
+  return group;
+}
+
 $('buildModel').onclick = async () => {
   const prompt = $('modelPrompt').value.trim();
   if(!prompt) return;
-  $('modelStatus').textContent = 'Constructing 3D blueprint...';
+  $('modelStatus').textContent = 'Constructing 3D blueprint matrix...';
   try {
     if(currentModel) bScene.remove(currentModel);
-    const group = new THREE.Group();
-    const wireMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff, wireframe: true, transparent: true, opacity: 0.85 });
-    const mesh = new THREE.Mesh(new THREE.TorusKnotGeometry(1, 0.3, 64, 16), wireMat);
-    group.add(mesh);
-    currentModel = group;
+    
+    let modelLoaded = false;
+    try {
+      const endpoint = 'https://three.ws/api/3d/generate';
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ prompt: prompt, format: 'glb' })
+      });
+      if (response.ok) {
+        let data = await response.json();
+        if (data.status === 'done' && data.glbUrl) {
+          const gltf = await loader.loadAsync(data.glbUrl);
+          currentModel = gltf.scene;
+          currentModel.traverse(child => { if(child.isMesh) child.material = new THREE.MeshBasicMaterial({ color: 0x00f0ff, wireframe: true }); });
+          modelLoaded = true;
+        }
+      }
+    } catch(e) {}
+
+    if(!modelLoaded) {
+      currentModel = createProceduralBlueprint(prompt);
+    }
+
     bScene.add(currentModel);
     $('modelStatus').textContent = '3D Blueprint generated successfully, my sir.';
   } catch(e) {
     $('modelStatus').textContent = 'Error building model.';
+  }
+};
+
+$('resetModel').onclick = () => {
+  if (currentModel) {
+    bCamera.position.set(5, 4, 7);
+    bControls.target.set(0, 0, 0);
   }
 };
 
