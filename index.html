@@ -4,728 +4,206 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#030712">
-<title>J.A.R.V.I.S. — Ultimate Enterprise Command Suite</title>
-<link rel="manifest" href="manifest.json">
-
+<title>J.A.R.V.I.S. — Personal AI</title>
 <style>
 :root {
-  --blue:#00f0ff;
-  --red:#ff2247;
-  --gold:#d99a39;
-  --gold-light:#ffd58a;
-  --line:rgba(0,240,255,.25);
-  --panel:rgba(5,10,18,.96);
+  --blue:#00eaff; --red:#ff3155; --gold:#ffc875;
+  --line:rgba(0,234,255,.28); --panel:rgba(4,12,23,.96);
 }
-* {box-sizing:border-box}
-html,body {
-  margin:0;
-  min-height:100%;
-  background:#030712;
-  color:#cbf0f8;
-  font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+*{box-sizing:border-box}
+body{
+  margin:0;background:#030712;color:#d7f7ff;
+  font-family:ui-monospace,Consolas,monospace;overflow-x:hidden
 }
-body {overflow-x:hidden}
-body:before {
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  opacity:.12;
-  background-image:
-    linear-gradient(rgba(0,240,255,.1) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(255,34,71,.08) 1px,transparent 1px);
-  background-size:24px 24px;
+body:before{
+  content:"";position:fixed;inset:0;pointer-events:none;opacity:.13;
+  background-image:linear-gradient(#00eaff18 1px,transparent 1px),
+  linear-gradient(90deg,#00eaff18 1px,transparent 1px);
+  background-size:25px 25px
 }
-.shell {max-width:1850px;margin:auto;padding:10px}
-header {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  padding:12px 16px;
-  border:1px solid var(--line);
-  border-radius:4px;
-  background:linear-gradient(90deg,#08101a,#03060a);
-  box-shadow:0 0 20px rgba(0,240,255,.12);
+.shell{max-width:1500px;margin:auto;padding:10px}
+header,.panel{
+  border:1px solid var(--line);background:var(--panel);
+  box-shadow:0 0 18px #00eaff0c;border-radius:7px
 }
-.brand {
-  color:var(--blue);
-  font-weight:700;
-  letter-spacing:.22em;
-  font-size:clamp(14px,2vw,20px);
+header{display:flex;justify-content:space-between;align-items:center;padding:13px;gap:10px}
+.brand{font-size:20px;color:var(--blue);font-weight:bold;letter-spacing:4px}
+.brand small{display:block;color:var(--gold);font-size:8px;letter-spacing:2px;margin-top:4px}
+.status{font-size:9px;color:#7fffd4}
+.enterprise-grid{display:grid;grid-template-columns:260px minmax(300px,1fr) 260px;gap:10px;margin-top:10px}
+.panel{padding:12px;min-width:0}
+.panel h3{font-size:10px;letter-spacing:2px;color:var(--blue);border-bottom:1px solid var(--line);padding-bottom:7px}
+.metric-row{display:flex;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px dashed #00eaff20;font-size:9px}
+.metric-row span:last-child{color:var(--gold);text-align:right}
+.core-deck{display:flex;flex-direction:column;align-items:center;gap:12px;background:radial-gradient(ellipse,#102c48,#030712 75%)}
+.sub{font-size:9px;letter-spacing:2px;color:#80dff5;text-align:center}
+.reactor-stage{width:100%;height:350px;position:relative;background:#01050b;border:1px solid #00eaff55;border-radius:6px;overflow:hidden;touch-action:none}
+.reactor-stage canvas{width:100%;height:100%;display:block}
+.greeting{color:var(--gold);font-size:13px;text-align:center;line-height:1.5}
+.controls{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
+button{
+  border:1px solid var(--blue);background:#00eaff12;color:var(--blue);
+  border-radius:4px;padding:9px 12px;font: bold 10px monospace;cursor:pointer
 }
-.brand small {
-  display:block;
-  margin-top:2px;
-  color:var(--gold);
-  font-size:7px;
-  letter-spacing:.18em;
+button:active{transform:scale(.97)}
+button.primary{border-color:var(--red);color:#ff9aaa;background:#ff31551a}
+button:disabled{opacity:.4}
+.shortcuts{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.app-shortcut{display:block;text-align:center;text-decoration:none;color:#d7f7ff;border:1px solid var(--line);padding:10px 3px;border-radius:4px;font-size:8px}
+.app-shortcut b{display:block;font-size:17px;margin-bottom:5px}
+nav{display:flex;gap:5px;margin:10px 0;flex-wrap:wrap}
+.tab{flex:1;min-width:90px;padding:10px;text-align:center;background:#06101d;border:1px solid var(--line);font-size:9px;cursor:pointer}
+.tab.active{background:#00eaff22;border-color:var(--blue)}
+.view{display:none}.view.active{display:block}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+input,textarea,select{
+  width:100%;padding:10px;background:#01050b;color:#d7f7ff;
+  border:1px solid var(--line);border-radius:4px;font:11px monospace;margin:5px 0
 }
-.status {
-  font-size:8px;
-  letter-spacing:.15em;
-  color:#76e4f7;
-}
-.status:before {
-  content:"";
-  display:inline-block;
-  width:5px;height:5px;
-  border-radius:50%;
-  background:var(--red);
-  box-shadow:0 0 8px var(--red);
-  margin-right:6px;
-}
-.enterprise-grid {
-  display:grid;
-  grid-template-columns:310px minmax(420px,1.4fr) 310px;
-  gap:10px;
-  margin-top:10px;
-}
-.panel {
-  border:1px solid var(--line);
-  border-radius:4px;
-  padding:10px;
-  background:var(--panel);
-  position:relative;
-  box-shadow:inset 0 0 15px rgba(0,240,255,.03);
-}
-.panel:before {
-  content:"";
-  position:absolute;
-  top:0;left:0;width:3px;height:3px;
-  border-top:2px solid var(--blue);
-  border-left:2px solid var(--blue);
-}
-.panel h3 {
-  color:var(--blue);
-  font-size:9px;
-  letter-spacing:.18em;
-  margin:0 0 8px;
-  text-transform:uppercase;
-  border-bottom:1px solid var(--line);
-  padding-bottom:4px;
-}
-.metric-row {
-  display:flex;
-  justify-content:space-between;
-  font-size:9px;
-  padding:4px 0;
-  border-bottom:1px dashed rgba(0,240,255,.1);
-}
-.metric-row span:last-child {color:var(--gold-light);font-weight:bold}
-.core-deck {
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:space-between;
-  min-height:560px;
-  background:radial-gradient(circle at 50% 40%,#0c1b30 0%,#040810 75%);
-}
-.reactor-stage {
-  width:100%;
-  height:310px;
-  position:relative;
-  border:1px solid rgba(255,34,71,.4);
-  border-radius:4px;
-  background:#010306;
-  overflow:hidden;
-}
-.reactor-stage canvas {width:100%;height:100%;display:block;cursor:grab}
-.reactor-stage canvas:active {cursor:grabbing}
-.greeting {
-  text-align:center;
-  color:var(--gold-light);
-  font-size:13px;
-  letter-spacing:.08em;
-  line-height:1.4;
-  margin:6px 0;
-}
-.sub {
-  color:#76e4f7;
-  font-size:8px;
-  letter-spacing:.15em;
-  text-align:center;
-}
-.controls {
-  display:flex;
-  gap:5px;
-  width:100%;
-  justify-content:center;
-}
-button {
-  border:1px solid var(--blue);
-  color:var(--blue);
-  background:rgba(0,240,255,.08);
-  padding:7px 12px;
-  border-radius:3px;
-  font-family:inherit;
-  font-weight:bold;
-  font-size:9px;
-  letter-spacing:.1em;
-  cursor:pointer;
-  transition:.2s;
-}
-button:hover {background:rgba(0,240,255,.2);box-shadow:0 0 10px rgba(0,240,255,.4)}
-button.primary {
-  border-color:var(--red);
-  color:#ff8899;
-  background:rgba(255,34,71,.15);
-}
-button.primary:hover {
-  background:rgba(255,34,71,0.3);
-  box-shadow:0 0 10px rgba(255,34,71,.5);
-}
-.shortcuts {
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:4px;
-  width:100%;
-}
-.app-shortcut {
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  text-decoration:none;
-  color:#cbf0f8;
-  border:1px solid var(--line);
-  border-radius:3px;
-  background:#040912;
-  font-size:6px;
-  letter-spacing:.08em;
-  padding:5px 2px;
-}
-.app-shortcut:hover {border-color:var(--blue);background:#08182c}
-.app-icon {font-size:12px;margin-bottom:2px}
-nav {display:flex;gap:5px;margin:8px 0}
-.tab {flex:1;text-align:center;padding:8px;background:#040912;border:1px solid var(--line);color:#76e4f7;cursor:pointer;font-size:9px;letter-spacing:.12em;border-radius:3px}
-.tab.active {background:rgba(0,240,255,.18);border-color:var(--blue);color:#fff;box-shadow:0 0 10px rgba(0,240,255,.3)}
-.view {display:none}
-.view.active {display:block}
-.two {display:grid;grid-template-columns:1fr 1fr;gap:8px}
-input,textarea,select {
-  width:100%;
-  background:#020408;
-  border:1px solid var(--line);
-  border-radius:3px;
-  color:#cbf0f8;
-  padding:8px;
-  font:inherit;
-  font-size:10px;
-  margin:3px 0 6px;
-}
-textarea {min-height:65px;resize:vertical}
-.chatlog {
-  height:180px;
-  overflow:auto;
-  border:1px solid var(--line);
-  border-radius:3px;
-  padding:6px;
-  background:#010204;
-}
-.msg {padding:6px 8px;border-radius:3px;margin:4px 0;font-size:11px;line-height:1.3}
-.user {background:#0a2036;margin-left:8%;border-left:2px solid var(--blue)}
-.ai {background:#240c12;margin-right:8%;border-left:2px solid var(--red)}
-.muted {color:#76e4f7;font-size:9px;line-height:1.4}
-.canvasbox {
-  height:290px;
-  border:1px solid var(--line);
-  border-radius:3px;
-  overflow:hidden;
-  background:#010204;
-}
-.canvasbox canvas {display:block;width:100%;height:100%}
-footer {text-align:center;color:#46728a;font-size:8px;padding:8px;letter-spacing:.1em}
-[hidden] {display:none!important}
-@media(max-width:1100px) {
-  .enterprise-grid {grid-template-columns:1fr}
-}
+textarea{min-height:75px;resize:vertical}
+.chatlog{height:230px;overflow:auto;background:#01050b;border:1px solid var(--line);padding:8px}
+.msg{font-size:11px;line-height:1.5;padding:8px;margin:5px 0;border-radius:4px;white-space:pre-wrap;overflow-wrap:anywhere}
+.user{background:#09243a;border-left:2px solid var(--blue);margin-left:8%}
+.ai{background:#240e19;border-left:2px solid var(--red);margin-right:8%}
+.muted{font-size:9px;color:#86c8dc;line-height:1.6}
+.canvasbox{height:300px;background:#01050b;border:1px solid var(--line)}
+.canvasbox canvas{width:100%;height:100%;display:block}
+footer{text-align:center;color:#47768a;font-size:8px;padding:15px}
+@media(max-width:900px){.enterprise-grid{grid-template-columns:1fr}.two{grid-template-columns:1fr}.reactor-stage{height:310px}}
 </style>
 </head>
-
 <body>
-<div class="shell">
-
+<div class="shell" id="shell">
 <header>
-  <div class="brand">
-    J.A.R.V.I.S.
-    <small>CORE INVENTOR: ADITHYAN • ENTERPRISE REACTOR SUITE</small>
-  </div>
-  <div class="status" id="status">BACKGROUND OVERLAY READY</div>
+  <div class="brand">J.A.R.V.I.S.<small>PERSONAL AI • CORE INVENTOR: ADITHYAN</small></div>
+  <div class="status" id="status">● SYSTEM READY</div>
 </header>
 
 <section class="enterprise-grid">
-
-<!-- COLUMN 1: TELEMETRY & DEVICE STATUS -->
 <aside class="panel">
-  <h3>System Telemetry</h3>
-  <div class="metric-row"><span>CORE INVENTOR</span><span>ADITHYAN</span></div>
-  <div class="metric-row"><span>STABILITY</span><span>100% NOMINAL</span></div>
-  <div class="metric-row"><span>QUANTUM FLUX</span><span>4.82 THZ</span></div>
-  <div class="metric-row"><span>VOICE LINK</span><span id="voiceState">READY</span></div>
+  <h3>SYSTEM TELEMETRY</h3>
+  <div class="metric-row"><span>CORE</span><span>NOMINAL</span></div>
+  <div class="metric-row"><span>VOICE</span><span id="voiceState">STANDBY</span></div>
   <div class="metric-row"><span>LOCAL TIME</span><span id="clock">--:--</span></div>
-  <div class="metric-row"><span>BATTERY STATUS</span><span id="battery">--</span></div>
-
-  <h3 style="margin-top:12px">Native App Shortcuts</h3>
+  <div class="metric-row"><span>BATTERY</span><span id="battery">Unavailable</span></div>
+  <h3>NATIVE APP SHORTCUTS</h3>
   <div class="shortcuts">
-    <a class="app-shortcut instagram" href="https://www.instagram.com/" target="_blank">
-      <span class="app-icon">◎</span><span>INSTAGRAM</span>
-    </a>
-    <a class="app-shortcut gmail" href="https://mail.google.com/" target="_blank">
-      <span class="app-icon">M</span><span>GMAIL</span>
-    </a>
-    <a class="app-shortcut youtube" href="https://www.youtube.com/" target="_blank">
-      <span class="app-icon">▶</span><span>YOUTUBE</span>
-    </a>
-    <a class="app-shortcut phone" href="tel:">
-      <span class="app-icon">☎</span><span>PHONE</span>
-    </a>
-    <a class="app-shortcut messages" href="sms:">
-      <span class="app-icon">▰</span><span>MESSAGES</span>
-    </a>
+    <a class="app-shortcut" href="https://www.instagram.com/"><b>◎</b>INSTAGRAM</a>
+    <a class="app-shortcut" href="https://mail.google.com/"><b>✉</b>GMAIL</a>
+    <a class="app-shortcut" href="https://www.youtube.com/"><b>▶</b>YOUTUBE</a>
+    <a class="app-shortcut" href="https://www.google.com/maps"><b>⌖</b>MAPS</a>
+    <a class="app-shortcut" href="https://web.whatsapp.com/"><b>◉</b>WHATSAPP</a>
+    <a class="app-shortcut" href="tel:"><b>☎</b>PHONE</a>
   </div>
-
-  <h3 style="margin-top:12px">Health & Sensors</h3>
-  <div class="metric-row"><span>HEART RATE SENSOR</span><span>IDLE / READY</span></div>
-  <div class="metric-row"><span>BACKGROUND SERVICE</span><span>ACTIVE STICKY</span></div>
+  <h3>HEALTH & SENSORS</h3>
+  <div class="metric-row"><span>HEART RATE</span><span>Not connected</span></div>
+  <p class="muted">Health readings require an authorized health-data connection. No readings are simulated.</p>
 </aside>
 
-<!-- COLUMN 2: CENTER 3D REACTOR CORE -->
 <main class="panel core-deck">
-  <div class="sub">ARC REACTOR CORE MATRIX (TOUCH TO SPLIT/ZOOM)</div>
-
+  <div class="sub">INTERACTIVE ARC REACTOR • DRAG TO ROTATE</div>
   <div class="reactor-stage" id="reactorStage"></div>
-
-  <div class="greeting" id="greeting">
-    My sir, all systems online. How may I assist you today?
-  </div>
-
+  <div class="greeting" id="greeting">My sir, JARVIS is ready. How may I assist?</div>
   <div class="sub" id="liveCaption">VOICE INTERFACE • STANDBY</div>
-
   <div class="controls">
     <button class="primary" id="listenBtn">🎙 LISTEN</button>
     <button id="speakBtn">🔊 SPEAK</button>
     <button id="stopBtn">■ STOP</button>
   </div>
+  <div class="controls">
+    <button id="zoomIn">＋ ZOOM</button>
+    <button id="zoomOut">－ ZOOM</button>
+    <button id="splitBtn">⟡ EXPLODE</button>
+    <button id="assembleBtn">◎ REASSEMBLE</button>
+    <button id="autoRotateBtn">⟳ AUTO ROTATE: ON</button>
+  </div>
 </main>
 
-<!-- COLUMN 3: PROTOCOLS & OVERLAY CONTROLS -->
 <aside class="panel">
-  <h3>Operational Protocols</h3>
-  <div class="metric-row"><span>WAKE WORD</span><span>"HEY JARVIS"</span></div>
-  <div class="metric-row"><span>RESPONSE</span><span>"My sir, all systems online"</span></div>
-  <div class="metric-row"><span>AI BACKEND</span><span>OPENROUTER (GPT-4O-MINI)</span></div>
-  <div class="metric-row"><span>OVERLAY PERMISSION</span><span>GRANTED / ACTIVE</span></div>
-
-  <h3 style="margin-top:12px">Android Native Bridge</h3>
-  <p class="muted">
-    • Background wake word service listens even when minimized.<br>
-    • Screen overlay permits floating reactor control widget.<br>
-    • Secure local storage for API credentials.
-  </p>
+  <h3>JARVIS PROTOCOLS</h3>
+  <div class="metric-row"><span>AI BACKEND</span><span>OPENROUTER</span></div>
+  <div class="metric-row"><span>VOICE ENGINE</span><span>BROWSER</span></div>
+  <div class="metric-row"><span>ANDROID BRIDGE</span><span>NOT CONNECTED</span></div>
+  <h3>DEVICE CAPABILITIES</h3>
+  <p class="muted">This web version can open websites, use supported browser voice features and display 3D graphics. Background wake-word listening, screen locking and native device controls require a native Android app.</p>
 </aside>
-
 </section>
 
 <nav>
-  <div class="tab active" data-tab="chat">AI Assistant</div>
-  <div class="tab" data-tab="images">Image Generator</div>
-  <div class="tab" data-tab="workshop">3D Blueprint Lab</div>
-  <div class="tab" data-tab="settings">Settings</div>
+  <div class="tab active" data-tab="chat">AI ASSISTANT</div>
+  <div class="tab" data-tab="images">IMAGE GENERATOR</div>
+  <div class="tab" data-tab="workshop">3D WORKSHOP</div>
+  <div class="tab" data-tab="settings">SETTINGS</div>
 </nav>
 
 <section class="view active" id="chat">
 <div class="two">
-<div class="panel">
-  <h3>JARVIS Tactical Link</h3>
-  <div class="chatlog" id="chatlog">
-    <div class="msg ai">My sir, all systems online. How can I assist you?</div>
+  <div class="panel">
+    <h3>JARVIS TACTICAL LINK</h3>
+    <div class="chatlog" id="chatlog"><div class="msg ai">My sir, all systems online. How can I assist?</div></div>
+    <textarea id="prompt" placeholder="Talk to JARVIS or type a command..."></textarea>
+    <div class="controls">
+      <button class="primary" id="sendBtn">SEND</button>
+      <button id="chatVoice">🎙 VOICE</button>
+      <button id="clearChat">CLEAR CHAT</button>
+    </div>
   </div>
-  <textarea id="prompt" placeholder="Ask JARVIS or command 'open YouTube', 'remind me', etc..."></textarea>
-  <div style="display:flex;gap:5px">
-    <button class="primary" id="sendBtn" style="flex:1">Send Transmission</button>
-    <button id="chatVoice">🎙 Voice</button>
+  <div class="panel">
+    <h3>ASSISTANT STATUS</h3>
+    <p class="muted" id="assistantStatus">Ready. Add your API key in Settings to enable AI replies.</p>
+    <h3>QUICK COMMANDS</h3>
+    <p class="muted">“Open YouTube” • “Open WhatsApp” • “What time is it?” • “Explain photosynthesis”</p>
   </div>
-</div>
-<div class="panel">
-  <h3>Enterprise Manual</h3>
-  <p class="muted">
-    • Touch/drag center reactor core to split plates apart.<br>
-    • Fully functional image synthesizer and 3D Blueprint Lab.<br>
-    • Native Android APK compilation instructions active.
-  </p>
-</div>
 </div>
 </section>
 
 <section class="view" id="images">
 <div class="two">
-<div class="panel">
-  <h3>Tactical Image Synthesizer</h3>
-  <textarea id="imagePrompt" placeholder="Describe visual concept..."></textarea>
-  <input id="imageModel" value="google/gemini-2.5-flash-image">
-  <button class="primary" id="generateImage" style="width:100%">GENERATE SYNTHESIS</button>
-  <p class="muted" id="imageStatus">Ready for synthesis.</p>
-</div>
-<div class="panel">
-  <h3>Synthesis Output</h3>
-  <div id="imageResult" class="muted">Output display ready.</div>
-</div>
+  <div class="panel">
+    <h3>IMAGE GENERATION</h3>
+    <textarea id="imagePrompt" placeholder="Describe the image you want..."></textarea>
+    <p class="muted">Image generation needs an image-generation service. This control will be connected in a later integration; it does not create fake results.</p>
+    <button id="generateImage" class="primary">GENERATE IMAGE</button>
+    <p class="muted" id="imageStatus">Image service not connected.</p>
+  </div>
+  <div class="panel"><h3>IMAGE OUTPUT</h3><div id="imageResult" class="muted">No image generated yet.</div></div>
 </div>
 </section>
 
 <section class="view" id="workshop">
 <div class="two">
-<div class="panel">
-  <h3>3D Hologram Blueprint Lab</h3>
-  <textarea id="modelPrompt" placeholder="Command any object, robot, car, or architectural structure..."></textarea>
-  <div style="display:flex;gap:5px">
-    <button class="primary" id="buildModel" style="flex:1">GENERATE 3D BLUEPRINT</button>
-    <button id="resetModel">RESET</button>
+  <div class="panel">
+    <h3>3D MODEL WORKSHOP</h3>
+    <textarea id="modelPrompt" placeholder="Describe a robot, vehicle or object..."></textarea>
+    <button class="primary" id="buildModel">CREATE PREVIEW</button>
+    <button id="resetModel">RESET VIEW</button>
+    <input type="file" id="modelFile" accept=".glb,.gltf">
+    <p class="muted" id="modelStatus">Create a basic 3D concept or import a GLB/GLTF model.</p>
   </div>
-  <input type="file" id="modelFile" accept=".glb,.gltf" style="margin-top:6px">
-  <p class="muted" id="modelStatus">Lab systems online. Unrestricted generation ready.</p>
-  <a id="downloadModel" class="muted" hidden download="jarvis-model.glb">Download GLB Model</a>
-</div>
-<div class="panel">
-  <h3>Hologram Projection Matrix (Visible Viewer)</h3>
-  <div class="canvasbox" id="modelCanvas"></div>
-</div>
+  <div class="panel">
+    <h3>3D PROJECTION</h3>
+    <div class="canvasbox" id="modelCanvas"></div>
+  </div>
 </div>
 </section>
 
 <section class="view" id="settings">
 <div class="two">
-<div class="panel">
-  <h3>Secure Credentials</h3>
-  <label class="muted">OpenRouter API Key</label>
-  <input id="apiKey" type="password" autocomplete="off" placeholder="Paste API Key">
-  <div style="display:flex;gap:5px">
+  <div class="panel">
+    <h3>AI CONNECTION</h3>
+    <label class="muted">OpenRouter API key</label>
+    <input id="apiKey" type="password" autocomplete="off" placeholder="Paste API key">
     <button class="primary" id="saveKey">SAVE KEY</button>
-    <button id="forgetKey">CLEAR</button>
+    <button id="forgetKey">CLEAR KEY</button>
+    <p class="muted">For a public website, browser storage is not secure. A private backend is recommended before publishing.</p>
+  </div>
+  <div class="panel">
+    <h3>VOICE SETTINGS</h3>
+    <label class="muted">Voice</label><select id="voiceSelect"><option value="">System default</option></select>
+    <label class="muted">Speech rate</label><input type="range" id="rate" min=".75" max="1.3" step=".05" value="1">
+    <button id="testVoice">TEST VOICE</button>
   </div>
 </div>
-<div class="panel">
-  <h3>Voice Modulator</h3>
-  <label class="muted">Speech Engine Voice</label>
-  <select id="voiceSelect"><option value="">Default Voice</option></select>
-  <label class="muted">Speech Rate</label>
-  <input type="range" id="rate" min=".75" max="1.35" step=".05" value="1">
-  <button id="testVoice" style="width:100%;margin-top:6px">TEST VOICE SYNTHESIS</button>
-</div>
-</div>
 </section>
-
-<footer>
-  J.A.R.V.I.S. • CORE INVENTOR: ADITHYAN • ENTERPRISE SUITE
-</footer>
+<footer>J.A.R.V.I.S. • PERSONAL AI COMMAND INTERFACE</footer>
 </div>
-
-<script type="importmap">
-{
-  "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
-  }
-}
-</script>
-
-<script type="module">
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
-import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js';
-import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/GLTFLoader.js';
-
-const $ = id => document.getElementById(id);
-const KEY = 'jarvis_gemini_key';
-let apiKey = localStorage.getItem(KEY) || '';
-$('apiKey').value = apiKey;
-
-function addMsg(text, who='ai') {
-  const d = document.createElement('div');
-  d.className = 'msg ' + who;
-  d.textContent = text;
-  $('chatlog').appendChild(d);
-  $('chatlog').scrollTop = $('chatlog').scrollHeight;
-}
-
-function speak(text) {
-  if (!('speechSynthesis' in window)) return;
-  speechSynthesis.cancel();
-  const message = String(text || '').trim();
-  if (!message) return;
-  const utterance = new SpeechSynthesisUtterance(message);
-  utterance.lang = 'en-GB';
-  utterance.rate = Number($('rate').value || 1);
-  utterance.pitch = 1;
-  utterance.volume = 1;
-  const voices = speechSynthesis.getVoices();
-  const selectedIndex = $('voiceSelect').value;
-  const voice = selectedIndex !== '' ? voices[Number(selectedIndex)] : voices.find(v => /en-GB/i.test(v.lang)) || voices.find(v => /en/i.test(v.lang));
-  if (voice) utterance.voice = voice;
-  speechSynthesis.speak(utterance);
-}
-
-if ('speechSynthesis' in window) {
-  speechSynthesis.onvoiceschanged = () => {
-    const voices = speechSynthesis.getVoices();
-    const select = $('voiceSelect');
-    select.innerHTML = '<option value="">Default Voice</option>';
-    voices.forEach((v, i) => {
-      const opt = document.createElement('option');
-      opt.value = i;
-      opt.textContent = `${v.name} (${v.lang})`;
-      select.appendChild(opt);
-    });
-  };
-}
-
-$('speakBtn').onclick = () => speak($('greeting').innerText);
-$('stopBtn').onclick = () => { if ('speechSynthesis' in window) speechSynthesis.cancel(); };
-
-function updateClock() {
-  $('clock').textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-}
-updateClock(); setInterval(updateClock, 1000);
-
-if (navigator.getBattery) {
-  navigator.getBattery().then(b => {
-    const update = () => { $('battery').textContent = Math.round(b.level * 100) + '%'; };
-    update();
-    b.addEventListener('levelchange', update);
-  }).catch(()=>{ $('battery').textContent = '100%'; });
-}
-
-// --- CENTER: 3D ARC REACTOR CORE ---
-const reactorStage = $('reactorStage');
-const rScene = new THREE.Scene();
-const rCamera = new THREE.PerspectiveCamera(45, reactorStage.clientWidth / reactorStage.clientHeight, 0.1, 1000);
-rCamera.position.set(0, 0, 7.5);
-
-const rRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-rRenderer.setSize(reactorStage.clientWidth, reactorStage.clientHeight);
-rRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-reactorStage.appendChild(rRenderer.domElement);
-
-const rControls = new OrbitControls(rCamera, rRenderer.domElement);
-rControls.enableDamping = true;
-
-rScene.add(new THREE.AmbientLight(0xffffff, 2.0));
-const reactorGroup = new THREE.Group();
-rScene.add(reactorGroup);
-
-const coreGeo = new THREE.SphereGeometry(0.5, 32, 32);
-const coreMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff });
-const coreMesh = new THREE.Mesh(coreGeo, coreMat);
-reactorGroup.add(coreMesh);
-
-const plateCount = 6;
-const reactorPlates = [];
-
-for(let i=0; i<plateCount; i++) {
-  const radius = 0.9 + (i * 0.35);
-  const tube = 0.08 + (i * 0.02);
-  const plateGeo = new THREE.TorusGeometry(radius, tube, 16, 64);
-  const colorHex = i % 3 === 0 ? 0xff2247 : (i % 3 === 1 ? 0x00f0ff : 0xd99a39);
-  const plateMat = new THREE.MeshStandardMaterial({ color: colorHex, metalness: 0.9, roughness: 0.2, wireframe: i % 2 === 1 });
-  const plateMesh = new THREE.Mesh(plateGeo, plateMat);
-  plateMesh.rotation.x = Math.random() * Math.PI;
-  plateMesh.rotation.y = Math.random() * Math.PI;
-
-  const targetOffset = new THREE.Vector3((Math.random() - 0.5) * 2.5, (Math.random() - 0.5) * 2.5, (Math.random() - 0.5) * 2.5);
-  reactorPlates.push({ mesh: plateMesh, targetOffset: targetOffset, origPos: new THREE.Vector3(0,0,0), rotSpeed: (Math.random() - 0.5) * 0.02 });
-  reactorGroup.add(plateMesh);
-}
-
-let lastInteractionTime = Date.now(), isInteracting = false;
-rControls.addEventListener('start', () => { isInteracting = true; lastInteractionTime = Date.now(); });
-rControls.addEventListener('end', () => { isInteracting = false; lastInteractionTime = Date.now(); });
-
-function animateReactor() {
-  requestAnimationFrame(animateReactor);
-  rControls.update();
-  const shouldSplit = isInteracting || (Date.now() - lastInteractionTime < 1500);
-
-  reactorPlates.forEach(item => {
-    const dest = shouldSplit ? item.targetOffset : item.origPos;
-    item.mesh.position.lerp(dest, 0.08);
-    item.mesh.rotation.z += item.rotSpeed * (shouldSplit ? 2.5 : 1.0);
-  });
-
-  reactorGroup.rotation.y += 0.004;
-  rRenderer.render(rScene, rCamera);
-}
-animateReactor();
-
-// --- APP INTENTS & AI ---
-function executeIntent(text) {
-  const lower = text.toLowerCase();
-  if (lower.includes('open youtube')) { window.open('https://www.youtube.com', '_blank'); return "Opening YouTube, my sir."; }
-  if (lower.includes('open whatsapp')) { window.open('https://web.whatsapp.com', '_blank'); return "Opening WhatsApp."; }
-  if (lower.includes('open gmail')) { window.open('https://mail.google.com', '_blank'); return "Opening Gmail, my sir."; }
-  if (lower.includes('open instagram')) { window.open('https://www.instagram.com', '_blank'); return "Opening Instagram."; }
-  if (lower.includes('call')) { window.location.href = 'tel:'; return "Opening phone dialer."; }
-  if (lower.includes('message')) { window.location.href = 'sms:'; return "Opening messaging interface."; }
-  if (lower.includes('hey jarvis') || lower === 'jarvis') { return "My sir, all systems online."; }
-  return null;
-}
-
-async function askAI(text) {
-  const local = executeIntent(text);
-  if (local) return local;
-  if (!apiKey) throw new Error('Please enter OpenRouter API key in Settings.');
-  const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-    method: 'POST',
-    headers: { 'Authorization': 'Bearer ' + apiKey, 'Content-Type': 'application/json', 'HTTP-Referer': location.href },
-    body: JSON.stringify({
-      model: 'openai/gpt-4o-mini',
-      messages: [
-        { role: 'system', content: 'You are J.A.R.V.I.S., created by Core Inventor Adithyan. Speak naturally, loyally, and concisely. Address the user as "my sir".' },
-        { role: 'user', content: text }
-      ]
-    })
-  });
-  const data = await response.json();
-  if (!response.ok) throw new Error(data.error?.message || 'AI request failed');
-  return data.choices?.[0]?.message?.content || 'Systems nominal.';
-}
-
-async function send() {
-  const text = $('prompt').value.trim();
-  if (!text) return;
-  $('prompt').value = '';
-  addMsg(text, 'user');
-  try {
-    const answer = await askAI(text);
-    addMsg(answer, 'ai');
-    $('greeting').textContent = answer.slice(0, 120);
-    speak(answer);
-  } catch (error) {
-    addMsg('Error: ' + error.message, 'ai');
-    speak('My sir, connection error.');
-  }
-}
-
-$('sendBtn').onclick = send;
-$('prompt').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } });
-
-// Navigation Tabs
-document.querySelectorAll('.tab').forEach(t => {
-  t.onclick = () => {
-    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
-    document.querySelectorAll('.view').forEach(x => x.classList.remove('active'));
-    t.classList.add('active');
-    $(t.dataset.tab).classList.add('active');
-  };
-});
-
-$('saveKey').onclick = () => { apiKey = $('apiKey').value.trim(); if(apiKey) localStorage.setItem(KEY, apiKey); alert('Key saved.'); };
-$('forgetKey').onclick = () => { localStorage.removeItem(KEY); apiKey = ''; $('apiKey').value = ''; alert('Key cleared.'); };
-
-// Voice recognition
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-function listen(target) {
-  if (!SpeechRecognition) return alert('Speech recognition not supported in browser.');
-  const rec = new SpeechRecognition();
-  rec.lang = 'en-IN';
-  rec.onresult = e => { target.value = e.results[0][0].transcript; if(target === $('prompt')) send(); };
-  rec.start();
-}
-$('listenBtn').onclick = () => listen($('prompt'));
-$('chatVoice').onclick = () => listen($('prompt'));
-$('testVoice').onclick = () => speak('My sir, all tactical systems nominal.');
-
-// --- 3D BLUEPRINT GENERATOR LAB ---
-const host = $('modelCanvas');
-const bScene = new THREE.Scene(); bScene.background = new THREE.Color(0x010204);
-const bCamera = new THREE.PerspectiveCamera(45, host.clientWidth / host.clientHeight, 0.1, 1000);
-bCamera.position.set(5,4,7);
-const bRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-bRenderer.setSize(host.clientWidth, host.clientHeight);
-host.appendChild(bRenderer.domElement);
-const bControls = new OrbitControls(bCamera, bRenderer.domElement);
-bControls.enableDamping = true;
-bScene.add(new THREE.AmbientLight(0x00f0ff, 2.5));
-
-let currentModel = null;
-const loader = new GLTFLoader();
-
-function createProceduralBlueprint(promptText) {
-  const group = new THREE.Group();
-  const wireMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff, wireframe: true, transparent: true, opacity: 0.9 });
-  
-  const textLower = promptText.toLowerCase();
-  let primaryMesh;
-  if(textLower.includes('car') || textLower.includes('vehicle')) {
-    primaryMesh = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.8, 1.3), wireMat);
-  } else if(textLower.includes('robot') || textLower.includes('mech')) {
-    primaryMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.9, 2.2, 16), wireMat);
-  } else {
-    primaryMesh = new THREE.Mesh(new THREE.TorusKnotGeometry(1, 0.3, 64, 16), wireMat);
-  }
-  group.add(primaryMesh);
-  return group;
-}
-
-$('buildModel').onclick = async () => {
-  const prompt = $('modelPrompt').value.trim();
-  if(!prompt) return;
-  $('modelStatus').textContent = 'Constructing 3D blueprint matrix...';
-  try {
-    if(currentModel) bScene.remove(currentModel);
-    currentModel = createProceduralBlueprint(prompt);
-    bScene.add(currentModel);
-    $('downloadModel').hidden = true;
-    $('modelStatus').textContent = '3D Blueprint generated successfully, my sir.';
-  } catch(e) {
-    $('modelStatus').textContent = 'Error building model.';
-  }
-};
-
-$('modelFile').onchange = (e) => {
-  const file = e.target.files[0];
-  if(!file) return;
-  const url = URL.createObjectURL(file);
-  loader.load(url, (gltf) => {
-    if(currentModel) bScene.remove(currentModel);
-    currentModel = gltf.scene;
-    currentModel.traverse(child => { if(child.isMesh) child.material = new THREE.MeshBasicMaterial({ color: 0x00f0ff, wireframe: true }); });
-    bScene.add(currentModel);
-    $('modelStatus').textContent = 'Custom GLB model loaded successfully.';
-  }, undefined, () => {
-    $('modelStatus').textContent = 'Failed to load model file.';
-  });
-};
-
-$('resetModel').onclick = () => {
-  if (currentModel) {
-    bCamera.position.set(5, 4, 7);
-    bControls.target.set(0, 0, 0);
-  }
-};
-
-currentModel = createProceduralBlueprint('Default Enterprise Core');
-bScene.add(currentModel);
-
-function animateWorkshop() {
-  requestAnimationFrame(animateWorkshop);
-  bControls.update();
-  if(currentModel) currentModel.rotation.y += 0.003;
-  bRenderer.render(bScene, bCamera);
-}
-animateWorkshop();
-
-new ResizeObserver(() => {
-  if (host.clientWidth && host.clientHeight) {
-    bCamera.aspect = host.clientWidth / host.clientHeight;
-    bCamera.updateProjectionMatrix();
-    bRenderer.setSize(host.clientWidth, host.clientHeight);
-  }
-  if (reactorStage.clientWidth && reactorStage.clientHeight) {
-    rCamera.aspect = reactorStage.clientWidth / reactorStage.clientHeight;
-    rCamera.updateProjectionMatrix();
-    rRenderer.setSize(reactorStage.clientWidth, reactorStage.clientHeight);
-  }
-}).observe($('shell'));
-</script>
-</body>
-</html>
