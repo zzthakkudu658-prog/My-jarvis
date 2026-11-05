@@ -878,7 +878,77 @@ function addMsg(text,who='ai') {
     $('voiceState').textContent = 'VOICE ERROR';
     $('liveCaption').textContent = 'SPEECH COULD NOT PLAY';
   };
+let jarvisVoiceMode = false;
+let jarvisListening = false;
+let jarvisRecognition = null;
+let jarvisGreetingDone = false;
 
+function jarvisGreet() {
+  if (jarvisGreetingDone) return;
+
+  jarvisGreetingDone = true;
+
+  const greetings = [
+    "Good to see you. All systems are online. How are you doing today?",
+    "Welcome back. JARVIS is ready. What shall we work on today?",
+    "Systems online. I was waiting for you. How has your day been?"
+  ];
+
+  speak(greetings[Math.floor(Math.random() * greetings.length)]);
+}
+
+function startJarvisListening() {
+  const SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+    $('voiceState').textContent = 'VOICE INPUT UNAVAILABLE';
+    return;
+  }
+
+  if (jarvisListening) return;
+
+  jarvisRecognition = new SpeechRecognition();
+  jarvisRecognition.lang = 'en-IN';
+  jarvisRecognition.continuous = false;
+  jarvisRecognition.interimResults = false;
+
+  jarvisRecognition.onstart = () => {
+    jarvisListening = true;
+    $('voiceState').textContent = 'LISTENING';
+  };
+
+  jarvisRecognition.onresult = event => {
+    const command = event.results[0][0].transcript;
+    $('userInput').value = command;
+    $('voiceState').textContent = 'PROCESSING';
+    $('sendBtn').click();
+  };
+
+  jarvisRecognition.onerror = () => {
+    jarvisListening = false;
+    $('voiceState').textContent = 'VOICE READY';
+  };
+
+  jarvisRecognition.onend = () => {
+    jarvisListening = false;
+  };
+
+  jarvisRecognition.start();
+}
+
+function toggleJarvisVoice() {
+  jarvisVoiceMode = !jarvisVoiceMode;
+
+  if (jarvisVoiceMode) {
+    speak("Hands-free mode activated. I'm listening.");
+    startJarvisListening();
+  } else {
+    if (jarvisRecognition) jarvisRecognition.stop();
+    speechSynthesis.cancel();
+    $('voiceState').textContent = 'VOICE READY';
+  }
+      }
   speechSynthesis.resume();
   speechSynthesis.speak(utterance);
  }
