@@ -3,25 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#05080c">
-<title>J.A.R.V.I.S. — Tactical Command HUD</title>
+<meta name="theme-color" content="#030508">
+<title>J.A.R.V.I.S. — Hacker Tactical Command Center</title>
 <link rel="manifest" href="manifest.json">
 
 <style>
 :root {
   --cyan:#00f0ff;
-  --cyan-dim:#005566;
+  --cyan-dim:#003344;
   --gold:#d99a39;
   --gold-light:#ffd58a;
-  --line:rgba(0,240,255,.22);
-  --gold-line:rgba(217,154,57,.3);
-  --panel:rgba(8,14,20,.94);
+  --line:rgba(0,240,255,.25);
+  --panel:rgba(5,10,16,.96);
 }
 * {box-sizing:border-box}
 html,body {
   margin:0;
   min-height:100%;
-  background:#05080c;
+  background:#030508;
   color:#cbf0f8;
   font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
 }
@@ -31,114 +30,111 @@ body:before {
   position:fixed;
   inset:0;
   pointer-events:none;
-  opacity:.15;
+  opacity:.12;
   background-image:
-    linear-gradient(rgba(0,240,255,.1) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(0,240,255,.1) 1px,transparent 1px);
-  background-size:32px 32px;
+    linear-gradient(rgba(0,240,255,.12) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,240,255,.12) 1px,transparent 1px);
+  background-size:24px 24px;
 }
-.shell {max-width:1650px;margin:auto;padding:12px}
+.shell {max-width:1800px;margin:auto;padding:10px}
 header {
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:12px;
-  padding:14px 20px;
+  gap:10px;
+  padding:10px 16px;
   border:1px solid var(--line);
-  border-radius:6px;
-  background:linear-gradient(90deg,#0a1420,#050b12);
-  box-shadow:0 0 20px rgba(0,240,255,.08);
+  border-radius:4px;
+  background:linear-gradient(90deg,#08101a,#03060a);
+  box-shadow:0 0 15px rgba(0,240,255,.1);
 }
 .brand {
   color:var(--cyan);
   font-weight:700;
-  letter-spacing:.22em;
-  font-size:clamp(16px,2.2vw,24px);
+  letter-spacing:.2em;
+  font-size:clamp(14px,2vw,20px);
 }
 .brand small {
   display:block;
-  margin-top:3px;
+  margin-top:2px;
   color:var(--gold);
-  font-size:8px;
-  letter-spacing:.2em;
+  font-size:7px;
+  letter-spacing:.18em;
 }
 .status {
-  font-size:9px;
-  letter-spacing:.15em;
+  font-size:8px;
+  letter-spacing:.12em;
   color:#76e4f7;
 }
 .status:before {
   content:"";
   display:inline-block;
-  width:6px;height:6px;
+  width:5px;height:5px;
   border-radius:50%;
   background:var(--cyan);
-  box-shadow:0 0 8px var(--cyan);
-  margin-right:8px;
+  box-shadow:0 0 6px var(--cyan);
+  margin-right:6px;
 }
-.tactical-grid {
+/* HACKER LANDSCAPE 3-COLUMN GRID */
+.hacker-grid {
   display:grid;
-  grid-template-columns:300px minmax(340px,1fr) 300px;
-  gap:12px;
-  margin-top:12px;
+  grid-template-columns:320px minmax(380px,1.2fr) 340px;
+  gap:10px;
+  margin-top:10px;
 }
 .panel {
   border:1px solid var(--line);
-  border-radius:6px;
-  padding:12px;
+  border-radius:4px;
+  padding:10px;
   background:var(--panel);
-  box-shadow:inset 0 0 15px rgba(0,240,255,.03);
   position:relative;
 }
 .panel:before {
   content:"";
   position:absolute;
-  top:0;left:0;width:4px;height:4px;
+  top:0;left:0;width:3px;height:3px;
   border-top:2px solid var(--cyan);
   border-left:2px solid var(--cyan);
 }
 .panel h3 {
   color:var(--cyan);
-  font-size:10px;
-  letter-spacing:.2em;
-  margin:0 0 10px;
+  font-size:9px;
+  letter-spacing:.18em;
+  margin:0 0 8px;
   text-transform:uppercase;
   border-bottom:1px solid var(--line);
-  padding-bottom:5px;
+  padding-bottom:4px;
 }
 .chart-box {
-  height:95px;
+  height:85px;
   border:1px solid rgba(0,240,255,.15);
-  background:#03060a;
-  margin-bottom:8px;
+  background:#020407;
+  margin-bottom:6px;
   position:relative;
   overflow:hidden;
-  border-radius:4px;
+  border-radius:3px;
 }
 .chart-box canvas {width:100%;height:100%;display:block}
 .metric-row {
   display:flex;
   justify-content:space-between;
-  font-size:10px;
-  padding:4px 0;
+  font-size:9px;
+  padding:3px 0;
   border-bottom:1px dashed rgba(0,240,255,.1);
 }
 .metric-row span:last-child {color:var(--gold-light);font-weight:bold}
-.core-panel {
-  min-height:540px;
+.center-deck {
   display:flex;
   flex-direction:column;
-  align-items:center;
-  justify-content:space-between;
-  background:radial-gradient(circle at 50% 40%,#0c1b2a 0%,#060a10 70%);
+  gap:8px;
 }
 .reactor-stage {
   width:100%;
-  height:260px;
+  height:240px;
   position:relative;
-  border:1px solid var(--gold-line);
-  border-radius:4px;
-  background:#020406;
+  border:1px solid rgba(217,154,57,.3);
+  border-radius:3px;
+  background:#010204;
   overflow:hidden;
 }
 .reactor-stage canvas {width:100%;height:100%;display:block;cursor:grab}
@@ -146,54 +142,40 @@ header {
 .greeting {
   text-align:center;
   color:var(--gold-light);
-  font-size:14px;
+  font-size:12px;
   letter-spacing:.08em;
-  line-height:1.4;
-  margin:6px 0;
-}
-.sub {
-  color:#6897bb;
-  font-size:9px;
-  letter-spacing:.15em;
-  text-align:center;
+  line-height:1.3;
+  margin:4px 0;
 }
 .controls {
   display:flex;
-  gap:6px;
-  width:100%;
+  gap:5px;
   justify-content:center;
 }
 button {
   border:1px solid var(--cyan);
   color:var(--cyan);
   background:rgba(0,240,255,.08);
-  padding:8px 12px;
-  border-radius:4px;
+  padding:6px 10px;
+  border-radius:3px;
   font-family:inherit;
   font-weight:bold;
-  font-size:10px;
-  letter-spacing:.12em;
+  font-size:9px;
+  letter-spacing:.1em;
   cursor:pointer;
   transition:.2s;
 }
-button:hover {
-  background:rgba(0,240,255,.2);
-  box-shadow:0 0 10px rgba(0,240,255,.4);
-}
+button:hover {background:rgba(0,240,255,.2);box-shadow:0 0 8px rgba(0,240,255,.4)}
 button.primary {
   border-color:var(--gold);
   color:var(--gold-light);
   background:rgba(217,154,57,.12);
 }
-button.primary:hover {
-  background:rgba(217,154,57,.25);
-  box-shadow:0 0 10px rgba(217,154,57,.5);
-}
+button.primary:hover {background:rgba(217,154,57,.25);box-shadow:0 0 8px rgba(217,154,57,.5)}
 .shortcuts {
   display:grid;
   grid-template-columns:repeat(5,1fr);
-  gap:5px;
-  margin-top:8px;
+  gap:4px;
 }
 .app-shortcut {
   display:flex;
@@ -203,58 +185,56 @@ button.primary:hover {
   text-decoration:none;
   color:#cbf0f8;
   border:1px solid var(--line);
-  border-radius:4px;
-  background:#04090f;
-  font-size:7px;
-  letter-spacing:.1em;
-  padding:6px 2px;
-  transition:.2s;
+  border-radius:3px;
+  background:#04080e;
+  font-size:6px;
+  letter-spacing:.08em;
+  padding:5px 2px;
 }
-.app-shortcut:hover {border-color:var(--cyan);background:#0a1926}
-.app-icon {font-size:14px;margin-bottom:3px}
-nav {display:flex;gap:6px;margin:10px 0}
-.tab {flex:1;text-align:center;padding:9px;background:#050a12;border:1px solid var(--line);color:#76e4f7;cursor:pointer;font-size:10px;letter-spacing:.15em;border-radius:4px}
-.tab.active {background:rgba(0,240,255,.15);border-color:var(--cyan);color:#fff;box-shadow:0 0 10px rgba(0,240,255,.2)}
+.app-shortcut:hover {border-color:var(--cyan);background:#081420}
+.app-icon {font-size:12px;margin-bottom:2px}
+nav {display:flex;gap:5px;margin:8px 0}
+.tab {flex:1;text-align:center;padding:7px;background:#04080e;border:1px solid var(--line);color:#76e4f7;cursor:pointer;font-size:9px;letter-spacing:.12em;border-radius:3px}
+.tab.active {background:rgba(0,240,255,.15);border-color:var(--cyan);color:#fff;box-shadow:0 0 8px rgba(0,240,255,.2)}
 .view {display:none}
 .view.active {display:block}
-.two {display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.two {display:grid;grid-template-columns:1fr 1fr;gap:8px}
 input,textarea,select {
   width:100%;
-  background:#03060a;
+  background:#020407;
   border:1px solid var(--line);
-  border-radius:4px;
+  border-radius:3px;
   color:#cbf0f8;
-  padding:10px;
+  padding:8px;
   font:inherit;
-  font-size:11px;
-  margin:4px 0 8px;
+  font-size:10px;
+  margin:3px 0 6px;
 }
-textarea {min-height:75px;resize:vertical}
+textarea {min-height:65px;resize:vertical}
 .chatlog {
-  height:210px;
+  height:170px;
   overflow:auto;
   border:1px solid var(--line);
-  border-radius:4px;
-  padding:8px;
-  background:#020406;
+  border-radius:3px;
+  padding:6px;
+  background:#010204;
 }
-.msg {padding:7px 9px;border-radius:4px;margin:5px 0;font-size:12px;line-height:1.4}
-.user {background:#0a1e2e;margin-left:10%;border-left:2px solid var(--cyan)}
-.ai {background:#141712;margin-right:10%;border-left:2px solid var(--gold)}
-.muted {color:#76e4f7;font-size:10px;line-height:1.5}
+.msg {padding:6px 8px;border-radius:3px;margin:4px 0;font-size:11px;line-height:1.3}
+.user {background:#081824;margin-left:8%;border-left:2px solid var(--cyan)}
+.ai {background:#14140c;margin-right:8%;border-left:2px solid var(--gold)}
+.muted {color:#76e4f7;font-size:9px;line-height:1.4}
 .canvasbox {
-  height:320px;
+  height:280px;
   border:1px solid var(--line);
-  border-radius:4px;
+  border-radius:3px;
   overflow:hidden;
-  background:#020406;
+  background:#010204;
 }
 .canvasbox canvas {display:block;width:100%;height:100%}
-footer {text-align:center;color:#46728a;font-size:9px;padding:12px;letter-spacing:.15em}
+footer {text-align:center;color:#46728a;font-size:8px;padding:8px;letter-spacing:.1em}
 [hidden] {display:none!important}
 @media(max-width:1100px) {
-  .tactical-grid {grid-template-columns:1fr}
-  .core {min-height:auto}
+  .hacker-grid {grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -265,14 +245,14 @@ footer {text-align:center;color:#46728a;font-size:9px;padding:12px;letter-spacin
 <header>
   <div class="brand">
     J.A.R.V.I.S.
-    <small>CORE INVENTOR: ADITHYAN • TACTICAL HUD SYSTEM</small>
+    <small>CORE INVENTOR: ADITHYAN • HACKER TACTICAL HUD</small>
   </div>
   <div class="status" id="status">TACTICAL LINK ONLINE</div>
 </header>
 
-<section class="tactical-grid">
+<section class="hacker-grid">
 
-<!-- LEFT PANEL: PRECISE FINANCIAL TRADE TRACE -->
+<!-- COLUMN 1: FINANCIAL TRADE TRACE & METRICS -->
 <aside class="panel">
   <h3>Market & Trade Trace</h3>
   <div class="chart-box"><canvas id="stockCanvas1"></canvas></div>
@@ -280,27 +260,25 @@ footer {text-align:center;color:#46728a;font-size:9px;padding:12px;letter-spacin
   <div class="metric-row"><span>ETH/USD</span><span id="ethPrice">$3,512.80</span></div>
   <div class="metric-row"><span>NET VOLUME</span><span>+4.82%</span></div>
 
-  <h3 style="margin-top:14px">Asset Candlesticks</h3>
+  <h3 style="margin-top:10px">Asset Candlesticks</h3>
   <div class="chart-box"><canvas id="stockCanvas2"></canvas></div>
   
-  <h3 style="margin-top:14px">Alpha Metrics</h3>
+  <h3 style="margin-top:10px">Alpha Matrix</h3>
   <div class="metric-row"><span>ALPHA INDEX</span><span>75%</span></div>
   <div class="metric-row"><span>BETA VOLATILITY</span><span>40%</span></div>
   <div class="metric-row"><span>GAMMA FLOW</span><span>90%</span></div>
   <div class="metric-row"><span>DELTA SIGNAL</span><span>100%</span></div>
 </aside>
 
-<!-- CENTER PANEL: HOLOGRAPHIC SPHERE CORE -->
-<main class="panel core-panel">
-  <div class="sub">HOLOGRAPHIC GOLDEN MATRIX (TOUCH TO SPLIT/ZOOM)[span_5](start_span)[span_5](end_span)</div>
-
+<!-- COLUMN 2: CENTER HOLOGRAPHIC CORE & COMMAND DECK -->
+<main class="panel center-deck">
+  <h3>Holographic Golden Matrix (Touch to Split / Zoom)[span_0](start_span)[span_0](end_span)</h3>
   <div class="reactor-stage" id="reactorStage">
-    <!-- Three.js Golden Particle Matrix Sphere -->
+    {/* Interactive 3D Particle Sphere */}
   </div>
 
   <div class="greeting" id="greeting">
-    My sir, all systems online.<br>
-    How may I assist you today?
+    My sir, all systems online. How may I assist you today?
   </div>
 
   <div class="sub" id="liveCaption">VOICE INTERFACE • STANDBY</div>
@@ -311,7 +289,7 @@ footer {text-align:center;color:#46728a;font-size:9px;padding:12px;letter-spacin
     <button id="stopBtn">■ STOP</button>
   </div>
 
-  <div class="shortcuts" style="width:100%">
+  <div class="shortcuts">
     <a class="app-shortcut instagram" href="https://www.instagram.com/" target="_blank">
       <span class="app-icon">◎</span><span>INSTAGRAM</span>
     </a>
@@ -330,20 +308,21 @@ footer {text-align:center;color:#46728a;font-size:9px;padding:12px;letter-spacin
   </div>
 </main>
 
-<!-- RIGHT PANEL: REAL-TIME 3D WEATHER & CLOUD MOVEMENT -->
+<!-- COLUMN 3: REAL-TIME 3D WEATHER & ATMOSPHERIC SIMULATION -->
 <aside class="panel">
-  <h3>Atmospheric Cloud 3D</h3>
-  <div class="chart-box" id="weatherContainer" style="height:190px">
-    <!-- Three.js Weather Cloud Simulation Rendered Here -->
+  <h3>Atmospheric Cloud 3D (Real-Time)[span_1](start_span)[span_1](end_span)</h3>
+  <div class="chart-box" id="weatherContainer" style="height:150px">
+    {/* Real 3D Cloud Movement Simulation */}
   </div>
   <div class="metric-row"><span>SECTOR</span><span>KOCHI / IND</span></div>
   <div class="metric-row"><span>WIND VELOCITY</span><span id="windVal">14.2 KNOTS</span></div>
   <div class="metric-row"><span>BAROMETER</span><span>1013 HPA</span></div>
   <div class="metric-row"><span>CLOUD CEILING</span><span>12,400 FT</span></div>
-  
-  <h3 style="margin-top:14px">Network Security</h3>
-  <div class="metric-row"><span>FIREWALL</span><span>SECURE</span></div>
-  <div class="metric-row"><span>ENCRYPTION</span><span>AES-256</span></div>
+  <div class="metric-row"><span>ATMOSPHERE</span><span>STABLE / CLEAR</span></div>
+
+  <h3 style="margin-top:10px">System Security</h3>
+  <div class="metric-row"><span>FIREWALL</span><span>ACTIVE (SECURE)</span></div>
+  <div class="metric-row"><span>ENCRYPTION</span><span>AES-256 QUANTUM</span></div>
 </aside>
 
 </section>
@@ -363,18 +342,18 @@ footer {text-align:center;color:#46728a;font-size:9px;padding:12px;letter-spacin
     <div class="msg ai">My sir, all systems online. How can I assist you?</div>
   </div>
   <textarea id="prompt" placeholder="Ask JARVIS or command 'open YouTube', 'check weather', etc..."></textarea>
-  <div class="row" style="display:flex;gap:6px">
+  <div style="display:flex;gap:5px">
     <button class="primary" id="sendBtn" style="flex:1">Send Transmission</button>
     <button id="chatVoice">🎙 Voice</button>
   </div>
 </div>
 <div class="panel">
-  <h3>Command Protocol</h3>
+  <h3>Command Protocols</h3>
   <p class="muted">
-    • Say <strong>"Hey Jarvis"</strong> for system status[span_6](start_span)[span_6](end_span).<br>
-    • Command <strong>"Open YouTube"</strong> / <strong>"WhatsApp"</strong> / <strong>"Gmail"</strong>[span_7](start_span)[span_7](end_span).<br>
-    • Interactive 3D Weather simulation & calculated financial graphs active[span_8](start_span)[span_8](end_span).<br>
-    • Unrestricted 3D Blueprint generation enabled[span_9](start_span)[span_9](end_span).
+    • Say <strong>"Hey Jarvis"</strong> for operational status[span_2](start_span)[span_2](end_span).<br>
+    • Command <strong>"Open YouTube"</strong> / <strong>"WhatsApp"</strong> / <strong>"Gmail"</strong>[span_3](start_span)[span_3](end_span).<br>
+    • Fully functional 3D Cloud simulation & live financial tickers[span_4](start_span)[span_4](end_span).<br>
+    • Unrestricted 3D Blueprint generation with visible viewer[span_5](start_span)[span_5](end_span).
   </p>
 </div>
 </div>
@@ -387,7 +366,7 @@ footer {text-align:center;color:#46728a;font-size:9px;padding:12px;letter-spacin
   <textarea id="imagePrompt" placeholder="Describe visual concept..."></textarea>
   <input id="imageModel" value="google/gemini-2.5-flash-image">
   <button class="primary" id="generateImage" style="width:100%">GENERATE SYNTHESIS</button>
-  <p class="muted" id="imageStatus">Ready.</p>
+  <p class="muted" id="imageStatus">Ready for synthesis.</p>
 </div>
 <div class="panel">
   <h3>Synthesis Output</h3>
@@ -401,16 +380,16 @@ footer {text-align:center;color:#46728a;font-size:9px;padding:12px;letter-spacin
 <div class="panel">
   <h3>3D Hologram Blueprint Lab</h3>
   <textarea id="modelPrompt" placeholder="Command any object, robot, car, or architectural structure..."></textarea>
-  <div style="display:flex;gap:6px">
+  <div style="display:flex;gap:5px">
     <button class="primary" id="buildModel" style="flex:1">GENERATE 3D BLUEPRINT</button>
     <button id="resetModel">RESET</button>
   </div>
-  <input type="file" id="modelFile" accept=".glb,.gltf" style="margin-top:10px">
-  <p class="muted" id="modelStatus">Lab systems online. Unrestricted generation ready.</p>
-  <a id="downloadModel" class="muted" hidden download="jarvis-model.glb">Download GLB</a>
+  <input type="file" id="modelFile" accept=".glb,.gltf" style="margin-top:6px">
+  <p class="muted" id="modelStatus">Lab systems online. Unrestricted generation ready[span_6](start_span)[span_6](end_span).</p>
+  <a id="downloadModel" class="muted" hidden download="jarvis-model.glb">Download GLB Model</a>
 </div>
 <div class="panel">
-  <h3>Hologram Projection Matrix</h3>
+  <h3>Hologram Projection Matrix (Visible Viewer)</h3>
   <div class="canvasbox" id="modelCanvas"></div>
 </div>
 </div>
@@ -422,7 +401,7 @@ footer {text-align:center;color:#46728a;font-size:9px;padding:12px;letter-spacin
   <h3>Secure Credentials</h3>
   <label class="muted">OpenRouter API Key</label>
   <input id="apiKey" type="password" autocomplete="off" placeholder="Paste API Key">
-  <div style="display:flex;gap:6px">
+  <div style="display:flex;gap:5px">
     <button class="primary" id="saveKey">SAVE KEY</button>
     <button id="forgetKey">CLEAR</button>
   </div>
@@ -433,7 +412,7 @@ footer {text-align:center;color:#46728a;font-size:9px;padding:12px;letter-spacin
   <select id="voiceSelect"><option value="">Default Voice</option></select>
   <label class="muted">Speech Rate</label>
   <input type="range" id="rate" min=".75" max="1.35" step=".05" value="1">
-  <button id="testVoice" style="width:100%;margin-top:8px">TEST VOICE SYNTHESIS</button>
+  <button id="testVoice" style="width:100%;margin-top:6px">TEST VOICE SYNTHESIS</button>
 </div>
 </div>
 </section>
@@ -509,7 +488,7 @@ function drawStockCharts() {
     ctx.lineWidth = 1.5;
     ctx.beginPath();
     for(let x=0; x<c1.width; x+=4) {
-      const y = c1.height/2 + Math.sin(x*0.04 + Date.now()*0.003)*22 + (Math.random()-0.5)*6;
+      const y = c1.height/2 + Math.sin(x*0.04 + Date.now()*0.003)*20 + (Math.random()-0.5)*5;
       if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
     }
     ctx.stroke();
@@ -522,13 +501,13 @@ function drawStockCharts() {
     c2.height = c2.parentElement.clientHeight;
     ctx.clearRect(0,0,c2.width,c2.height);
     for(let i=0; i<c2.width; i+=12) {
-      const h = 18 + Math.random()*45;
+      const h = 15 + Math.random()*40;
       ctx.fillStyle = i%24===0 ? '#d99a39' : '#00f0ff';
-      ctx.fillRect(i, c2.height - h - 8, 7, h);
+      ctx.fillRect(i, c2.height - h - 6, 6, h);
       ctx.strokeStyle = '#fff';
       ctx.beginPath();
-      ctx.moveTo(i+3, c2.height - h - 14);
-      ctx.lineTo(i+3, c2.height - 4);
+      ctx.moveTo(i+3, c2.height - h - 12);
+      ctx.lineTo(i+3, c2.height - 3);
       ctx.stroke();
     }
   }
@@ -554,7 +533,7 @@ rScene.add(new THREE.AmbientLight(0xffcc77, 2.0));
 const reactorGroup = new THREE.Group();
 rScene.add(reactorGroup);
 
-const particleCount = 4000;
+const particleCount = 3500;
 const particleGeo = new THREE.BufferGeometry();
 const posArray = new Float32Array(particleCount * 3);
 const targetPosArray = new Float32Array(particleCount * 3);
@@ -562,14 +541,14 @@ const targetPosArray = new Float32Array(particleCount * 3);
 for(let i = 0; i < particleCount * 3; i += 3) {
   const u = Math.random(), v = Math.random();
   const theta = u * 2.0 * Math.PI, phi = Math.acos(2.0 * v - 1.0);
-  const r = 1.3 + Math.random() * 0.4;
+  const r = 1.2 + Math.random() * 0.4;
   const x = r * Math.sin(phi) * Math.cos(theta);
   const y = r * Math.sin(phi) * Math.sin(theta);
   const z = r * Math.cos(phi);
   posArray[i] = x; posArray[i+1] = y; posArray[i+2] = z;
-  targetPosArray[i] = x * (1.9 + Math.random() * 1.3);
-  targetPosArray[i+1] = y * (1.9 + Math.random() * 1.3);
-  targetPosArray[i+2] = z * (1.9 + Math.random() * 1.3);
+  targetPosArray[i] = x * (1.8 + Math.random() * 1.2);
+  targetPosArray[i+1] = y * (1.8 + Math.random() * 1.2);
+  targetPosArray[i+2] = z * (1.8 + Math.random() * 1.2);
 }
 particleGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
 
@@ -612,38 +591,38 @@ function animateReactor() {
 }
 animateReactor();
 
-// --- RIGHT PANEL: REAL-TIME 3D WEATHER & CLOUD MOVEMENT SIMULATION ---
+// --- RIGHT PANEL: REAL-TIME 3D VOLUMETRIC CLOUD WEATHER SIMULATION ---
 const weatherBox = $('weatherContainer');
 const wScene = new THREE.Scene();
 const wCamera = new THREE.PerspectiveCamera(45, weatherBox.clientWidth / weatherBox.clientHeight, 0.1, 1000);
-wCamera.position.set(0, 1, 5);
+wCamera.position.set(0, 0.8, 4);
 
 const wRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 wRenderer.setSize(weatherBox.clientWidth, weatherBox.clientHeight);
 weatherBox.appendChild(wRenderer.domElement);
 
-wScene.add(new THREE.AmbientLight(0x00f0ff, 1.8));
+wScene.add(new THREE.AmbientLight(0x00f0ff, 2.0));
 const cloudGroup = new THREE.Group();
 wScene.add(cloudGroup);
 
-const cloudCount = 400;
+const cloudCount = 500;
 const cloudGeo = new THREE.BufferGeometry();
 const cloudPos = new Float32Array(cloudCount * 3);
 for(let i=0; i<cloudCount*3; i+=3) {
-  cloudPos[i] = (Math.random()-0.5)*5;
-  cloudPos[i+1] = (Math.random()-0.5)*1.8;
-  cloudPos[i+2] = (Math.random()-0.5)*3.5;
+  cloudPos[i] = (Math.random()-0.5)*4.5;
+  cloudPos[i+1] = (Math.random()-0.5)*1.2;
+  cloudPos[i+2] = (Math.random()-0.5)*2.5;
 }
 cloudGeo.setAttribute('position', new THREE.BufferAttribute(cloudPos, 3));
 const cloudMat = new THREE.PointsMaterial({
-  size: 0.18, color: 0x76e4f7, transparent: true, opacity: 0.75, blending: THREE.AdditiveBlending
+  size: 0.14, color: 0x99e6ff, transparent: true, opacity: 0.8, blending: THREE.AdditiveBlending
 });
 cloudGroup.add(new THREE.Points(cloudGeo, cloudMat));
 
 let windKnot = 14.2;
 function animateWeather() {
   requestAnimationFrame(animateWeather);
-  cloudGroup.rotation.y += 0.005;
+  cloudGroup.rotation.y += 0.006;
   windKnot = 14.2 + Math.sin(Date.now()*0.001)*1.5;
   $('windVal').textContent = windKnot.toFixed(1) + ' KNOTS';
   wRenderer.render(wScene, wCamera);
@@ -728,9 +707,9 @@ $('listenBtn').onclick = () => listen($('prompt'));
 $('chatVoice').onclick = () => listen($('prompt'));
 $('testVoice').onclick = () => speak('My sir, all tactical systems nominal.');
 
-// --- UNRESTRICTED 3D BLUEPRINT GENERATOR LAB ---
+// --- UNRESTRICTED VISIBLE 3D BLUEPRINT GENERATOR LAB ---
 const host = $('modelCanvas');
-const bScene = new THREE.Scene(); bScene.background = new THREE.Color(0x020406);
+const bScene = new THREE.Scene(); bScene.background = new THREE.Color(0x010204);
 const bCamera = new THREE.PerspectiveCamera(45, host.clientWidth / host.clientHeight, 0.1, 1000);
 bCamera.position.set(5,4,7);
 const bRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -738,21 +717,24 @@ bRenderer.setSize(host.clientWidth, host.clientHeight);
 host.appendChild(bRenderer.domElement);
 const bControls = new OrbitControls(bCamera, bRenderer.domElement);
 bControls.enableDamping = true;
-bScene.add(new THREE.AmbientLight(0x00f0ff, 2));
+bScene.add(new THREE.AmbientLight(0x00f0ff, 2.5));
 
 let currentModel = null;
 const loader = new GLTFLoader();
 
 function createProceduralBlueprint(promptText) {
   const group = new THREE.Group();
-  const wireMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff, wireframe: true, transparent: true, opacity: 0.85 });
+  const wireMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff, wireframe: true, transparent: true, opacity: 0.9 });
   
   const textLower = promptText.toLowerCase();
   let primaryMesh;
   if(textLower.includes('car') || textLower.includes('vehicle')) {
-    primaryMesh = new THREE.Mesh(new THREE.BoxGeometry(2, 0.8, 1.2), wireMat);
+    primaryMesh = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.8, 1.3), wireMat);
   } else if(textLower.includes('robot') || textLower.includes('mech')) {
-    primaryMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.8, 2, 16), wireMat);
+    primaryMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.9, 2.2, 16), wireMat);
+  } else if(textLower.includes('plane') || textLower.includes('jet')) {
+    primaryMesh = new THREE.Mesh(new THREE.ConeGeometry(1, 2.5, 16), wireMat);
+    primaryMesh.rotation.x = Math.PI / 2;
   } else {
     primaryMesh = new THREE.Mesh(new THREE.TorusKnotGeometry(1, 0.3, 64, 16), wireMat);
   }
@@ -782,16 +764,19 @@ $('buildModel').onclick = async () => {
           currentModel = gltf.scene;
           currentModel.traverse(child => { if(child.isMesh) child.material = new THREE.MeshBasicMaterial({ color: 0x00f0ff, wireframe: true }); });
           modelLoaded = true;
+          $('downloadModel').href = data.glbUrl;
+          $('downloadModel').hidden = false;
         }
       }
     } catch(e) {}
 
     if(!modelLoaded) {
       currentModel = createProceduralBlueprint(prompt);
+      $('downloadModel').hidden = true;
     }
 
     bScene.add(currentModel);
-    $('modelStatus').textContent = '3D Blueprint generated successfully, my sir.';
+    $('modelStatus').textContent = '3D Blueprint generated successfully, my sir[span_7](start_span)[span_7](end_span).';
   } catch(e) {
     $('modelStatus').textContent = 'Error building model.';
   }
@@ -803,6 +788,10 @@ $('resetModel').onclick = () => {
     bControls.target.set(0, 0, 0);
   }
 };
+
+// Default initial visible blueprint model
+currentModel = createProceduralBlueprint('Default Matrix Core');
+bScene.add(currentModel);
 
 function animateWorkshop() {
   requestAnimationFrame(animateWorkshop);
